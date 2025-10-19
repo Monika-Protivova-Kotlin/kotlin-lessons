@@ -53,6 +53,157 @@ object CourseBuilder {
         indexFile.writeText(indexStringWriter.toString())
     }
 
+    fun createMainIndex(courses: List<Course>) {
+        val outputFile = File("public/index.html")
+        println("Generating main index page...")
+
+        val html = StringWriter().appendHTML().html {
+            attributes["lang"] = "en"
+            head {
+                meta(charset = CHARSET)
+                meta(
+                    name = "viewport",
+                    content = "width=device-width, initial-scale=1.0"
+                )
+                title { +"Kotlin Courses" }
+                style {
+                    unsafe {
+                        raw("""
+                            * {
+                                margin: 0;
+                                padding: 0;
+                                box-sizing: border-box;
+                            }
+
+                            body {
+                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+                                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                min-height: 100vh;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                padding: 20px;
+                            }
+
+                            .container {
+                                max-width: 900px;
+                                width: 100%;
+                            }
+
+                            h1 {
+                                color: white;
+                                text-align: center;
+                                font-size: 3em;
+                                margin-bottom: 1em;
+                                text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+                            }
+
+                            .courses {
+                                display: grid;
+                                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                                gap: 2em;
+                            }
+
+                            .course-card {
+                                background: white;
+                                border-radius: 12px;
+                                padding: 2em;
+                                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                                text-decoration: none;
+                                color: inherit;
+                                display: block;
+                            }
+
+                            .course-card:hover {
+                                transform: translateY(-5px);
+                                box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+                            }
+
+                            .course-card h2 {
+                                color: #667eea;
+                                font-size: 1.8em;
+                                margin-bottom: 0.5em;
+                            }
+
+                            .course-card .subtitle {
+                                color: #764ba2;
+                                font-size: 1.2em;
+                                margin-bottom: 1em;
+                                font-weight: 500;
+                            }
+
+                            .course-card p {
+                                color: #666;
+                                line-height: 1.6;
+                                margin-bottom: 1.5em;
+                            }
+
+                            .course-card .cta {
+                                color: #667eea;
+                                font-weight: 600;
+                                display: inline-flex;
+                                align-items: center;
+                                gap: 0.5em;
+                            }
+
+                            .course-card .cta::after {
+                                content: '→';
+                                font-size: 1.2em;
+                                transition: transform 0.3s ease;
+                            }
+
+                            .course-card:hover .cta::after {
+                                transform: translateX(5px);
+                            }
+
+                            @media (max-width: 768px) {
+                                h1 {
+                                    font-size: 2em;
+                                }
+
+                                .courses {
+                                    grid-template-columns: 1fr;
+                                }
+                            }
+                        """.trimIndent())
+                    }
+                }
+            }
+
+            body {
+                div(classes = "container") {
+                    h1 { +"Kotlin Courses" }
+
+                    div(classes = "courses") {
+                        courses.forEach { course ->
+                            a(href = "courses/${course.name.normalizedFileName()}/", classes = "course-card") {
+                                h2 { +course.name }
+                                div(classes = "subtitle") { +course.subTitle }
+                                p {
+                                    // Create description from first few lesson summaries
+                                    val description = course.lessons
+                                        .take(3)
+                                        .mapNotNull { it.summary }
+                                        .joinToString(" ")
+                                        .take(200)
+                                        .let { if (it.length == 200) "$it..." else it }
+                                    +description
+                                }
+                                span(classes = "cta") {
+                                    +"Start Learning"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        outputFile.writeText(html.toString())
+        println("Written main index: ${outputFile.absolutePath}")
+    }
+
     fun createLesson(
         lesson: Lesson
     ) = StringWriter().appendHTML().html {

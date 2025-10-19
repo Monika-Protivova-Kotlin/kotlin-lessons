@@ -5,6 +5,14 @@ import com.motycka.edu.content.courses.BackendDevelopmentInKotlinCourse
 import com.motycka.edu.content.courses.ProgrammingInKotlinCourse
 
 fun main() {
-    CourseBuilder.createCourse(BackendDevelopmentInKotlinCourse)
-    CourseBuilder.createCourse(ProgrammingInKotlinCourse)
+    val courses = listOf(
+        BackendDevelopmentInKotlinCourse,
+        ProgrammingInKotlinCourse
+    )
+
+    courses.forEach { course ->
+        CourseBuilder.createCourse(course)
+    }
+
+    CourseBuilder.createMainIndex(courses)
 }
