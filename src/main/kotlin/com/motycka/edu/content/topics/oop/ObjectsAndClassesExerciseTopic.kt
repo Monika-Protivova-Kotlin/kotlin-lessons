@@ -44,11 +44,12 @@ object ClassesAndObjectsExercise1Slide : Slide(
             }
         }
 
-        p {
-            em {
-                +"Playground $ARROW_DOWN"
-            }
-        }
+//        p {
+//            strong {
+//                + "You can use "
+//                a(href = "https://pl.kotl.in/a91gCQl5d") { +"Kotlin Playground" }
+//            }
+//        }
     }
 )
 
@@ -82,11 +83,11 @@ object ClassesAndObjectsExercise2Slide : Slide(
             li { inlineCode("Rectangle(-5.0, 3.0)"); +" should throw an error" }
         }
 
-        p {
-            em {
-                +"Playground $ARROW_DOWN"
-            }
-        }
+//        p {
+//            em {
+//                +"Playground $ARROW_DOWN"
+//            }
+//        }
     }
 )
 
@@ -116,10 +117,10 @@ object ClassesAndObjectsExercise3Slide : Slide(
             li { +"For "; inlineCode("Triangle(5.0)"); +" (equilateral): Perimeter = 15.0" }
         }
 
-        p {
-            em {
-                +"Playground $ARROW_DOWN"
-            }
-        }
+//        p {
+//            em {
+//                +"Playground $ARROW_DOWN"
+//            }
+//        }
     }
 )

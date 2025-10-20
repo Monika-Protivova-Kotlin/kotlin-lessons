@@ -43,11 +43,11 @@ object SingletonObjectsExercise1Slide : Slide(
             li { inlineCode("ShapeUtils.PI"); +" → 3.14159" }
         }
 
-        p {
-            em {
-                +"Playground $ARROW_DOWN"
-            }
-        }
+//        p {
+//            em {
+//                +"Playground $ARROW_DOWN"
+//            }
+//        }
     }
 )
 
@@ -89,10 +89,10 @@ object SingletonObjectsExercise2Slide : Slide(
             }
         }
 
-        p {
-            em {
-                +"Playground $ARROW_DOWN"
-            }
-        }
+//        p {
+//            em {
+//                +"Playground $ARROW_DOWN"
+//            }
+//        }
     }
 )

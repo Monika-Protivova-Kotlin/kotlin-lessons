@@ -6,7 +6,6 @@ import com.motycka.edu.content.topics.basics.conditionals.loops.BasicForLoopSlid
 import com.motycka.edu.content.topics.basics.conditionals.loops.WhileLoopExamplesSlide
 import com.motycka.edu.content.topics.basics.conditionals.loops.WhileLoopSlide
 import com.motycka.edu.content.topics.basics.conditionals.`when`.WhenExampleSlide
-import com.motycka.edu.content.topics.basics.conditionals.`when`.WhenFullExampleSlide
 import com.motycka.edu.content.topics.basics.conditionals.`when`.WhenSlide
 import com.motycka.edu.model.Topic
 
@@ -18,7 +17,6 @@ object ConditionalsTopic : Topic(
         IfElseKotlinFeaturesSlide,
         WhenSlide,
         WhenExampleSlide,
-        WhenFullExampleSlide,
         BasicForLoopSlide,
         WhileLoopSlide,
         WhileLoopExamplesSlide
