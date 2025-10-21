@@ -32,7 +32,7 @@ object ClassesAndObjectsExercise1Slide : Slide(
             li { +"Create a class "; inlineCode("Circle"); +" with property "; inlineCode("radius: Double") }
             li { +"Add method "; inlineCode("area()"); +" that returns π × radius²" }
             li { +"Add method "; inlineCode("perimeter()"); +" that returns 2 × π × radius" }
-            li { +"Use PI = 3.14159" }
+            li { +"Use PI = 3.14159 or "; inlineCode("Math.PI") }
         }
 
         p { strong { +"Expected Output:" } }
@@ -43,13 +43,12 @@ object ClassesAndObjectsExercise1Slide : Slide(
                 li { +"Perimeter: ~31.42" }
             }
         }
-
-//        p {
-//            strong {
-//                + "You can use "
-//                a(href = "https://pl.kotl.in/a91gCQl5d") { +"Kotlin Playground" }
-//            }
-//        }
+        p {
+            strong {
+                + "You can use "
+                a(href = "https://pl.kotl.in/Ebe-0R88d") { +"Kotlin Playground" }
+            }
+        }
     }
 )
 
@@ -67,10 +66,10 @@ object ClassesAndObjectsExercise2Slide : Slide(
 
         p { strong { +"Task:" } }
         ul {
-            li { +"Create a class "; inlineCode("Rectangle"); +" with properties "; inlineCode("width: Double"); +" and "; inlineCode("height: Double") }
+            li { +"Create a class "; inlineCode("Rectangle"); +" with properties "; inlineCode("a: Double"); +" and "; inlineCode("b: Double") }
             li { +"Add an "; inlineCode("init"); +" block to validate both dimensions are positive (> 0)" }
-            li { +"Add method "; inlineCode("area()"); +" that returns width × height" }
-            li { +"Add method "; inlineCode("perimeter()"); +" that returns 2 × (width + height)" }
+            li { +"Add method "; inlineCode("area()"); +" that returns a × b" }
+            li { +"Add method "; inlineCode("perimeter()"); +" that returns 2 × (a + b)" }
         }
 
         p { strong { +"Expected Output:" } }
@@ -82,12 +81,12 @@ object ClassesAndObjectsExercise2Slide : Slide(
             }
             li { inlineCode("Rectangle(-5.0, 3.0)"); +" should throw an error" }
         }
-
-//        p {
-//            em {
-//                +"Playground $ARROW_DOWN"
-//            }
-//        }
+        p {
+            strong {
+                + "You can use "
+                a(href = "https://pl.kotl.in/Ebe-0R88d") { +"Kotlin Playground" }
+            }
+        }
     }
 )
 
@@ -105,10 +104,10 @@ object ClassesAndObjectsExercise3Slide : Slide(
 
         p { strong { +"Task:" } }
         ul {
-            li { +"Create primary constructor with: "; inlineCode("sideA: Double, sideB: Double, sideC: Double") }
+            li { +"Create primary constructor with: "; inlineCode("a: Double, b: Double, c: Double") }
             li { +"Add a secondary constructor "; inlineCode("constructor(side: Double)"); +" for equilateral triangles" }
-            li { +"The secondary constructor should call the primary with "; inlineCode("side, side, side") }
-            li { +"Add method "; inlineCode("perimeter()"); +" that returns sideA + sideB + sideC" }
+            li { +"The secondary constructor should call the primary with "; inlineCode("this(a, a, a)") }
+            li { +"Add method "; inlineCode("perimeter()"); +" that returns a + b + c" }
         }
 
         p { strong { +"Expected Output:" } }
@@ -116,11 +115,11 @@ object ClassesAndObjectsExercise3Slide : Slide(
             li { +"For "; inlineCode("Triangle(3.0, 4.0, 5.0)"); +": Perimeter = 12.0" }
             li { +"For "; inlineCode("Triangle(5.0)"); +" (equilateral): Perimeter = 15.0" }
         }
-
-//        p {
-//            em {
-//                +"Playground $ARROW_DOWN"
-//            }
-//        }
+        p {
+            strong {
+                + "You can use "
+                a(href = "https://pl.kotl.in/Ebe-0R88d") { +"Kotlin Playground" }
+            }
+        }
     }
 )
