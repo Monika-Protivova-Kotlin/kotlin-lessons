@@ -13,7 +13,7 @@ object CollectionsPracticeTopic : Topic(
 )
 
 object CollectionsPracticeSlide : Slide(
-    header = "Practice: Fantasy.Space Game ",
+    header = "Practice: Fantasy.Space Game",
     summary = {
         +"Let's extend out game with new features using collections!"
     },

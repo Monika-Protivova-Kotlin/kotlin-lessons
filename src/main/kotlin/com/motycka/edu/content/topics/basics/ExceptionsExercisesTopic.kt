@@ -3,9 +3,10 @@ package com.motycka.edu.content.topics.basics
 import kotlinx.html.*
 import com.motycka.edu.model.ExerciseTopic
 import com.motycka.edu.model.Slide
+import com.motycka.edu.model.Topic
 import com.motycka.edu.model.inlineCode
 
-object ExceptionsExercisesTopic : ExerciseTopic(
+object ExceptionsExercisesTopic : Topic(
     title = "Exceptions Exercise",
     subtitle = "Hands-on Practice",
     slides = listOf(
@@ -14,39 +15,48 @@ object ExceptionsExercisesTopic : ExerciseTopic(
 )
 
 object ExceptionsExerciseSlide : Slide(
-    header = "Exercise",
+    header = "Exercise: Exceptions",
+    summary = {
+        +"In this exercise, you will create a custom exception and a class that uses it. "
+    },
     content = {
-        div("content exercise-formatting") {
-            p {
+        ol {
+            li {
                 +"Create a class "
-                strong { +"OutOfFuelException" }
+                inlineCode("OutOfFuelException")
                 +" that extends "
-                strong { +"Throwable" }
+                inlineCode("Throwable")
                 +" and sets the message to "
                 inlineCode("\"Car is out of fuel.\"")
             }
-            p {
+            li {
                 +"Create a class "
-                strong { +"Car" }
+                inlineCode("Car")
                 +" with the following properties and methods:"
+                ul {
+                    li { inlineCode("private var fuelKm: Int") }
+                    li {
+                        inlineCode("fun drive(distance: Int)")
+                        +" that will check if car has enough fuel to drive the distance and reduce the "
+                        +" that will check if car has enough fuel to drive the distance and reduce the fuelKm by the distance"
+                        inlineCode("fuelKm")
+                        +" by the distance"
+                    }
+                }
             }
-            ul {
-                li { inlineCode("private var fuelKm: Int") }
-                li { inlineCode("fun drive(distance: Int)"); +" that will check if car has enough fuel to drive the distance and reduce the fuelKm by the distance" }
-            }
-            p {
+            li {
                 +"Create an instance of the "
-                strong { +"Car" }
+                inlineCode("Car")
                 +" class and test the drive method with a distance that is greater than the fuelKm."
             }
-            p {
+            li {
                 +"Use a "
                 inlineCode("try-catch-finally")
                 +" block to catch the "
-                strong { +"OutOfFuelException" }
+                inlineCode("OutOfFuelException")
                 +" and print the message."
             }
-            p {
+            li {
                 +"Add another catch block to catch any other Exception and print the message."
             }
         }

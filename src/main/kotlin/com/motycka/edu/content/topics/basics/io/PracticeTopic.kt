@@ -12,19 +12,13 @@ object IOPracticeTopic : Topic(
 )
 
 object IOPracticeSlide : Slide(
-    header = "Can you see a problem?",
+    header = "Practice: Fantasy.Space Game",
     summary = {
-        +"Looking back at our fantasy characters game model, there is one problem that breaks one of the OOP principles."
+        +"Let's use what we have learned."
     },
     content = {
-        div("content-center content-100") {
-            style = "font-size: 120%"
-            p {
-                +"Can you see it?"
-            }
-            p {
-                +"Can you fix it?"
-            }
+        p {
+            +"Load game characters from a character.csv file provided in resources."
         }
     }
 )
