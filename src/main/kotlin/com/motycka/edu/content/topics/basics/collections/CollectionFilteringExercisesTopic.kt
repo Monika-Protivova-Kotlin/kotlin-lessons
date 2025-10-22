@@ -15,29 +15,28 @@ object CollectionFilteringExercisesTopic : ExerciseTopic(
 )
 
 object FilteringExerciseSlide : Slide(
-    header = "Exercise #5: Filtering by Fraction",
+    header = "Exercise #5: Filtering by Shape Type",
     summary = {
-        +"Filter match results based on character fractions using "; inlineCode("filter"); "."
+        +"Filter comparison results based on shape types using "; inlineCode("filter"); "."
     },
     content = {
         p {
-            +"Now that you have a flattened list of all match results from Exercise #4, let's analyze them by filtering."
+            +"Now that you have a flattened list of all comparison results from Exercise #4, let's analyze them by filtering."
         }
         p {
             strong { highlight("Task:") }
-            +" Use the "; inlineCode("filter"); " function to separate matches into two groups:"
+            +" Use the "; inlineCode("filter"); " function to separate comparisons into different groups:"
         }
         ol {
             li {
-                strong { +"Light Side matches" }
-                +" - where "; strong { +"either fighter" }; " is from "
-                inlineCode("JEDI"); " or "; inlineCode("REBEL"); " fractions"
+                strong { +"Circular comparisons" }
+                +" - where "; strong { +"either shape" }; " is a "
+                inlineCode("CIRCLE")
             }
             li {
-                strong { +"Dark Side matches" }
-                +" - where "; strong { +"both fighters" }; " are from "
-                inlineCode("SITH"); ", "; inlineCode("EMPIRE"); ", or "
-                inlineCode("BOUNTY_HUNTER"); " fractions"
+                strong { +"Rectangular comparisons" }
+                +" - where "; strong { +"both shapes" }; " are "
+                inlineCode("SQUARE"); " or "; inlineCode("RECTANGLE")
             }
         }
         br()
@@ -46,32 +45,32 @@ object FilteringExerciseSlide : Slide(
         }
         kotlinPlayground(
             code = """
-                val lightSideMatches: List<MatchResult> = // ... your filter here
-                val darkSideMatches: List<MatchResult> = // ... your filter here
+                val circularComparisons: List<ComparisonResult> = // ... your filter here
+                val rectangularComparisons: List<ComparisonResult> = // ... your filter here
             """.trimIndent(),
             executable = false
         )
         br()
         p {
             strong { highlight("Additional Challenge:") }
-            +" Create a third list containing only matches where:"
+            +" Create a third list containing only comparisons where:"
         }
         ul {
-            li { +"The winner is from the "; inlineCode("JEDI"); " fraction" }
+            li { +"The larger shape is a "; inlineCode("CIRCLE") }
             li { strong { +"AND" } }
-            li { +"The match number is 3 (the final match)" }
+            li { +"The scale factor is 2.0" }
         }
         kotlinPlayground(
             code = """
-                val jediVictories: List<MatchResult> = // ... your filter here
+                val largeCircles: List<ComparisonResult> = // ... your filter here
             """.trimIndent(),
             executable = false
         )
         blockQuote {
             em {
                 +"Hint: You can chain multiple conditions in a filter using && (AND) or || (OR). "
-                +"For checking if a fraction is in a set, you can use: "
-                inlineCode("fraction in setOf(Fraction.JEDI, Fraction.REBEL)")
+                +"For checking if a type is in a set, you can use: "
+                inlineCode("type in setOf(ShapeType.SQUARE, ShapeType.RECTANGLE)")
             }
         }
         br()

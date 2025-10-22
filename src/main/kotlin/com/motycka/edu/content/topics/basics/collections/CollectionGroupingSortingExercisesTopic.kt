@@ -15,32 +15,32 @@ object CollectionGroupingSortingExercisesTopic : ExerciseTopic(
 )
 
 object GroupingSortingExerciseSlide : Slide(
-    header = "Exercise #6: Grouping and Sorting - Scoreboard",
+    header = "Exercise #6: Grouping and Sorting - Shape Analysis",
     summary = {
-        +"Create a scoreboard by grouping results by fraction and calculating win statistics."
+        +"Analyze shapes by grouping results by type and calculating statistics."
     },
     content = {
         p {
-            +"Let's create a comprehensive scoreboard that shows how each fraction is performing!"
+            +"Let's create a comprehensive analysis that shows statistics for each shape type!"
         }
         p {
-            strong { highlight("Part 1: Group by Fraction") }
+            strong { highlight("Part 1: Group by Shape Type") }
         }
         p {
-            +"Using your flattened list of "; inlineCode("MatchResult"); " objects from Exercise #4:"
+            +"Using your flattened list of "; inlineCode("ComparisonResult"); " objects from Exercise #4:"
         }
         ol {
             li {
-                +"Use "; inlineCode("groupBy"); " to group all match results by the winner's fraction"
+                +"Use "; inlineCode("groupBy"); " to group all comparison results by the larger shape's type"
             }
             li {
-                +"This will give you a "; inlineCode("Map<Fraction, List<MatchResult>>")
+                +"This will give you a "; inlineCode("Map<ShapeType, List<ComparisonResult>>")
             }
         }
         kotlinPlayground(
             code = """
-                val resultsByFraction: Map<Fraction, List<MatchResult>> =
-                    matchResults.groupBy { /* group by winner's fraction */ }
+                val resultsByType: Map<ShapeType, List<ComparisonResult>> =
+                    comparisonResults.groupBy { /* group by larger shape's type */ }
             """.trimIndent(),
             executable = false
         )
@@ -49,50 +49,50 @@ object GroupingSortingExerciseSlide : Slide(
             strong { highlight("Part 2: Calculate Statistics") }
         }
         p {
-            +"For each fraction, calculate:"
+            +"For each shape type, calculate:"
         }
         ul {
-            li { +"Total number of wins ("; inlineCode("count()"); ")" }
-            li { +"Percentage of matches won" }
+            li { +"Total number of times it was larger ("; inlineCode("count()"); ")" }
+            li { +"Average area of the larger shapes" }
         }
         p {
-            +"Create a "; inlineCode("FractionStats"); " data class:"
+            +"Create a "; inlineCode("ShapeStats"); " data class:"
         }
         kotlinPlayground(
             code = """
-                data class FractionStats(
-                    val fraction: Fraction,
-                    val totalWins: Int,
-                    val winPercentage: Double
+                data class ShapeStats(
+                    val shapeType: ShapeType,
+                    val timesLarger: Int,
+                    val averageArea: Double
                 )
             """.trimIndent(),
             executable = false
         )
         p {
             +"Use "; inlineCode("map"); " on the grouped results to transform each entry into "
-            inlineCode("FractionStats"); "."
+            inlineCode("ShapeStats"); "."
         }
         br()
         p {
             strong { highlight("Part 3: Sort by Performance") }
         }
         p {
-            +"Create a sorted scoreboard using "; inlineCode("sortedByDescending"); ":"
+            +"Create a sorted ranking using "; inlineCode("sortedByDescending"); ":"
         }
         ol {
-            li { +"Sort the list of "; inlineCode("FractionStats"); " by total wins (descending)" }
-            li { +"Then create a secondary sort by win percentage (descending)" }
+            li { +"Sort the list of "; inlineCode("ShapeStats"); " by times larger (descending)" }
+            li { +"Then create a secondary sort by average area (descending)" }
         }
         kotlinPlayground(
             code = """
-                val scoreboard: List<FractionStats> = stats
-                    .sortedByDescending { it.totalWins }
-                    .sortedByDescending { it.winPercentage }
+                val ranking: List<ShapeStats> = stats
+                    .sortedByDescending { it.timesLarger }
+                    .sortedByDescending { it.averageArea }
 
                 // Or use sortedWith for multiple criteria:
-                val scoreboard2 = stats.sortedWith(
-                    compareByDescending<FractionStats> { it.totalWins }
-                        .thenByDescending { it.winPercentage }
+                val ranking2 = stats.sortedWith(
+                    compareByDescending<ShapeStats> { it.timesLarger }
+                        .thenByDescending { it.averageArea }
                 )
             """.trimIndent(),
             executable = false
@@ -105,9 +105,9 @@ object GroupingSortingExerciseSlide : Slide(
             code = """
                 // Example output:
                 listOf(
-                    FractionStats(Fraction.JEDI, totalWins = 5, winPercentage = 55.5),
-                    FractionStats(Fraction.SITH, totalWins = 3, winPercentage = 33.3),
-                    FractionStats(Fraction.REBEL, totalWins = 1, winPercentage = 11.1)
+                    ShapeStats(ShapeType.CIRCLE, timesLarger = 5, averageArea = 78.5),
+                    ShapeStats(ShapeType.SQUARE, timesLarger = 3, averageArea = 25.0),
+                    ShapeStats(ShapeType.RECTANGLE, timesLarger = 2, averageArea = 18.0)
                 )
             """.trimIndent(),
             executable = false

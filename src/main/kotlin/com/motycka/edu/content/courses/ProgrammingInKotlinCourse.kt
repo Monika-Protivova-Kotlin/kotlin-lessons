@@ -141,7 +141,7 @@ object CollectionsAndAdvancedFunctionsLesson : Lesson(
         ExtensionFunctionsTopic,
         ExtensionFunctionsExerciseTopic,
         ScopeFunctionsTopic,
-        ScopeFunctionsExerciseTopic,
+//        ScopeFunctionsExerciseTopic,
 
         // Ranges & Collections
         RangesAndProgressionsTopic,

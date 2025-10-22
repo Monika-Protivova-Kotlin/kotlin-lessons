@@ -27,12 +27,12 @@ object OtherTransformationsExerciseSlide : Slide(
 
         h4 { strong { highlight("Part 1: zip - Combining Two Lists") } }
         p {
-            +"Given two lists of match statistics:"
+            +"Given two lists of shape statistics:"
         }
         kotlinPlayground(
             code = """
-                val fractions = listOf(Fraction.JEDI, Fraction.SITH, Fraction.REBEL)
-                val totalWins = listOf(5, 3, 2)
+                val shapeTypes = listOf(ShapeType.CIRCLE, ShapeType.SQUARE, ShapeType.RECTANGLE)
+                val averageAreas = listOf(78.5, 25.0, 18.0)
             """.trimIndent(),
             executable = false
         )
@@ -40,12 +40,12 @@ object OtherTransformationsExerciseSlide : Slide(
             strong { +"Task:" }
             +" Use "; inlineCode("zip"); " to combine these two lists into pairs. "
             +"Then use "; inlineCode("map"); " to convert each pair into a "
-            inlineCode("FractionStats"); " object."
+            inlineCode("ShapeStats"); " object."
         }
         kotlinPlayground(
             code = """
-                val stats: List<Pair<Fraction, Int>> = fractions.zip(totalWins)
-                // Result: [(JEDI, 5), (SITH, 3), (REBEL, 2)]
+                val stats: List<Pair<ShapeType, Double>> = shapeTypes.zip(averageAreas)
+                // Result: [(CIRCLE, 78.5), (SQUARE, 25.0), (RECTANGLE, 18.0)]
             """.trimIndent(),
             executable = false
         )
@@ -53,24 +53,24 @@ object OtherTransformationsExerciseSlide : Slide(
 
         h4 { strong { highlight("Part 2: unzip - Separating Pairs") } }
         p {
-            +"Given a list of character pairs from earlier exercises:"
+            +"Given a list of shape pairs from earlier exercises:"
         }
         kotlinPlayground(
             code = """
-                val characterPairs: List<Pair<StarWarsCharacter, StarWarsCharacter>> = // ... from Exercise #2
+                val shapePairs: List<Pair<Shape, Shape>> = // ... from Exercise #2
             """.trimIndent(),
             executable = false
         )
         p {
             strong { +"Task:" }
             +" Use "; inlineCode("unzip"); " to separate the pairs into two lists: "
-            +"one containing all first characters, and one containing all second characters."
+            +"one containing all first shapes, and one containing all second shapes."
         }
         kotlinPlayground(
             code = """
-                val (firstFighters, secondFighters) = characterPairs.unzip()
-                // firstFighters: List<StarWarsCharacter>
-                // secondFighters: List<StarWarsCharacter>
+                val (firstShapes, secondShapes) = shapePairs.unzip()
+                // firstShapes: List<Shape>
+                // secondShapes: List<Shape>
             """.trimIndent(),
             executable = false
         )
@@ -78,18 +78,18 @@ object OtherTransformationsExerciseSlide : Slide(
 
         h4 { strong { highlight("Part 3: zipWithNext - Sequential Pairs") } }
         p {
-            +"Given a list of match results sorted by match number:"
+            +"Given a list of comparison results sorted by scale factor:"
         }
         p {
             strong { +"Task:" }
-            +" Use "; inlineCode("zipWithNext"); " to create pairs of consecutive matches. "
-            +"This is useful for comparing how the same fighters performed across multiple rounds."
+            +" Use "; inlineCode("zipWithNext"); " to create pairs of consecutive comparisons. "
+            +"This is useful for seeing how shapes grow relative to each other as scale increases."
         }
         kotlinPlayground(
             code = """
-                val matchSequence = listOf(match1, match2, match3, match4)
-                val consecutiveMatches = matchSequence.zipWithNext()
-                // Result: [(match1, match2), (match2, match3), (match3, match4)]
+                val comparisons = listOf(comp1, comp2, comp3, comp4)
+                val consecutiveComparisons = comparisons.zipWithNext()
+                // Result: [(comp1, comp2), (comp2, comp3), (comp3, comp4)]
             """.trimIndent(),
             executable = false
         )
@@ -97,22 +97,22 @@ object OtherTransformationsExerciseSlide : Slide(
 
         h4 { strong { highlight("Part 4: reduce - Aggregating Values") } }
         p {
-            +"Given a list of total wins for a fraction across different tournaments:"
+            +"Given a list of circle areas from different measurements:"
         }
         kotlinPlayground(
             code = """
-                val jediWinsPerTournament = listOf(5, 7, 3, 8, 6)
+                val circleAreas = listOf(78.5, 50.3, 95.0, 113.1, 63.6)
             """.trimIndent(),
             executable = false
         )
         p {
             strong { +"Task:" }
-            +" Use "; inlineCode("reduce"); " to calculate the total wins across all tournaments."
+            +" Use "; inlineCode("reduce"); " to calculate the total area of all circles combined."
         }
         kotlinPlayground(
             code = """
-                val totalJediWins = jediWinsPerTournament.reduce { acc, wins -> acc + wins }
-                // Result: 29 (5 + 7 + 3 + 8 + 6)
+                val totalCircleArea = circleAreas.reduce { acc, area -> acc + area }
+                // Result: 400.5 (78.5 + 50.3 + 95.0 + 113.1 + 63.6)
             """.trimIndent(),
             executable = false
         )
@@ -124,25 +124,25 @@ object OtherTransformationsExerciseSlide : Slide(
         }
         p {
             strong { +"Task:" }
-            +" Calculate the total score where Jedi faction started the tournament with a 10-point bonus:"
+            +" Calculate the total area where we start with a base area of 10.0:"
         }
         kotlinPlayground(
             code = """
-                val totalWithBonus = jediWinsPerTournament.fold(10) { acc, wins -> acc + wins }
-                // Result: 39 (10 + 5 + 7 + 3 + 8 + 6)
+                val totalWithBase = circleAreas.fold(10.0) { acc, area -> acc + area }
+                // Result: 410.5 (10.0 + 78.5 + 50.3 + 95.0 + 113.1 + 63.6)
             """.trimIndent(),
             executable = false
         )
         br()
         p {
             strong { +"Advanced Challenge:" }
-            +" Use "; inlineCode("fold"); " to create a summary string of all match results:"
+            +" Use "; inlineCode("fold"); " to create a summary string of all shape comparisons:"
         }
         kotlinPlayground(
             code = """
-                val matchResults = listOf(match1, match2, match3)
-                val summary = matchResults.fold("Match Summary:\\n") { acc, match ->
-                    acc + "Match ${'$'}{match.matchNumber}: ${'$'}{match.winner.name} wins\\n"
+                val comparisons = listOf(comp1, comp2, comp3)
+                val summary = comparisons.fold("Shape Comparison Summary:\\n") { acc, comp ->
+                    acc + "Scale ${'$'}{comp.scaleFactor}: ${'$'}{comp.largerShape.type} is larger\\n"
                 }
             """.trimIndent(),
             executable = false
