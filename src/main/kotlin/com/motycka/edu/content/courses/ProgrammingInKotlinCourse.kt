@@ -152,9 +152,9 @@ object CollectionsAndAdvancedFunctionsLesson : Lesson(
 
         // Collection Exercises
         CollectionMappingExercisesTopic,
-        CollectionFilteringExercisesTopic,
-        CollectionGroupingSortingExercisesTopic,
-        CollectionOtherTransformationsExercisesTopic,
+//        CollectionFilteringExercisesTopic,
+//        CollectionGroupingSortingExercisesTopic,
+//        CollectionOtherTransformationsExercisesTopic,
 
         // Sequences
         SequencesTopic,
