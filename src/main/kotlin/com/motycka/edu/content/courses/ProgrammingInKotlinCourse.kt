@@ -4,6 +4,7 @@ import com.motycka.edu.content.lessons.programming.*
 import com.motycka.edu.content.topics.backend.*
 import com.motycka.edu.content.topics.backend.springboot.*
 import com.motycka.edu.content.topics.basics.*
+import com.motycka.edu.content.topics.basics.ExceptionHandlingTopic
 import com.motycka.edu.content.topics.basics.api.*
 import com.motycka.edu.content.topics.basics.arrays.ArraysAdvancedTopic
 import com.motycka.edu.content.topics.basics.collections.*
@@ -165,17 +166,18 @@ object CollectionsAndAdvancedFunctionsLesson : Lesson(
 )
 
 object IOAndExceptionsLesson : Lesson(
-    title = "I/O & Exceptions",
+    title = "I/O, Errors and Exceptions",
     preTitle = "Week 1 | Lesson 4",
-    subTitle = "File I/O, Command-line Input, Exception Handling, Error Handling Strategies",
+    subTitle = "File I/O, Exception Handling, Error Handling Strategies",
     summary = "File operations, command-line input, and comprehensive error handling",
     topics = listOf(
         // Exceptions & Error Handling
-        ExceptionHandlingTopic,
+//        ExceptionHandlingTopic,
         ApplicationErrorHandlingTopic,
 
         // TODO
         ExceptionsTopic,
+        ExceptionHandlingTopic,
         ExceptionsExercisesTopic,
 
         // CommandLineInputTopic,
@@ -185,7 +187,10 @@ object IOAndExceptionsLesson : Lesson(
         PathsAndResourcesTopic,
         FileOperationsTopic,
         StreamsTopic,
-        IOPracticeTopic
+        IOPracticeTopic,
+
+        // Assignment
+        IOAndExceptionsAssignmentTopic
     )
 )
 
@@ -226,7 +231,8 @@ object PolymorphismInheritanceLesson : Lesson(
         AbstractionTopic,
         AbstractionExercisesTopic,
         GenericsTopic,
-        GenericsExercisesTopic
+        GenericsExercisesTopic,
+        PolymorphismInheritanceAssignmentTopic
     )
 )
 

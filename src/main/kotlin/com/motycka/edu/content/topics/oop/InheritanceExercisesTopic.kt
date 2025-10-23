@@ -3,100 +3,151 @@ package com.motycka.edu.content.topics.oop
 import kotlinx.html.*
 import com.motycka.edu.model.ExerciseTopic
 import com.motycka.edu.model.Slide
+import com.motycka.edu.model.Topic
 import com.motycka.edu.model.kotlinPlayground
 import com.motycka.edu.model.inlineCode
 
-object InheritanceExercisesTopic : ExerciseTopic(
+object InheritanceExercisesTopic : Topic(
     title = "Inheritance Exercises",
     subtitle = "Hands-on Practice",
     slides = listOf(
         InheritanceExercise1Slide,
-        InheritanceExercise2Slide
+        InheritanceExercise2Slide,
+        InheritanceExercise3Slide,
+        InheritanceExercise4Slide,
+        InheritanceExercise5Slide
     )
 )
 
 object InheritanceExercise1Slide : Slide(
-    header = "Exercise: Inheritance #1",
+    header = "Part 1: Rectangle Class",
     content = {
-        div("content exercise-formatting") {
-            p {
-                +"Create an open class "
-                strong { +"Character" }
-                +" with the following properties:"
-            }
-            kotlinPlayground(
-                code = """
-                    val name: String
-                    var health: Int
-                    val attackPower: Int
-                """,
-                executable = false,
-                showLines = false
-            )
-            p {
-                +"Create an open method "
-                inlineCode("receiveAttack(attackPower: Int)")
-                +" that will receive an attack and reduce the health of the character."
-            }
-            ul {
-                li { +"If the character has "; strong { +"health <= 0" }; +", print "; inlineCode("\"\$name has been defeated\"") }
-                li { +"Else, print "; inlineCode("\"\$name has \$health health remaining\"") }
-            }
-            p {
-                +"Create an open method "
-                inlineCode("attack(target: Character)")
-                +" that will attack the target character."
-            }
-            ul {
-                li { +"If the character has "; strong { +"health <= 0" }; +", print "; inlineCode("\"\$name is dead and cannot attack\"") }
-                li { +"Else, print "; inlineCode("\"\$name attacks \${target.name}\""); +" and call "; inlineCode("target.receiveAttack(attackPower)") }
-            }
+        p {
+            +"Create an "
+            strong { +"open" }
+            +" class "
+            strong { +"Rectangle" }
+            +" with the following:"
+        }
+        p { strong { +"Properties:" } }
+        ul {
+            li { inlineCode("width: Double"); +" - make it "; strong { +"protected" } }
+            li { inlineCode("length: Double"); +" - make it "; strong { +"protected" } }
+            li { +"Constructor that initializes both fields" }
+        }
+        p { strong { +"Methods:" } }
+        ul {
+            li { inlineCode("area()"); +" - returns the area of the rectangle (width × length)" }
+            li { inlineCode("perimeter()"); +" - returns the perimeter (2 × (width + length))" }
         }
     }
 )
 
 object InheritanceExercise2Slide : Slide(
-    header = "Exercise: Inheritance #2",
+    header = "Part 2: Square Class",
     content = {
-        div("content exercise-formatting") {
-            p {
-                +"Create two other classes "
-                strong { +"Warrior" }
-                +" and "
-                strong { +"Sorcerer" }
-                +" that inherit from "
-                strong { +"Character" }
-                +"."
-            }
-            p {
-                +"You can use the following code to test your implementation:"
-            }
-            kotlinPlayground(
-                code = """
-                    fun main() {
-                        match(
-                            character1 = Warrior(name = "Thorne Ironfist", health = 100, attackPower = 10),
-                            character2 = Sorcerer(name = "Eldrin Starfire", health = 50, attackPower = 20)
-                        )
-                    }
+        p {
+            +"Create a class "
+            strong { +"Square" }
+            +" that extends "
+            strong { +"Rectangle" }
+            +"."
+        }
+        p {
+            +"A square has equal sides, so use a single "
+            inlineCode("side")
+            +" parameter and pass it to the "
+            inlineCode("Rectangle")
+            +" constructor for both width and length."
+        }
+        p {
+            +"Now, if you instantiate either "
+            strong { +"Square" }
+            +" or "
+            strong { +"Rectangle" }
+            +" and call the "
+            inlineCode("area()")
+            +" and "
+            inlineCode("perimeter()")
+            +" methods, you should get the correct results."
+        }
+    }
+)
 
-                    internal fun match(character1: Character, character2: Character) {
-                        var round = 0
-                        while (character1.health > 0 && character2.health > 0 && round < 10) {
-                            round++
-                            println("\nROUND ${'$'}round:")
-                            character1.attack(character2)
-                            character2.attack(character1)
-                        }
-                        when {
-                            character1.health <= 0 && character2.health > 0 -> println("\n${'$'}{character2.name} is the victor in round ${'$'}round!")
-                            character2.health <= 0 && character1.health > 0 -> println("\n${'$'}{character1.name} is the victor in round ${'$'}round!")
-                            else -> println("\nIt's a draw!")
-                        }
-                    }
-                """,
-                executable = false
-            )
+object InheritanceExercise3Slide : Slide(
+    header = "Part 3: Cuboid Class",
+    content = {
+        p {
+            +"Create a class "
+            strong { +"Cuboid" }
+            +" (3D rectangular block) with:"
+        }
+        p { strong { +"Properties:" } }
+        ul {
+            li { inlineCode("width: Double") }
+            li { inlineCode("height: Double") }
+            li { inlineCode("depth: Double") }
+            li { +"Constructor that initializes all fields" }
+        }
+        p { strong { +"Methods:" } }
+        ul {
+            li { inlineCode("volume()"); +" - returns the volume (width × height × depth)" }
+            li { inlineCode("surfaceArea()"); +" - returns the surface area (2 × (width × height + height × depth + width × depth))" }
+        }
+    }
+)
+
+object InheritanceExercise4Slide : Slide(
+    header = "Part 4: Rectangle to3D Method",
+    content = {
+        p {
+            +"Update the "
+            strong { +"Rectangle" }
+            +" class, add method:"
+        }
+        ul {
+            li {
+                inlineCode("to3D(depth: Double): Cuboid")
+                +" - returns a new "
+                inlineCode("Cuboid")
+                +" object with the same width and height (length), plus the given depth"
+            }
+        }
+        p {
+            +"This converts a 2D rectangle into a 3D cuboid by adding depth."
+        }
+    }
+)
+
+object InheritanceExercise5Slide : Slide(
+    header = "Part 5: Square to3D Method",
+    content = {
+        p {
+            +"Update the "
+            strong { +"Square" }
+            +" class, add method:"
+        }
+        ul {
+            li {
+                inlineCode("to3D(): Cuboid")
+                +" - returns a new "
+                inlineCode("Cuboid")
+                +" where all dimensions are equal (creates a cube)"
+            }
+        }
+        p {
+            +"You can proxy the call to the "
+            inlineCode("to3D")
+            +" method of the "
+            strong { +"Rectangle" }
+            +" class by passing the square's side length as the depth."
+        }
+        p {
+            +"On this example you can see that "
+            strong { +"Square" }
+            +" inherits all "
+            strong { +"Rectangle" }
+            +" methods and properties, and you can also add new methods to it."
         }
     }
 )

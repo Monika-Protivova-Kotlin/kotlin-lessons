@@ -85,6 +85,9 @@ object ExceptionIntroSlide : Slide(
 
 object CheckedVsUncheckedExceptionsSlide : Slide(
     header = "Checked vs Unchecked Exceptions",
+    summary = {
+        +"The are two types of exceptions you can encounter in Java and Kotlin: checked and unchecked exceptions."
+    },
     content = {
         twoColumns(
             left = {

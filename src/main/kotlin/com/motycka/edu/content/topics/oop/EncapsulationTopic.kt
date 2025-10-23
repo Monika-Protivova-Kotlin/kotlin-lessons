@@ -12,7 +12,8 @@ object EncapsulationTopic : Topic(
     title = "Encapsulation",
     subtitle = "OOP Principle #1",
     slides = listOf(
-        EncapsulationSlide
+        EncapsulationSlide,
+        KotlinGettersSettersSlide
     )
 )
 
@@ -66,6 +67,79 @@ object EncapsulationSlide : Slide(
                     val assignment = Assignment(LocalDate.now(), "John Doe")
                     assignment.setFinalGrade(90)
                     println(assignment.getFinalGrade())
+                }
+            """.trimIndent(),
+                    executable = true,
+                )
+            },
+            ratio = 2 to 1
+        )
+    }
+)
+
+object KotlinGettersSettersSlide : Slide(
+    header = "Kotlin Getters and Setters",
+    summary = {
+        +"Kotlin provides idiomatic syntax for custom getters and setters using the get() and set(value) keywords."
+    },
+    content = {
+        twoColumns(
+            right = {
+                p {
+                    +"Kotlin properties can have custom "
+                    highlight("get()")
+                    +" and "
+                    highlight("set(value)")
+                    +" accessors directly on the property."
+                }
+                p {
+                    +"Use the "
+                    highlight("field")
+                    +" keyword to access the backing field inside custom accessors."
+                }
+                p {
+                    +"Custom "
+                    highlight("get()")
+                    +" can create "
+                    highlight("computed properties")
+                    +" that derive their value from other properties."
+                }
+                p {
+                    +"You can make the setter "
+                    highlight("private")
+                    +" to allow external read access while restricting write access to the class."
+                }
+            },
+            left = {
+                kotlinPlayground(
+                    code = """
+                import java.time.LocalDate
+
+                data class Assignment(
+                    val dueDate: LocalDate,
+                    val assignee: String,
+                ) {
+                    var finalGrade: Int? = null
+                        set(value) {
+                            value?.let {
+                                require(it in 0..100) { "Final grade must be between 0 and 100" }
+                            }
+                            field = value
+                        }
+
+                    val isPassing: Boolean
+                        get() = finalGrade?.let { it >= 60 } ?: false
+                }
+
+                fun main() {
+                    val assignment = Assignment(LocalDate.now(), "John Doe")
+                    assignment.finalGrade = 90
+                    println("Grade: ${DOLLAR}{assignment.finalGrade}")
+                    println("Passing: ${DOLLAR}{assignment.isPassing}")
+
+                    assignment.finalGrade = 45
+                    println("Grade: ${DOLLAR}{assignment.finalGrade}")
+                    println("Passing: ${DOLLAR}{assignment.isPassing}")
                 }
             """.trimIndent(),
                     executable = true,

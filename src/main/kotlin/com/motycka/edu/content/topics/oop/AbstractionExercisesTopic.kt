@@ -3,158 +3,211 @@ package com.motycka.edu.content.topics.oop
 import kotlinx.html.*
 import com.motycka.edu.model.ExerciseTopic
 import com.motycka.edu.model.Slide
+import com.motycka.edu.model.Topic
 import com.motycka.edu.model.kotlinPlayground
 import com.motycka.edu.model.inlineCode
 
-object AbstractionExercisesTopic : ExerciseTopic(
+object AbstractionExercisesTopic : Topic(
     title = "Abstraction Exercises",
     subtitle = "Hands-on Practice",
     slides = listOf(
         AbstractionExercise1Slide,
         AbstractionExercise2Slide,
-        AbstractionExercise3Slide
+        AbstractionExercise3Slide,
+        AbstractionExercise4Slide,
+        AbstractionExercise5Slide
     )
 )
 
 object AbstractionExercise1Slide : Slide(
-    header = "Exercise: Abstraction #1",
+    header = "Part 1: Shape2D Interface",
     content = {
-        div("content exercise-formatting") {
-            p {
-                +"Update the "
-                strong { +"Character" }
-                +", change the "
-                strong { +"attack" }
-                +" method to be "
-                inlineCode("abstract")
-                +" and remove the implementation from the "
-                strong { +"Character" }
-                +" class. Leave the "
-                strong { +"receiveAttack" }
-                +" function as it is."
-            }
-            p {
-                +"Change the "
-                strong { +"Warrior" }
-                +" class, add a new private mutable property "
-                inlineCode("private var stamina: Int")
-                +"."
-            }
-            p {
-                +"Update the "
-                strong { +"attack" }
-                +" function in the "
-                strong { +"Warrior" }
-                +" class:"
-            }
-            ul {
-                li { +"If the warrior has "; strong { +"health <= 0" }; +", print "; inlineCode("\"\$name is dead and cannot attack\"") }
-                li { +"If the warrior has "; strong { +"stamina <= 0" }; +", print "; inlineCode("\"\$name is too tired to attack\"") }
-                li { +"Else, print "; inlineCode("\"\$name swings a sword at \${target.name}\""); +" and call "; inlineCode("target.receiveAttack(attackPower)") }
-                li { +"Decrease the stamina by 1" }
-            }
-            p {
-                +"Extend the Sorcerer class, add a new private mutable property "
-                inlineCode("private var mana: Int")
-            }
-            p {
-                +"Update the "
-                strong { +"attack" }
-                +" function in the "
-                strong { +"Sorcerer" }
-                +" class:"
-            }
-            ul {
-                li { +"If the sorcerer has "; strong { +"health <= 0" }; +", print "; inlineCode("\"\$name is dead and cannot attack\"") }
-                li { +"If the sorcerer has "; strong { +"mana <= 0" }; +", print "; inlineCode("\"\$name is out of mana\"") }
-                li { +"Else, print "; inlineCode("\"\$name casts a spell at \${target.name}\""); +" and call "; inlineCode("target.receiveAttack(attackPower)") }
-                li { +"Decrease the mana by 1" }
-            }
-            p {
-                +"Update the test code to use the new classes and properties and run the match function."
-            }
+        p {
+            +"Create an "
+            strong { +"interface" }
+            +" called "
+            strong { +"Shape2D" }
+            +" with the following methods:"
+        }
+        ul {
+            li { inlineCode("fun area(): Double"); +" - returns the area of the 2D shape" }
+            li { inlineCode("fun perimeter(): Double"); +" - returns the perimeter of the 2D shape" }
+        }
+        p {
+            +"Update your "
+            strong { +"Rectangle" }
+            +" class from the inheritance exercise to "
+            strong { +"implement" }
+            +" the "
+            strong { +"Shape2D" }
+            +" interface."
+        }
+        p {
+            +"Since "
+            strong { +"Rectangle" }
+            +" already has these methods, you just need to add "
+            inlineCode(": Shape2D")
+            +" after the class declaration."
         }
     }
 )
 
 object AbstractionExercise2Slide : Slide(
-    header = "Exercise: Abstraction #2",
+    header = "Part 2: Quadrilateral Interface",
     content = {
-        div("content exercise-formatting") {
-            p {
-                +"Create new interfaces "
-                strong { +"Defender" }
-                +" with the following methods and properties:"
-            }
-            ul {
-                li { inlineCode("val name: String") }
-                li { inlineCode("var stamina: Int") }
-                li { inlineCode("val defensePower: Int") }
-                li { inlineCode("fun defend(attackPower: Int): Int") }
-            }
-            p {
-                +"Have the "
-                strong { +"Warrior" }
-                +" class "
-                strong { +"implement" }
-                +" the "
-                strong { +"Defender" }
-                +" interface:"
-            }
-            ul {
-                li { +"Implement the "; strong { +"defend" }; +" method to "; strong { +"reduce the attackPower by the defensePower and decrease the stamina by 1" } }
-                li { +"If the warrior has "; strong { +"stamina <= 0" }; +", print "; inlineCode("\"\$name is too tired to defend\""); +" and return the "; strong { +"attackPower" } }
-                li { +"If the warrior has "; strong { +"stamina > 0" }; +", print "; inlineCode("\"\$name raises shield and defends against \$defensePower damage\""); +" and return "; strong { +"attackPower - defensePower" } }
-                li { +"Override the "; strong { +"receiveAttack" }; +" method to call the defend function and then call the super.receiveAttack function with the result" }
-            }
-            p { +"Example:" }
-            kotlinPlayground(
-                code = """
-                    override fun receiveAttack(attackPower: Int) {
-                        super.receiveAttack(defend(attackPower))
+        p {
+            +"Create an "
+            strong { +"interface" }
+            +" called "
+            strong { +"Quadrilateral" }
+            +" with the following:"
+        }
+        p { strong { +"Properties:" } }
+        ul {
+            li { inlineCode("val width: Double") }
+            li { inlineCode("val length: Double") }
+        }
+        p { strong { +"Methods:" } }
+        ul {
+            li { inlineCode("fun to3D(depth: Double): Cuboid"); +" - converts the 2D quadrilateral to a 3D cuboid" }
+        }
+        p {
+            +"Update your "
+            strong { +"Rectangle" }
+            +" class to implement "
+            strong { +"both" }
+            +" the "
+            strong { +"Shape2D" }
+            +" and "
+            strong { +"Quadrilateral" }
+            +" interfaces."
+        }
+        p {
+            +"Your "
+            strong { +"Rectangle" }
+            +" class should now look like:"
+        }
+        kotlinPlayground(
+            code = """
+                    open class Rectangle(
+                        override val width: Double,
+                        override val length: Double
+                    ) : Shape2D, Quadrilateral {
+                        // existing area(), perimeter(), and to3D() methods
                     }
                 """.trimIndent(),
-                executable = false
-            )
-            p {
-                +"Update the test code to use the new classes and properties and run the match function."
-            }
+            executable = false
+        )
+        p {
+            +"This demonstrates how a class can implement "
+            strong { +"multiple interfaces" }
+            +" in Kotlin."
         }
     }
 )
 
 object AbstractionExercise3Slide : Slide(
-    header = "Exercise: Abstraction #3",
+    header = "Part 3: Circle and Ellipse Interface",
     content = {
-        div("content exercise-formatting") {
-            p {
-                +"Create new interfaces "
-                strong { +"Healer" }
-                +" with the following methods and properties:"
-            }
-            ul {
-                li { +"var mana: Int" }
-                li { +"val healingPower: Int" }
-                li { +"fun heal()" }
-            }
-            p {
-                +"Have the "
-                strong { +"Sorcerer" }
-                +" class "
-                strong { +"implement" }
-                +" the "
-                strong { +"Healer" }
-                +" interface:"
-            }
-            ul {
-                li { +"Implement the "; strong { +"heal" }; +" method to "; strong { +"increase the health by the healingPower and decrease the mana by 1" } }
-                li { +"If the sorcerer has "; strong { +"mana <= 0" }; +", print "; inlineCode("\"\$name is out of mana\""); +" and do not heal" }
-                li { +"If the sorcerer has "; strong { +"mana > 0" }; +", print "; inlineCode("\"\$name heals self to \$health health\""); +" and increase the health by "; strong { +"healingPower" } }
-                li { +"Update the "; strong { +"attack" }; +" function to call "; strong { +"heal" }; +" function before attacking" }
-            }
-            p {
-                +"Update the test code to use the new classes and properties and run the match function."
-            }
+        p {
+            +"Create an "
+            strong { +"interface" }
+            +" called "
+            strong { +"Ellipse" }
+            +" with the following:"
+        }
+        p { strong { +"Properties:" } }
+        ul {
+            li { inlineCode("val radius: Double") }
+        }
+        p { strong { +"Methods:" } }
+        ul {
+            li { inlineCode("fun to3D(): Sphere"); +" - converts the 2D circle to a 3D sphere" }
+        }
+        p {
+            +"Create a class "
+            strong { +"Circle" }
+            +" that implements "
+            strong { +"both" }
+            +" the "
+            strong { +"Shape2D" }
+            +" and "
+            strong { +"Ellipse" }
+            +" interfaces:"
+        }
+        p { strong { +"Properties:" } }
+        ul {
+            li { inlineCode("override val radius: Double"); +" - the radius of the circle" }
+        }
+        p { strong { +"Methods:" } }
+        ul {
+            li { inlineCode("override fun area()"); +" - returns π × radius² (use "; inlineCode("Math.PI"); +")" }
+            li { inlineCode("override fun perimeter()"); +" - returns 2 × π × radius" }
+            li { inlineCode("override fun to3D()"); +" - returns a new "; inlineCode("Sphere"); +" with the same radius" }
+        }
+    }
+)
+
+object AbstractionExercise4Slide : Slide(
+    header = "Part 4: Shape3D Interface",
+    content = {
+        p {
+            +"Create an "
+            strong { +"interface" }
+            +" called "
+            strong { +"Shape3D" }
+            +" with the following methods:"
+        }
+        ul {
+            li { inlineCode("fun volume(): Double"); +" - returns the volume of the 3D shape" }
+            li { inlineCode("fun surfaceArea(): Double"); +" - returns the surface area of the 3D shape" }
+        }
+        p {
+            +"Update your "
+            strong { +"Cuboid" }
+            +" class from the inheritance exercise to "
+            strong { +"implement" }
+            +" the "
+            strong { +"Shape3D" }
+            +" interface."
+        }
+        p {
+            +"Since "
+            strong { +"Cuboid" }
+            +" already has these methods, you just need to add "
+            inlineCode(": Shape3D")
+            +" after the class declaration."
+        }
+    }
+)
+
+object AbstractionExercise5Slide : Slide(
+    header = "Part 5: Sphere Class",
+    content = {
+        p {
+            +"Create a class "
+            strong { +"Sphere" }
+            +" that implements the "
+            strong { +"Shape3D" }
+            +" interface:"
+        }
+        p { strong { +"Properties:" } }
+        ul {
+            li { inlineCode("val radius: Double"); +" - the radius of the sphere" }
+        }
+        p { strong { +"Methods:" } }
+        ul {
+            li { inlineCode("override fun volume()"); +" - returns (4/3) × π × radius³ (use "; inlineCode("Math.PI"); +")" }
+            li { inlineCode("override fun surfaceArea()"); +" - returns 4 × π × radius²" }
+        }
+        p {
+            +"Now you can test your implementation by creating instances of all shapes and calling their methods:"
+        }
+        ul {
+            li { strong { +"Rectangle" }; +" and "; strong { +"Square" }; +" implement "; inlineCode("Shape2D"); +" and "; inlineCode("Quadrilateral") }
+            li { strong { +"Circle" }; +" implements "; inlineCode("Shape2D"); +" and "; inlineCode("Ellipse") }
+            li { strong { +"Cuboid" }; +" and "; strong { +"Sphere" }; +" implement "; inlineCode("Shape3D") }
+            li { +"All 2D shapes can be converted to 3D shapes using their "; inlineCode("to3D()"); +" methods" }
         }
     }
 )

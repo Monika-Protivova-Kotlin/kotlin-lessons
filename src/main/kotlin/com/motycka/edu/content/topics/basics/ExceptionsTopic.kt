@@ -1,5 +1,8 @@
 package com.motycka.edu.content.topics.basics
 
+import com.motycka.edu.content.topics.backend.CheckedVsUncheckedExceptionsSlide
+import com.motycka.edu.content.topics.backend.CommonExceptionsSlide
+import com.motycka.edu.content.topics.backend.CustomExceptionsSlide
 import kotlinx.html.*
 import com.motycka.edu.model.Topic
 import com.motycka.edu.model.Slide
@@ -11,8 +14,16 @@ object ExceptionsTopic : Topic(
     subtitle = "and error handling",
     slides = listOf(
         ExceptionOverviewSlide,
-        CheckedExceptionsSlide,
-        UncheckedExceptionsSlide,
+        CheckedVsUncheckedExceptionsSlide,
+        CommonExceptionsSlide,
+        CustomExceptionsSlide
+    )
+)
+
+object ExceptionHandlingTopic : Topic(
+    title = "Handling Exceptions",
+    subtitle = "throwing and catching exceptions",
+    slides = listOf(
         ExceptionHandlingSlide,
         ThrowingExceptionsSlide,
         ThrowingHandlingExampleSlide,
