@@ -142,7 +142,6 @@ object CollectionsAndAdvancedFunctionsLesson : Lesson(
         ExtensionFunctionsTopic,
         ExtensionFunctionsExerciseTopic,
         ScopeFunctionsTopic,
-//        ScopeFunctionsExerciseTopic,
 
         // Ranges & Collections
         RangesAndProgressionsTopic,
@@ -153,9 +152,6 @@ object CollectionsAndAdvancedFunctionsLesson : Lesson(
 
         // Collection Exercises
         CollectionMappingExercisesTopic,
-//        CollectionFilteringExercisesTopic,
-//        CollectionGroupingSortingExercisesTopic,
-//        CollectionOtherTransformationsExercisesTopic,
 
         // Sequences
         SequencesTopic,
@@ -175,7 +171,6 @@ object IOAndExceptionsLesson : Lesson(
 //        ExceptionHandlingTopic,
         ApplicationErrorHandlingTopic,
 
-        // TODO
         ExceptionsTopic,
         ExceptionHandlingTopic,
         ExceptionsExercisesTopic,
@@ -212,7 +207,6 @@ object TestingLesson : Lesson(
         IntegrationTestingTopic,
 //        TestingLayersTopic,
         KotestTopic,
-//        CoffeeMachineExampleTopic,
         PracticeTopic
     )
 )

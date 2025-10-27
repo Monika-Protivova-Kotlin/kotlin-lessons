@@ -130,13 +130,13 @@ object SevenPrinciplesOfTestingSlide : Slide(
 object TestingPyramidSlide : Slide(
     header = "The Testing Pyramid",
     content = {
-        img("Testing Pyramid", imgByName("testing_pyramid", "png"))
+        img("Testing Pyramid", imgByName("testing_pyramid"))
     }
 )
 
 object CostOfDefectsSlide : Slide(
     header = "The Cost of Defects",
     content = {
-        img("Cost of Defects", imgByName("cost_of_defects", "png"))
+        img("Cost of Defects", imgByName("cost_of_defects"))
     }
 )
