@@ -18,6 +18,6 @@ val TestingBackendLesson = Lesson(
         UnitTestingTopic,
         IntegrationTestingTopic,
         KotestTopic,
-        JUnitTopic
+        CoffeeMachineExampleTopic
     )
 )

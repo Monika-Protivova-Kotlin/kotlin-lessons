@@ -3,6 +3,7 @@ package com.motycka.edu.content.topics.testing
 import kotlinx.html.*
 import com.motycka.edu.model.Topic
 import com.motycka.edu.model.Slide
+import com.motycka.edu.model.imgByName
 import com.motycka.edu.model.twoColumns
 
 object IntroductionToTestingTopic : Topic(
@@ -47,23 +48,21 @@ object WhatIsQualitySlide : Slide(
         p { +"Is a product considered good quality if it contains no errors?" }
     },
     content = {
-        div("content content-center content-100") {
-            div("fragment fade-in") {
-                blockQuote {
-                    +"A product is something someone desires because it satisfies their needs."
-                }
+        div("fragment fade-in") {
+            blockQuote {
+                +"A product is something someone desires because it satisfies their needs."
             }
-            div("fragment fade-in") {
-                p { +"We can view the quality of a product from two perspectives:" }
-            }
-            div("fragment fade-in") {
-                blockQuote {
-                    em { strong { +"What the product does" }; +" = external quality." }
-                    br()
-                    +"&"
-                    br()
-                    em { strong { +"How it does it" }; +" = internal quality." }
-                }
+        }
+        div("fragment fade-in") {
+            p { +"We can view the quality of a product from two perspectives:" }
+        }
+        div("fragment fade-in") {
+            blockQuote {
+                em { strong { +"What the product does" }; +" = external quality." }
+                br()
+                +"&"
+                br()
+                em { strong { +"How it does it" }; +" = internal quality." }
             }
         }
     }
@@ -71,10 +70,13 @@ object WhatIsQualitySlide : Slide(
 
 object ExternalInternalQualitySlide : Slide(
     header = "External and Internal Quality",
+    summary = {
+        +"External quality focuses on the user's perspective, while internal quality emphasizes the code's structure and maintainability."
+    },
     content = {
         twoColumns(
             left = {
-                strong { +"External Quality" }
+                h4 { +"External Quality" }
                 br()
                 ul {
                     li { +"Does the product fulfill user's needs?" }
@@ -82,7 +84,7 @@ object ExternalInternalQualitySlide : Slide(
                 }
             },
             right = {
-                strong { +"Internal Quality" }
+                h4 { +"Internal Quality" }
                 br()
                 ul {
                     li { +"Is the software well written?" }
@@ -94,7 +96,7 @@ object ExternalInternalQualitySlide : Slide(
                 }
             }
         )
-        div("content") {
+        p {
             +"While it is possible for product with relatively low internal quality to have high external quality, "
             +"it is not surprising, that the two usually correlate. When software is testable, it is easier to extend and maintain, "
             +"requiring both less skill and time, making it more resistant to "
@@ -111,34 +113,30 @@ object ExternalInternalQualitySlide : Slide(
 object SevenPrinciplesOfTestingSlide : Slide(
     header = "7 principles of testing",
     content = {
-        div("content content-center content-100") {
-            ol {
-                li { +"Testing shows the presence of defects, not their absence" }
-                li { +"Exhaustive testing is not possible" }
-                li { +"Early testing saves time and money" }
-                li { +"Defect have a tendency to cluster" }
-                li { +"The Pesticide Paradox" }
-                li { +"Testing is context dependent" }
-                li { +"Absence of errors fallacy" }
-            }
+        ol {
+            li { +"Testing shows the presence of defects, not their absence" }
+            li { +"Exhaustive testing is not possible" }
+            li { +"Early testing saves time and money" }
+            li { +"Defect have a tendency to cluster" }
+            li { +"The Pesticide Paradox" }
+            li { +"Testing is context dependent" }
+            li { +"Absence of errors fallacy" }
         }
-    }
+    },
+    textAlign = "center",
+    fontSize = "100%"
 )
 
 object TestingPyramidSlide : Slide(
     header = "The Testing Pyramid",
     content = {
-        div("content content-center") {
-            img(src = "./src/img/testing_pyramid.png")
-        }
+        img("Testing Pyramid", imgByName("testing_pyramid", "png"))
     }
 )
 
 object CostOfDefectsSlide : Slide(
     header = "The Cost of Defects",
     content = {
-        div("content content-center") {
-            img(src = "./src/img/cost_of_defects.png")
-        }
+        img("Cost of Defects", imgByName("cost_of_defects", "png"))
     }
 )

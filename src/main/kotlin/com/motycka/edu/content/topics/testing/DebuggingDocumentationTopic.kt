@@ -3,6 +3,7 @@ package com.motycka.edu.content.topics.testing
 import kotlinx.html.*
 import com.motycka.edu.model.Topic
 import com.motycka.edu.model.Slide
+import com.motycka.edu.model.imgByName
 import com.motycka.edu.model.kotlinPlayground
 import com.motycka.edu.model.twoColumns
 
@@ -20,22 +21,21 @@ object DebuggingSlide : Slide(
         +"Debugging is the process of finding and resolving defects or problems within a computer program that prevent correct operation of computer software or a system."
     },
     content = {
-        div("content content-center content-100") {
-            p {
-                strong { +"It is an essential skill of any software developer." }
-            }
-            p {
-                +"Usually, an IDE (such as IntelliJ IDEA) will have a debugger built in, "
-                +"which will allow you to "
-                strong { +"step" }
-                +" through your code, "
-                strong { +"inspect variables" }
-                +" and "
-                strong { +"evaluate expressions" }
-                +" to see what the program is doing, while it is executing"
-            }
+        p {
+            strong { +"It is an essential skill of any software developer." }
         }
-    }
+        p {
+            +"Usually, an IDE (such as IntelliJ IDEA) will have a debugger built in, "
+            +"which will allow you to "
+            strong { +"step" }
+            +" through your code, "
+            strong { +"inspect variables" }
+            +" and "
+            strong { +"evaluate expressions" }
+            +" to see what the program is doing, while it is executing"
+        }
+    },
+    textAlign = "ceneter"
 )
 
 object DocumentationSlide : Slide(
@@ -88,7 +88,7 @@ object DocumentationSlide : Slide(
                 }
             },
             right = {
-                img(src = "./src/img/javadoc.png", alt = "Javadoc")
+                img("Javadoc", imgByName("javadoc", "png"))
             }
         )
         p {

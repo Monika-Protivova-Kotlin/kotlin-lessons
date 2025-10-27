@@ -3,6 +3,7 @@ package com.motycka.edu.content.topics.testing
 import kotlinx.html.*
 import com.motycka.edu.model.Topic
 import com.motycka.edu.model.Slide
+import com.motycka.edu.model.imgByName
 
 object TestDesignTechniquesTopic : Topic(
     title = "Test design techniques",
@@ -56,7 +57,7 @@ object EquivalencePartitioningSlide : Slide(
         +"Equivalence partitioning is a technique used to reduce the number of test cases by dividing the input data of a software unit into partitions of equivalent data from which test cases can be derived."
     },
     content = {
-        img(src = "./src/img/equivalence_boundary.png")
+        img("Equivalence Partitioning", imgByName("equivalence_boundary", "png"))
         p {
             +"In this example, there are 4 partitions of equivalent data. "
             +"In theory, any test case from a partition should yield the same result."
@@ -90,7 +91,7 @@ object BoundaryValueAnalysisSlide : Slide(
         +"but the tests are designed to look program behavior at boundary values."
     },
     content = {
-        img(src = "./src/img/equivalence_boundary.png")
+        img("Boundary Value Analysis", imgByName("equivalence_boundary", "png"))
         p {
             +"There are 3 boundary values in this example: "
             strong { +"-273.15" }
@@ -181,7 +182,7 @@ object StateTransitionAnalysisSlide : Slide(
         +"State transition testing is a testing technique in which outputs are triggered by changes to the input conditions or changes to state of the system."
     },
     content = {
-        img(src = "./src/img/state_transition.png")
+        img("State Transition Analysis", imgByName("state_transition", "png"))
     }
 )
 

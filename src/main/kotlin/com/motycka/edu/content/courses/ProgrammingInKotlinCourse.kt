@@ -197,8 +197,8 @@ object IOAndExceptionsLesson : Lesson(
 object TestingLesson : Lesson(
     title = "Testing Fundamentals",
     preTitle = "Week 2 | Lesson 6",
-    subTitle = "Dependency Management, Logging, Debugging, Documentation, Validation, Testing fundamentals, Levels of testing, JUnit",
-    summary = "Testing principles, test design, unit testing, integration testing with JUnit",
+    subTitle = "Dependency Management, Logging, Debugging, Documentation, Validation, Testing fundamentals, Levels of testing, Kotest",
+    summary = "Testing principles, test design, unit testing, integration testing with Kotest",
     topics = listOf(
         DependencyManagementTopic,
         LoggingTopic,
@@ -210,8 +210,9 @@ object TestingLesson : Lesson(
         TestDesignTechniquesTopic,
         UnitTestingTopic,
         IntegrationTestingTopic,
-        TestingLayersTopic,
-        JUnitTopic,
+//        TestingLayersTopic,
+        KotestTopic,
+//        CoffeeMachineExampleTopic,
         PracticeTopic
     )
 )

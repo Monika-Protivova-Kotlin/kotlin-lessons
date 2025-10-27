@@ -100,14 +100,6 @@ object KotestTestsSlide : Slide(
         p { +"A more realistic test might look like this:" }
         kotlinPlayground(
             code = """
-                package com.motycka.edu.lesson04
-
-                import com.motycka.edu.lesson04.Coffee.*
-                import io.kotest.core.spec.style.FunSpec
-                import io.kotest.core.spec.style.ShouldSpec
-                import io.kotest.core.spec.style.StringSpec
-                import io.kotest.matchers.shouldBe
-
                 class PriceCalculatorTest : FunSpec({
 
                     val priceCalculator = PriceCalculator(applyDiscount = 4)
@@ -265,9 +257,9 @@ object GoodTestsSlide : Slide(
 
 object DescriptiveTestsSlide : Slide(
     header = "Descriptive tests",
-    summary = {
-        +"One of the ways you can make your test code easier to understand is using descriptive names and well-designed assertions."
-    },
+//    summary = {
+//        +"One of the ways you can make your test code easier to understand is using descriptive names and well-designed assertions."
+//    },
     content = {
         p {
             strong { +"Kotest" }
@@ -280,7 +272,6 @@ object DescriptiveTestsSlide : Slide(
                 class PriceCalculatorTests: StringSpec({
 
                     "Price Calculator" {
-
                         "should not allow discount less than 2" {
                             val exception = kotlin.runCatching { PriceCalculator(applyDiscount = 1) }
                             exception.isFailure shouldBe true
@@ -288,33 +279,23 @@ object DescriptiveTestsSlide : Slide(
                     }
 
                     "when calculating with discount on every 4th coffee" {
-
                         val priceCalculator = PriceCalculator(applyDiscount = 4)
 
                         "should apply no discount for 3 coffees" {
                             val order = listOf(ESPRESSO, CAPPUCCINO, AMERICANO)
                             val expectedTotal = order.sumOf { it.price }
-
                             priceCalculator.calculatePrice(order).shouldBe(expectedTotal)
                         }
 
                         "should apply discount for 4 coffees - cheapest one is free" {
                             val order = listOf(ESPRESSO, ESPRESSO, CAPPUCCINO, AMERICANO)
                             val expectedTotal = order.sumOf { it.price } - AMERICANO.price
-
                             priceCalculator.calculatePrice(order).shouldBe(expectedTotal)
                         }
 
                         "should apply discount for 9 coffees - cheapest two are free" {
-                            val order = listOf(
-                                ESPRESSO,
-                                CAPPUCCINO, CAPPUCCINO, CAPPUCCINO,
-                                FLAT_WHITE, FLAT_WHITE,
-                                LATTE, LATTE,
-                                AMERICANO
-                            )
+                            val order = listOf(ESPRESSO, CAPPUCCINO, CAPPUCCINO, CAPPUCCINO, FLAT_WHITE, FLAT_WHITE, LATTE, LATTE, AMERICANO)
                             val expectedTotal = order.sumOf { it.price } - AMERICANO.price - ESPRESSO.price
-
                             priceCalculator.calculatePrice(order).shouldBe(expectedTotal)
                         }
                     }
