@@ -157,3 +157,25 @@ fun FlowContent.mermaidDiagram(diagram: String) {
         }
     }
 }
+
+fun FlowContent.svgDiagram(
+    width: Int = 800,
+    height: Int = 600,
+    svgContent: String
+) {
+    // Use consumer API to insert raw HTML/SVG
+    consumer.onTagContentUnsafe {
+        raw("""
+            <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+                <svg width="$width" height="$height" viewBox="0 0 $width $height" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+                        </marker>
+                    </defs>
+                    $svgContent
+                </svg>
+            </div>
+        """.trimIndent())
+    }
+}

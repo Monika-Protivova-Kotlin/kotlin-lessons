@@ -30,6 +30,14 @@ import com.motycka.edu.content.topics.design.DesignPatternsTopic
 import com.motycka.edu.content.topics.design.FunctionalProgrammingTopic
 import com.motycka.edu.content.topics.design.InversionOfControlTopic
 import com.motycka.edu.content.topics.design.SOLIDPracticeTopic
+import com.motycka.edu.content.topics.design.patterns.SingletonPatternTopic
+import com.motycka.edu.content.topics.design.patterns.FactoryPatternTopic
+import com.motycka.edu.content.topics.design.patterns.BuilderPatternTopic
+import com.motycka.edu.content.topics.design.patterns.ObserverPatternTopic
+import com.motycka.edu.content.topics.design.patterns.StrategyPatternTopic
+import com.motycka.edu.content.topics.design.patterns.DecoratorPatternTopic
+import com.motycka.edu.content.topics.design.patterns.AdapterPatternTopic
+import com.motycka.edu.content.topics.design.patterns.RepositoryPatternTopic
 import com.motycka.edu.content.topics.design.solid.DesignForTestabilityTopic
 import com.motycka.edu.content.topics.design.solid.SolidPrinciplesTopic
 import com.motycka.edu.content.topics.introductory.DevelopmentEnvironmentTopic
@@ -264,9 +272,18 @@ object SOLIDAndArchitectureLesson : Lesson(
         SolidPrinciplesTopic,
         DesignForTestabilityTopic,
         InversionOfControlTopic,
-        ApplicationArchitecturePatternsTopic,
-        FunctionalProgrammingTopic,
         DesignPatternsTopic,
+        SingletonPatternTopic,
+        FactoryPatternTopic,
+        BuilderPatternTopic,
+        RepositoryPatternTopic,
+        StrategyPatternTopic,
+
+//        ObserverPatternTopic,
+//        DecoratorPatternTopic,
+//        AdapterPatternTopic,
+
+        ApplicationArchitecturePatternsTopic,
         SOLIDPracticeTopic
     )
 )
