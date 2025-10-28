@@ -13,12 +13,19 @@ object ThreadExercisesTopic : Topic(
         ThreadBasicsExerciseSlide,
         RunnableExerciseSlide,
         SynchronizationExerciseSlide,
+    )
+)
+
+
+object AtomicVariablesExerciseTopic : Topic(
+    title = "Thread Exercises",
+    slides = listOf(
         AtomicVariablesExerciseSlide
     )
 )
 
 object ThreadBasicsExerciseSlide : Slide(
-    header = "Exercise 1: Download Manager",
+    header = "Exercise: Download Manager",
     summary = {
         +"Simulate downloading multiple files concurrently using threads."
     },
@@ -48,7 +55,7 @@ object ThreadBasicsExerciseSlide : Slide(
 )
 
 object RunnableExerciseSlide : Slide(
-    header = "Exercise 2: Marathon Race",
+    header = "Exercise: Marathon Race",
     summary = {
         +"Create a "
         inlineCode("Runner")
@@ -109,7 +116,7 @@ object RunnableExerciseSlide : Slide(
 )
 
 object SynchronizationExerciseSlide : Slide(
-    header = "Exercise 3: Bank Account",
+    header = "Exercise: Bank Account",
     summary = {
         +"Simulate concurrent deposits to a shared bank account and fix race conditions using "
         inlineCode("@Synchronized")
@@ -148,7 +155,7 @@ object SynchronizationExerciseSlide : Slide(
 )
 
 object AtomicVariablesExerciseSlide : Slide(
-    header = "Exercise 4: Ticket Booking System",
+    header = "Exercise: Ticket Booking System",
     summary = {
         +"Use "
         inlineCode("AtomicInteger")

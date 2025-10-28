@@ -20,10 +20,10 @@ object GarbageCollectionTopic : Topic(
         GarbageCollectionSlide,
         GarbageCollectionGenerationsSlide,
         GarbageCollectionStrategiesSlide,
-//        ObjectLifecycleAnimationSlide,
-//        GenerationalGCAnimationSlide,
-//        MarkAndSweepAnimationSlide,
-//        MemoryCompactionAnimationSlide
+        ObjectLifecycleAnimationSlide,
+        GenerationalGCAnimationSlide,
+        MarkAndSweepAnimationSlide,
+        MemoryCompactionAnimationSlide
     )
 )
 
@@ -125,7 +125,7 @@ object ObjectLifecycleAnimationSlide : Slide(
         div("gc-animation") {
             // Stack on the left
             div("gc-memory-area gc-stack") {
-//                attributes["data-fragment-index"] = "1"
+                attributes["data-fragment-index"] = "1"
                 div("gc-memory-area-label") { +"Stack" }
 
                 // Variable A reference
@@ -135,16 +135,22 @@ object ObjectLifecycleAnimationSlide : Slide(
                     div("gc-stack-var-ref") { +"→ A" }
                 }
 
+                // Remove varA reference
+                div("gc-stack-var fragment fade-out") {
+                    attributes["data-fragment-index"] = "4"
+                    div("gc-stack-var-name") { +"var a" }
+                    div("gc-stack-var-ref") { +"→ A" }
+                }
+
                 // Variable C reference
                 div("gc-stack-var fragment fade-in") {
-                    attributes["data-fragment-index"] = "4"
+                    attributes["data-fragment-index"] = "3"
                     div("gc-stack-var-name") { +"var c" }
                     div("gc-stack-var-ref") { +"→ C" }
                 }
 
-                // Remove varA reference
                 div("gc-stack-var fragment fade-in") {
-                    attributes["data-fragment-index"] = "5"
+                    attributes["data-fragment-index"] = "4"
                     div("gc-stack-var-name") { +"var a" }
                     div("gc-stack-var-ref") { +"→ null" }
                 }
@@ -160,18 +166,24 @@ object ObjectLifecycleAnimationSlide : Slide(
                     attributes["data-fragment-index"] = "2"
                     div("gc-object-label") {
                         +"Object A"
+                        br
+                        em { +"(references B)" }
                     }
                 }
 
                 // Object B (referenced by A)
                 div("gc-object gc-live fragment fade-in") {
                     attributes["data-fragment-index"] = "2"
-                    div("gc-object-label") { +"Object B" }
+                    div("gc-object-label") {
+                        +"Object B"
+                        br
+                        em { +"(referenced by A)" }
+                    }
                 }
 
                 // Object C (live)
                 div("gc-object gc-live fragment fade-in") {
-                    attributes["data-fragment-index"] = "4"
+                    attributes["data-fragment-index"] = "3"
                     div("gc-object-label") { +"Object C" }
                 }
 
@@ -202,7 +214,7 @@ object ObjectLifecycleAnimationSlide : Slide(
         }
 
         // Annotation text
-        p("fragment fade-in") {
+        p("fragment") {
             attributes["data-fragment-index"] = "1"
             +"Step 1: Empty heap and stack"
         }
@@ -212,11 +224,11 @@ object ObjectLifecycleAnimationSlide : Slide(
             span("gc-highlight") { +"varA" }
         }
         p("fragment fade-in") {
-            attributes["data-fragment-index"] = "3"
+            attributes["data-fragment-index"] = "2"
             +"Step 3: Create Object B, referenced by Object A"
         }
         p("fragment fade-in") {
-            attributes["data-fragment-index"] = "4"
+            attributes["data-fragment-index"] = "3"
             +"Step 4: Create Object C, referenced by stack variable "
             span("gc-highlight") { +"varC" }
         }

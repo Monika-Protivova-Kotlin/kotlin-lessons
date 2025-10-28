@@ -11,6 +11,7 @@ import com.motycka.edu.content.topics.basics.collections.*
 import com.motycka.edu.content.topics.basics.collections.CollectionTransformationsTopic
 import com.motycka.edu.content.topics.basics.collections.CollectionTraversalTopic
 import com.motycka.edu.content.topics.basics.collections.CollectionsTopic
+import com.motycka.edu.content.topics.basics.concurrency.AtomicVariablesExerciseTopic
 import com.motycka.edu.content.topics.basics.concurrency.AtomicVariablesTopic
 import com.motycka.edu.content.topics.basics.concurrency.CoffeeShopExerciseTopic
 import com.motycka.edu.content.topics.basics.concurrency.ConcurrentUtilitiesTopic
@@ -243,9 +244,10 @@ object MemoryAndThreadsLesson : Lesson(
         JavaMemoryManagementTopic,
         GarbageCollectionTopic,
         MultithreadingTopic,
-        ThreadExercisesTopic,
         ConcurrentUtilitiesTopic,
+        ThreadExercisesTopic,
         AtomicVariablesTopic,
+        AtomicVariablesExerciseTopic,
         SynchronizersTopic,
         FuturesTopic,
         CoroutinesTopic,
