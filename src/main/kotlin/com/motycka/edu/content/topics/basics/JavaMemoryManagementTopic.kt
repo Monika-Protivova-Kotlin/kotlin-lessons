@@ -20,10 +20,7 @@ object JavaMemoryManagementTopic : Topic(
         MemoryAllocationExamples1Slide,
         MemoryAllocationExamples2Slide,
         MemoryAllocationExamples3Slide,
-        MemoryAllocationExamples4Slide,
-        GarbageCollectionSlide,
-        GarbageCollectionGenerationsSlide,
-        GarbageCollectionStrategiesSlide
+        MemoryAllocationExamples4Slide
     )
 )
 
@@ -242,73 +239,98 @@ object StackVsHeapComparisonSlide : Slide(
 )
 
 object MemoryAllocationExamples1Slide : Slide(
-    header = "Memory Allocation Examples",
+    header = "Memory Allocation",
+    summary = {
+        +"Examples"
+    },
     content = {
-        p {
-            highlight("1. Primitive Types → Stack (when local)")
-            kotlinPlayground(
-                code = """
+        twoColumns(
+            left = {
+                highlight("1. Primitive Types → Stack (when local)")
+                br
+                ul {
+                    li { +"Variables are local to the main function → stored in the stack frame." }
+                    li { +"No object instantiation → no heap allocation." }
+                }
+            },
+            right = {
+                kotlinPlayground(
+                    code = """
                     fun main() {
                         val a = 42      // Int – primitive value, allocated on stack
                         val b = true    // Boolean – also on stack
                     }
                     """,
-                executable = false
-            )
-            ul {
-                style = "font-size: 80%;"
-                li { +"These variables are local to the main function → stored in the stack frame." }
-                li { +"No object instantiation → no heap allocation." }
+                    executable = false
+                )
             }
-        }
-
-        p {
-            highlight("2. Reference Types (Classes) → Heap")
-            kotlinPlayground(
-                code = """
+        )
+        twoColumns(
+            left = {
+                highlight("2. Reference Types (Classes) → Heap")
+                br
+                ul {
+                    li { +"List reference → stack" }
+                    li { +"Actual List and its contents → heap" }
+                    li { +"Returned to caller → remains alive after function ends" }
+                }
+            },
+            right = {
+                kotlinPlayground(
+                    code = """
                     class User(val name: String)
                     
                     fun main() {
                         val user = User("Alice") // user is a reference on stack, actual User object on heap
                     }
                     """,
-                executable = false
-            )
-            ul {
-                style = "font-size: 80%;"
-                li { +"List reference → stack" }
-                li { +"Actual List and its contents → heap" }
-                li { +"Returned to caller → remains alive after function ends" }
+                    executable = false
+                )
             }
-        }
+        )
     }
 )
 
 object MemoryAllocationExamples2Slide : Slide(
-    header = "Memory Allocation Examples",
+    header = "Memory Allocation",
+    summary = {
+        +"Examples"
+    },
     content = {
-        p {
-            highlight("3. Function-local Objects → Heap")
-            kotlinPlayground(
-                code = """
+        twoColumns(
+            left = {
+                highlight("3. Function-local Objects → Heap")
+                br
+                ul {
+                    li { +"list reference → stack" }
+                    li { +"actual List and its contents → heap" }
+                    li { +"returned to caller → remains alive after function ends" }
+                }
+            },
+            right = {
+                kotlinPlayground(
+                    code = """
                     fun createList(): List<Int> {
                         val list = listOf(1, 2, 3) // list is a reference on stack, actual List on heap
                         return list
                     }
                     """,
-                executable = false
-            )
-            ul {
-                style = "font-size: 80%;"
-                li { +"list reference → stack" }
-                li { +"actual List and its contents → heap" }
-                li { +"returned to caller → remains alive after function ends" }
+                    executable = false
+                )
             }
-        }
-        p {
-            highlight("4. Objects Captured in Lambdas → Heap")
-            kotlinPlayground(
-                code = """
+        )
+        twoColumns(
+            left = {
+                highlight("4. Objects Captured in Lambdas → Heap")
+                br
+                ul {
+                    li { +"Lambdas that capture variables allocate a closure object on the heap." }
+                    li { +"If prefix were not captured, lambda could be compiled more efficiently." }
+                }
+            },
+            right = {
+                kotlinPlayground(
+                    code = """
                     fun main() {
                         val prefix = "Item " // captured in lambda → stored on heap
                         val printer = { i: Int -> println(prefix + i) }
@@ -316,79 +338,99 @@ object MemoryAllocationExamples2Slide : Slide(
                         printer(5)
                     }
                     """,
-                executable = false
-            )
-            ul {
-                style = "font-size: 80%;"
-                li { +"Lambdas that capture variables allocate a closure object on the heap." }
-                li { +"If prefix were not captured, lambda could be compiled more efficiently." }
+                    executable = false
+                )
             }
-        }
+        )
     }
 )
 
 object MemoryAllocationExamples3Slide : Slide(
-    header = "Memory Allocation Examples",
+    header = "Memory Allocation",
+    summary = {
+        +"Examples"
+    },
     content = {
-        p {
-            highlight("5. Top-Level / object Singleton → Heap (once)")
-            kotlinPlayground(
-                code = """
+        twoColumns(
+            left = {
+                highlight("5. Top-Level / object Singleton → Heap (once)")
+                br
+                ul {
+                    li { +"The Logger object is allocated once and lives in heap/meta space." }
+                    li { +"Static-like structure with JVM guarantees." }
+                }
+            },
+            right = {
+                kotlinPlayground(
+                    code = """
                     object Logger {
                         fun log(msg: String) {
                             println(msg)
                         }
                     }
                     """,
-                executable = false
-            )
-            ul {
-                style = "font-size: 80%;"
-                li { +"The Logger object is allocated once and lives in heap/meta space." }
-                li { +"Static-like structure with JVM guarantees." }
+                    executable = false
+                )
             }
-        }
-
-        p {
-            highlight("6. Array Allocation → Heap")
-            kotlinPlayground(
-                code = """
+        )
+        twoColumns(
+            left = {
+                highlight("6. Array Allocation → Heap")
+                br
+                ul {
+                    li { +"Arrays, even of primitives, live on heap." }
+                    li { +"Elements of primitive type (Int) are stored inline; objects would be references." }
+                }
+            },
+            right = {
+                kotlinPlayground(
+                    code = """
                     val nums = IntArray(5) // array is always allocated on heap
                     """,
-                executable = false
-            )
-            ul {
-                style = "font-size: 80%;"
-                li { +"Arrays, even of primitives, live on heap." }
-                li { +"Elements of primitive type (Int) are stored inline; objects would be references." }
+                    executable = false
+                )
             }
-        }
+        )
     }
 )
 
 object MemoryAllocationExamples4Slide : Slide(
-    header = "Memory Allocation Examples",
+    header = "Memory Allocation",
+    summary = {
+        +"Examples"
+    },
     content = {
-        p {
-            highlight("7. Inline Functions and Reified Types → Reduced Allocation")
-            kotlinPlayground(
-                code = """
+        twoColumns(
+            left = {
+                highlight("7. Inline Functions and Reified Types → Reduced Allocation")
+                br
+                ul {
+                    li { +"Inlined at call site → may reduce allocation." }
+                    li { +"No closure or lambda object if no capturing → no heap cost." }
+                }
+            },
+            right = {
+                kotlinPlayground(
+                    code = """
                     inline fun <reified T> printType() {
                         println(T::class.java.name)
                     }
                     """,
-                executable = false
-            )
-            ul {
-                style = "font-size: 80%;"
-                li { +"Inlined at call site → may reduce allocation." }
-                li { +"No closure or lambda object if no capturing → no heap cost." }
+                    executable = false
+                )
             }
-        }
-        p {
-            highlight("8. Example of memory leak due to static reference")
-            kotlinPlayground(
-                code = """
+        )
+        twoColumns(
+            left = {
+                highlight("8. Example of memory leak due to static reference")
+                br
+                ul {
+                    li { +"Static reference in Leaky object → cache lives as long as program." }
+                }
+            },
+            right = {
+                kotlinPlayground(
+                    code = """
                 object Leaky {
                     var cache: MutableList<Any> = mutableListOf()
                 }
@@ -399,101 +441,9 @@ object MemoryAllocationExamples4Slide : Slide(
                     }
                 }
                 """,
-                executable = false
-            )
-            ul {
-                style = "font-size: 80%;"
-                li { +"Static reference in Leaky object → cache lives as long as program." }
+                    executable = false
+                )
             }
-        }
-    }
-)
-
-object GarbageCollectionSlide : Slide(
-    header = "Garbage Collection",
-    summary = { +"Garbage Collection (GC) is a process of automatically reclaiming memory." },
-    content = {
-        p {
-            +"The Garbage Collector automatically frees up heap space memory allocations that are no longer "
-            +"referenced by any running part of the program."
-        }
-        p {
-            +"The process of GC is not predictable, and the programmer can't force garbage collection. "
-            +"System.gc() can be called as a hint to JVM for garbage collection, but it is not guaranteed that it will be performed."
-        }
-        p {
-            +"To make the garbage collection process more efficient, the heap is divided into generations."
-        }
-        ul {
-            li {
-                span(classes = "highlight") { +"Young Generation (Eden)" }
-                br()
-            }
-            li {
-                span(classes = "highlight") { +"Old Generation (Tenured)" }
-                br()
-            }
-            li {
-                span(classes = "highlight") { +"Permanent Generation (Meta Space)" }
-                br()
-            }
-        }
-    }
-)
-
-object GarbageCollectionGenerationsSlide : Slide(
-    header = "Garbage Collection Generations",
-    summary = {
-        +"Java uses generational garbage collection strategy that categorizes objects by age. "
-        +"This is because performing GC on the entire heap would be inefficient. "
-        +"Most objects in java are short-lived, therefore, there can be more frequent GC events for those."
-    },
-    content = {
-        ul {
-            li {
-                span(classes = "highlight") { +"Young Generation (Eden)" }
-                br()
-                +"This is where all new objects are created. It can be further divided into Eden space and Survivor spaces (FromSpace and ToSpace)."
-                ul {
-                    li { +"When it fills up, a Minor GC event occurs." }
-                    li { +"Objects that are evaluated as dead or alive." }
-                    li { +"Dead objects are removed, and the memory is compacted." }
-                    li { +"If an object survives for a given number minor GC cycles, it is promoted to the Old Generation." }
-                }
-            }
-            li {
-                span(classes = "highlight") { +"Old Generation (Tenured)" }
-                br()
-                +"This contains objects that have survived the garbage collection from the Young Generation."
-            }
-            li {
-                span(classes = "highlight") { +"Permanent Generation (Meta Space)" }
-                br()
-                +"This is used to store metadata about classes and methods. "
-                +"It's garbage collected just like the other generations but usually at a slower rate."
-            }
-        }
-    }
-)
-
-object GarbageCollectionStrategiesSlide : Slide(
-    header = "Garbage Collection Strategies",
-    summary = {
-        +"There is a number of GC strategies that can be used in Java. "
-        +"Each strategy has its own advantages and disadvantages, and is suitable for different types of applications."
-    },
-    content = {
-        ul {
-            li { highlight("Serial Collector"); +" ("; inlineCode("-XX:+UseSerialGC"); +")" }
-            li { highlight("Parallel Collector"); +" ("; inlineCode("-XX:+UseParallelGC"); +" and "; inlineCode("-XX:+UseParallelOldGC"); +")" }
-            li { highlight("Z Garbage Collector (ZGC)"); +" ("; inlineCode("-XX:+UseZGC"); +")" }
-            li { highlight("Concurrent Mark Sweep (CMS) Collector"); +" ("; inlineCode("-XX:+UseConcMarkSweepGC"); +")" }
-            li { highlight("G1 (Garbage-First) Collector"); +" ("; inlineCode("-XX:+UseG1GC"); +")" }
-            li { highlight("Shenandoah GC"); +" ("; inlineCode("-XX:+UseShenandoahGC"); +")" }
-        }
-        p {
-            +"Each JVM implementation may implement GC differently, and may have its own GC strategies, "
-            +"although they should all follow the JVM specification."
-        }
+        )
     }
 )

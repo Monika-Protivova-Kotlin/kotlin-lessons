@@ -17,7 +17,6 @@ val TestingBackendLesson = Lesson(
         TestDesignTechniquesTopic,
         UnitTestingTopic,
         IntegrationTestingTopic,
-        KotestTopic,
-        CoffeeMachineExampleTopic
+        KotestTopic
     )
 )

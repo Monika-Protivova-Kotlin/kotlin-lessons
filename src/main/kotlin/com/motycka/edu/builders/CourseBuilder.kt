@@ -218,6 +218,7 @@ object CourseBuilder {
             link(rel = "stylesheet", href = "https://unpkg.com/reveal.js@$REVEAL_VERSION/dist/reset.css")
             link(rel = "stylesheet", href = "https://unpkg.com/reveal.js@$REVEAL_VERSION/dist/reveal.css")
             link(rel = "stylesheet", href = "../../dist/theme/kotlin.css")
+            link(rel = "stylesheet", href = "../../dist/theme/gc-animations.css")
         }
 
         body {
@@ -688,6 +689,7 @@ object CourseBuilder {
             link(rel = "stylesheet", href = "https://unpkg.com/reveal.js@$REVEAL_VERSION/dist/reset.css")
             link(rel = "stylesheet", href = "https://unpkg.com/reveal.js@$REVEAL_VERSION/dist/reveal.css")
             link(rel = "stylesheet", href = "../../dist/theme/kotlin.css")
+            link(rel = "stylesheet", href = "../../dist/theme/gc-animations.css")
         }
 
         body {

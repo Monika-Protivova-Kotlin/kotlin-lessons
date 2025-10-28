@@ -18,6 +18,7 @@ import com.motycka.edu.content.topics.basics.concurrency.CoroutinesTopic
 import com.motycka.edu.content.topics.basics.concurrency.FuturesTopic
 import com.motycka.edu.content.topics.basics.concurrency.MultithreadingTopic
 import com.motycka.edu.content.topics.basics.concurrency.SynchronizersTopic
+import com.motycka.edu.content.topics.basics.concurrency.ThreadExercisesTopic
 import com.motycka.edu.content.topics.basics.conditionals.ConditionalsTopic
 import com.motycka.edu.content.topics.basics.datetime.*
 import com.motycka.edu.content.topics.basics.essentials.*
@@ -240,7 +241,9 @@ object MemoryAndThreadsLesson : Lesson(
         JavaVirtualMachineTopic,
         JREJDKCompilerTopic,
         JavaMemoryManagementTopic,
+        GarbageCollectionTopic,
         MultithreadingTopic,
+        ThreadExercisesTopic,
         ConcurrentUtilitiesTopic,
         AtomicVariablesTopic,
         SynchronizersTopic,
