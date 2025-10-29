@@ -18,11 +18,11 @@ object InversionOfControlTopic : Topic(
         ConstructorInjectionSlide,
         SetterInjectionSlide,
         InterfaceInjectionSlide,
-        IoCExerciseIntroSlide,
-        CharacterMatchingStrategySlide,
-        CharacterRepositorySlide,
-        IoCExerciseImplementationSlide,
-        IoCExerciseResultsSlide
+//        IoCExerciseIntroSlide,
+//        CharacterMatchingStrategySlide,
+//        CharacterRepositorySlide,
+//        IoCExerciseImplementationSlide,
+//        IoCExerciseResultsSlide
     )
 )
 
@@ -141,7 +141,7 @@ object ConstructorInjectionSlide : Slide(
                     car.stop()
                 }
             """.trimIndent(),
-            executable = true
+            executable = false
         )
         twoColumns(
             left = {
@@ -281,8 +281,10 @@ object InterfaceInjectionSlide : Slide(
         p {
             em { +"This is just a conceptual example!" }
         }
-        kotlinPlayground(
-            code = """
+        twoColumns(
+            left = {
+                kotlinPlayground(
+                    code = """
                 @Component
                 class NotificationApplication(
                     private var service: MessageService
@@ -294,17 +296,21 @@ object InterfaceInjectionSlide : Slide(
 
                 }
             """.trimIndent(),
-            executable = false
-        )
-        kotlinPlayground(
-            code = """
+                    executable = false
+                )
+            },
+            right = {
+                kotlinPlayground(
+                    code = """
                 interface MessageService {
 
                     fun sendMessage(msg: String, rec: String)
 
                 }
             """.trimIndent(),
-            executable = false
+                    executable = false
+                )
+            },
         )
         kotlinPlayground(
             code = """
