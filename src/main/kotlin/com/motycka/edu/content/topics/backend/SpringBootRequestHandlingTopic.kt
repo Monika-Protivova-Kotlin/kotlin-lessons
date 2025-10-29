@@ -16,7 +16,7 @@ object SpringBootRequestHandlingTopic : Topic(
         RequestBodySlide,
         ResponseHandlingSlide,
         ResponseEntitySlide,
-        CompleteRequestHandlingExampleSlide
+//        CompleteRequestHandlingExampleSlide
     )
 )
 
@@ -33,15 +33,15 @@ object RequestHandlingIntroSlide : Slide(
             li {
                 strong { +"Path (URL)" }
                 +" - e.g., "
-                inlineCode("/api/characters/123")
+                inlineCode("/api/tasks/123")
                 +" where "
                 inlineCode("123")
-                +" is the character ID"
+                +" is the task ID"
             }
             li {
                 strong { +"Query Parameters" }
                 +" - e.g., "
-                inlineCode("/api/characters?type=WARRIOR&level=5")
+                inlineCode("/api/tasks?priority=HIGH&status=TODO")
             }
             li {
                 strong { +"Request Body" }
@@ -77,41 +77,41 @@ object PathVariableSlide : Slide(
         p {
             +"Path variables are typically used to identify "
             strong { +"specific resources" }
-            +", like a character ID or battle ID."
+            +", like a task ID or project ID."
         }
         kotlinPlayground(
             code = """
                 @RestController
                 @RequestMapping("/api")
-                class CharacterController(
-                    private val characterService: CharacterService
+                class TaskController(
+                    private val taskService: TaskService
                 ) {
 
                     // Single path variable
-                    @GetMapping("/characters/{id}")
-                    fun getCharacterById(@PathVariable id: Long): CharacterDTO {
-                        return characterService.getCharacterById(id)
+                    @GetMapping("/tasks/{id}")
+                    fun getTaskById(@PathVariable id: Long): TaskDTO {
+                        return taskService.getTaskById(id)
                     }
 
                     // Multiple path variables
-                    @GetMapping("/characters/{characterId}/battles/{battleId}")
-                    fun getCharacterBattle(
-                        @PathVariable characterId: Long,
-                        @PathVariable battleId: Long
-                    ): BattleDTO {
-                        return characterService.getCharacterBattle(characterId, battleId)
+                    @GetMapping("/tasks/{taskId}/subtasks/{subtaskId}")
+                    fun getSubtask(
+                        @PathVariable taskId: Long,
+                        @PathVariable subtaskId: Long
+                    ): SubtaskDTO {
+                        return taskService.getSubtask(taskId, subtaskId)
                     }
 
                     // Path variable with different name
-                    @GetMapping("/characters/{id}/stats")
-                    fun getCharacterStats(@PathVariable("id") characterId: Long): StatsDTO {
-                        return characterService.getCharacterStats(characterId)
+                    @GetMapping("/tasks/{id}/details")
+                    fun getTaskDetails(@PathVariable("id") taskId: Long): TaskDetailsDTO {
+                        return taskService.getTaskDetails(taskId)
                     }
 
                     // Path variable with enum
-                    @GetMapping("/characters/type/{type}")
-                    fun getCharactersByType(@PathVariable type: CharacterType): List<CharacterDTO> {
-                        return characterService.getCharactersByType(type)
+                    @GetMapping("/tasks/priority/{priority}")
+                    fun getTasksByPriority(@PathVariable priority: TaskPriority): List<TaskDTO> {
+                        return taskService.getTasksByPriority(priority)
                     }
                 }
             """.trimIndent(),
@@ -144,44 +144,44 @@ object RequestParamSlide : Slide(
         kotlinPlayground(
             code = """
                 @RestController
-                @RequestMapping("/api/characters")
-                class CharacterController(
-                    private val characterService: CharacterService
+                @RequestMapping("/api/tasks")
+                class TaskController(
+                    private val taskService: TaskService
                 ) {
 
                     // Simple query parameter
-                    // GET /api/characters?name=Aragorn
+                    // GET /api/tasks?title=Report
                     @GetMapping
-                    fun searchCharacters(@RequestParam name: String): List<CharacterDTO> {
-                        return characterService.searchByName(name)
+                    fun searchTasks(@RequestParam title: String): List<TaskDTO> {
+                        return taskService.searchByTitle(title)
                     }
 
                     // Optional query parameter with default value
-                    // GET /api/characters?page=2&size=20 or just /api/characters
+                    // GET /api/tasks?page=2&size=20 or just /api/tasks
                     @GetMapping
-                    fun getAllCharacters(
+                    fun getAllTasks(
                         @RequestParam(defaultValue = "0") page: Int,
                         @RequestParam(defaultValue = "10") size: Int
-                    ): List<CharacterDTO> {
-                        return characterService.getAllCharacters(page, size)
+                    ): List<TaskDTO> {
+                        return taskService.getAllTasks(page, size)
                     }
 
                     // Multiple query parameters with different types
-                    // GET /api/characters?type=WARRIOR&minLevel=5&maxLevel=10&includeInactive=true
+                    // GET /api/tasks?priority=HIGH&status=TODO&includeArchived=false
                     @GetMapping
-                    fun filterCharacters(
-                        @RequestParam(required = false) type: CharacterType?,
-                        @RequestParam(required = false) minLevel: Int?,
-                        @RequestParam(required = false) maxLevel: Int?,
-                        @RequestParam(defaultValue = "false") includeInactive: Boolean
-                    ): List<CharacterDTO> {
-                        return characterService.filterCharacters(type, minLevel, maxLevel, includeInactive)
+                    fun filterTasks(
+                        @RequestParam(required = false) priority: TaskPriority?,
+                        @RequestParam(required = false) status: TaskStatus?,
+                        @RequestParam(required = false) assignee: String?,
+                        @RequestParam(defaultValue = "false") includeArchived: Boolean
+                    ): List<TaskDTO> {
+                        return taskService.filterTasks(priority, status, assignee, includeArchived)
                     }
 
                     // Query parameter with custom name
                     @GetMapping("/search")
-                    fun search(@RequestParam("q") query: String): List<CharacterDTO> {
-                        return characterService.search(query)
+                    fun search(@RequestParam("q") query: String): List<TaskDTO> {
+                        return taskService.search(query)
                     }
                 }
             """.trimIndent(),
@@ -210,61 +210,59 @@ object RequestBodySlide : Slide(
         }
         kotlinPlayground(
             code = """
-                data class CreateCharacterRequest(
-                    val name: String,
-                    val type: CharacterType,
-                    val level: Int,
-                    val health: Int,
-                    val attack: Int,
-                    val defense: Int
+                data class CreateTaskRequest(
+                    val title: String,
+                    val description: String?,
+                    val priority: TaskPriority,
+                    val status: TaskStatus,
+                    val dueDate: String?
                 )
 
-                data class UpdateCharacterRequest(
-                    val name: String?,
-                    val level: Int?,
-                    val health: Int?
+                data class UpdateTaskRequest(
+                    val title: String?,
+                    val description: String?,
+                    val priority: TaskPriority?,
+                    val status: TaskStatus?
                 )
 
-                data class InitiateBattleRequest(
-                    val character1Id: Long,
-                    val character2Id: Long,
-                    val battleType: BattleType
+                data class AssignTaskRequest(
+                    val taskId: Long,
+                    val assigneeId: Long
                 )
 
                 @RestController
                 @RequestMapping("/api")
-                class GameController(
-                    private val characterService: CharacterService,
-                    private val battleService: BattleService
+                class TaskController(
+                    private val taskService: TaskService
                 ) {
 
                     // POST request with request body
-                    // Request: POST /api/characters
-                    // Body: {"name": "Aragorn", "type": "WARRIOR", "level": 10, ...}
-                    @PostMapping("/characters")
+                    // Request: POST /api/tasks
+                    // Body: {"title": "Write Report", "priority": "HIGH", "status": "TODO", ...}
+                    @PostMapping("/tasks")
                     @ResponseStatus(HttpStatus.CREATED)
-                    fun createCharacter(@RequestBody request: CreateCharacterRequest): CharacterDTO {
-                        return characterService.createCharacter(request)
+                    fun createTask(@RequestBody request: CreateTaskRequest): TaskDTO {
+                        return taskService.createTask(request)
                     }
 
                     // PUT request with path variable and request body
-                    // Request: PUT /api/characters/123
-                    // Body: {"name": "Aragorn II", "level": 11, "health": 150}
-                    @PutMapping("/characters/{id}")
-                    fun updateCharacter(
+                    // Request: PUT /api/tasks/123
+                    // Body: {"title": "Write Final Report", "priority": "URGENT", "status": "IN_PROGRESS"}
+                    @PutMapping("/tasks/{id}")
+                    fun updateTask(
                         @PathVariable id: Long,
-                        @RequestBody request: UpdateCharacterRequest
-                    ): CharacterDTO {
-                        return characterService.updateCharacter(id, request)
+                        @RequestBody request: UpdateTaskRequest
+                    ): TaskDTO {
+                        return taskService.updateTask(id, request)
                     }
 
                     // POST request with request body
-                    // Request: POST /api/battles
-                    // Body: {"character1Id": 1, "character2Id": 2, "battleType": "DUEL"}
-                    @PostMapping("/battles")
-                    @ResponseStatus(HttpStatus.CREATED)
-                    fun initiateBattle(@RequestBody request: InitiateBattleRequest): BattleDTO {
-                        return battleService.initiateBattle(request)
+                    // Request: POST /api/tasks/assign
+                    // Body: {"taskId": 1, "assigneeId": 5}
+                    @PostMapping("/tasks/assign")
+                    @ResponseStatus(HttpStatus.OK)
+                    fun assignTask(@RequestBody request: AssignTaskRequest): TaskDTO {
+                        return taskService.assignTask(request)
                     }
                 }
             """.trimIndent(),
@@ -302,29 +300,29 @@ object ResponseHandlingSlide : Slide(
         kotlinPlayground(
             code = """
                 @RestController
-                @RequestMapping("/api/characters")
-                class CharacterController(
-                    private val characterService: CharacterService
+                @RequestMapping("/api/tasks")
+                class TaskController(
+                    private val taskService: TaskService
                 ) {
 
                     // Direct return - automatic 200 OK
                     @GetMapping("/{id}")
-                    fun getCharacter(@PathVariable id: Long): CharacterDTO {
-                        return characterService.getCharacterById(id)
+                    fun getTask(@PathVariable id: Long): TaskDTO {
+                        return taskService.getTaskById(id)
                     }
 
                     // Custom status code with @ResponseStatus
                     @PostMapping
                     @ResponseStatus(HttpStatus.CREATED)  // Returns 201 Created
-                    fun createCharacter(@RequestBody request: CreateCharacterRequest): CharacterDTO {
-                        return characterService.createCharacter(request)
+                    fun createTask(@RequestBody request: CreateTaskRequest): TaskDTO {
+                        return taskService.createTask(request)
                     }
 
                     // No content response for DELETE
                     @DeleteMapping("/{id}")
                     @ResponseStatus(HttpStatus.NO_CONTENT)  // Returns 204 No Content
-                    fun deleteCharacter(@PathVariable id: Long) {
-                        characterService.deleteCharacter(id)
+                    fun deleteTask(@PathVariable id: Long) {
+                        taskService.deleteTask(id)
                     }
                 }
             """.trimIndent(),
@@ -354,17 +352,17 @@ object ResponseEntitySlide : Slide(
         kotlinPlayground(
             code = """
                 @RestController
-                @RequestMapping("/api/characters")
-                class CharacterController(
-                    private val characterService: CharacterService
+                @RequestMapping("/api/tasks")
+                class TaskController(
+                    private val taskService: TaskService
                 ) {
 
                     // ResponseEntity with dynamic status
                     @GetMapping("/{id}")
-                    fun getCharacter(@PathVariable id: Long): ResponseEntity<CharacterDTO> {
-                        val character = characterService.findCharacterById(id)
-                        return if (character != null) {
-                            ResponseEntity.ok(character)  // 200 OK
+                    fun getTask(@PathVariable id: Long): ResponseEntity<TaskDTO> {
+                        val task = taskService.findTaskById(id)
+                        return if (task != null) {
+                            ResponseEntity.ok(task)  // 200 OK
                         } else {
                             ResponseEntity.notFound().build()  // 404 Not Found
                         }
@@ -372,24 +370,24 @@ object ResponseEntitySlide : Slide(
 
                     // ResponseEntity with custom headers
                     @PostMapping
-                    fun createCharacter(@RequestBody request: CreateCharacterRequest): ResponseEntity<CharacterDTO> {
-                        val character = characterService.createCharacter(request)
+                    fun createTask(@RequestBody request: CreateTaskRequest): ResponseEntity<TaskDTO> {
+                        val task = taskService.createTask(request)
                         return ResponseEntity
                             .status(HttpStatus.CREATED)  // 201 Created
-                            .header("Location", "/api/characters/${DOLLAR}{character.id}")
-                            .body(character)
+                            .header("Location", "/api/tasks/${DOLLAR}{task.id}")
+                            .body(task)
                     }
 
                     // ResponseEntity with conditional logic
                     @PutMapping("/{id}")
-                    fun updateCharacter(
+                    fun updateTask(
                         @PathVariable id: Long,
-                        @RequestBody request: UpdateCharacterRequest
-                    ): ResponseEntity<CharacterDTO> {
+                        @RequestBody request: UpdateTaskRequest
+                    ): ResponseEntity<TaskDTO> {
                         return try {
-                            val updated = characterService.updateCharacter(id, request)
+                            val updated = taskService.updateTask(id, request)
                             ResponseEntity.ok(updated)  // 200 OK
-                        } catch (e: CharacterNotFoundException) {
+                        } catch (e: TaskNotFoundException) {
                             ResponseEntity.notFound().build()  // 404 Not Found
                         } catch (e: InvalidRequestException) {
                             ResponseEntity.badRequest().build()  // 400 Bad Request
@@ -398,8 +396,8 @@ object ResponseEntitySlide : Slide(
 
                     // No content response
                     @DeleteMapping("/{id}")
-                    fun deleteCharacter(@PathVariable id: Long): ResponseEntity<Unit> {
-                        characterService.deleteCharacter(id)
+                    fun deleteTask(@PathVariable id: Long): ResponseEntity<Unit> {
+                        taskService.deleteTask(id)
                         return ResponseEntity.noContent().build()  // 204 No Content
                     }
                 }

@@ -11,11 +11,66 @@ import kotlinx.html.*
 object SpringBootBeansTopic : Topic(
     title = "Beans & Dependency Injection",
     slides = listOf(
+        BeansIntroSlide,
         BeanSlide,
         ControllerBeanSlide,
         ServiceBeanSlide,
         RepositoryBeanSlide
     )
+)
+
+object BeansIntroSlide : Slide(
+    header = "Spring Boot Beans & Dependency Injection",
+    summary = {
+        +"Spring Boot automates the dependency injection you did manually in Assignment 08"
+    },
+    content = {
+        p { +"Remember creating service instances manually?" }
+        kotlinPlayground(
+            code = """
+                // Assignment 08 - Manual approach
+                interface TaskService {
+                    fun getTasks(): List<String>
+                }
+
+                class TaskServiceImpl : TaskService {
+                    override fun getTasks() = listOf("Task A", "Task B")
+                }
+
+                fun main() {
+                    val taskService: TaskService = TaskServiceImpl()  // Manual creation
+                    val app = TaskManagerApp(taskService)             // Manual injection
+                }
+            """.trimIndent(),
+            executable = false
+        )
+
+        p { +"With Spring Boot, just add "; inlineCode("@Service"); +" annotation:" }
+        kotlinPlayground(
+            code = """
+                // Spring Boot - Automatic approach
+                @Service
+                class TaskService {
+                    fun getTasks() = listOf("Task A", "Task B")
+                }
+
+                @RestController
+                class TaskController(
+                    private val taskService: TaskService  // Spring Boot injects automatically!
+                ) {
+                    @GetMapping("/tasks")
+                    fun getTasks() = taskService.getTasks()
+                }
+            """.trimIndent(),
+            executable = false
+        )
+
+        blockQuote {
+            +"Spring Boot creates "; strong { +"beans" }; +" (managed objects) and injects them automatically. "
+            +"You focus on business logic, Spring Boot handles the wiring."
+        }
+    },
+    fontSize = "80%"
 )
 
 object BeanSlide : Slide(

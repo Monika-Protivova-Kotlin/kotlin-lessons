@@ -2,6 +2,7 @@ package com.motycka.edu.content.courses
 
 import com.motycka.edu.content.lessons.programming.*
 import com.motycka.edu.content.topics.backend.*
+import com.motycka.edu.content.topics.backend.deployment.*
 import com.motycka.edu.content.topics.backend.springboot.*
 import com.motycka.edu.content.topics.basics.*
 import com.motycka.edu.content.topics.basics.ExceptionHandlingTopic
@@ -68,7 +69,8 @@ val ProgrammingInKotlinCourse = Course(
         MemoryAndThreadsLesson,                       // L7
         SOLIDAndArchitectureLesson,                   // L8
         SpringBootIntroductionLesson,                 // L9
-        RESTArchitectureLesson,                       // L10
+//        RESTArchitectureLesson,                       // L10
+        SpringBootBusinessLogicLesson,                // L10
 
         // Week 3: Spring Boot & Production
         SpringBootBusinessLogicLesson,                // L11
@@ -289,49 +291,61 @@ object SOLIDAndArchitectureLesson : Lesson(
 )
 
 object RESTArchitectureLesson : Lesson(
-    title = "REST Architecture & Application Design",
+    title = "REST Architecture & API Design",
     preTitle = "Week 2 | Lesson 10",
-    subTitle = "REST Principles, HTTP Methods, Request/Response, Controllers, Routing, DTOs, Reflection",
-    summary = "REST principles, HTTP methods, controllers, and API design",
+    subTitle = "REST Principles, DTOs, Validation, Exception Handling, Controller Testing",
+    summary = "REST principles, API design, validation, exception handling, and controller testing",
     topics = listOf(
         WhatIsAPITopic,
         WhatIsRESTTopic,
-        SpringBootControllersTopic,
-        SpringBootRequestHandlingTopic,
         DTOsAndSerializationTopic,
         ReflectionTopic,
+        SpringBootControllerTestingTopic,
+        ValidationTopic,
+        SpringBootExceptionHandlingTopic,
         APIPracticeTopic
     )
 )
 
 object SpringBootIntroductionLesson : Lesson(
-    title = "Spring Boot Application",
+    title = "Spring Boot Application & Controllers",
     preTitle = "Week 2 | Lesson 9",
-    subTitle = "Spring Boot Introduction, Frameworks, MVC Pattern, Application Structure, Beans & DI",
-    summary = "Introduction to Spring Boot framework, MVC pattern, beans and dependency injection",
+    subTitle = "Spring Boot Introduction, Frameworks, MVC Pattern, Application Structure, Beans & DI, REST API, Controllers",
+    summary = "Introduction to Spring Boot framework, MVC pattern, beans, dependency injection, and controllers",
     topics = listOf(
         KotlinApplicationsTopic,
         FrameworksTopic,
         SpringFrameworkTopic,
-        MVCPatternTopic,
+        WhySpringBootTopic,
         SpringBootApplicationStructureTopic,
         SpringBootBeansTopic,
-        SpringBootConfigurationTopic
+        SpringBootConfigurationTopic,
+        MVCPatternTopic,
+
+        // REST API
+        WhatIsAPITopic,
+        WhatIsRESTTopic,
+
+        // Spring Boot Controllers
+        SpringBootControllersTopic,
+        SpringBootRequestHandlingTopic,
+        FirstControllerExerciseTopic
     )
 )
 
 object SpringBootBusinessLogicLesson : Lesson(
-    title = "Spring Boot Business Logic",
+    title = "Service Layer & Business Logic",
     preTitle = "Week 3 | Lesson 11",
-    subTitle = "Service Layer, Dependency Injection, Validation, Exception Handling, Testing, Date/Time",
-    summary = "Service layer, dependency injection, validation, exception handling, and testing",
+    subTitle = "Service Layer, Dependency Injection, Service Testing, Testing Layers, Date/Time",
+    summary = "Service layer patterns, dependency injection, comprehensive testing overview, and date/time handling",
     topics = listOf(
         ServiceLayerTopic,
         SpringBootDependencyInjectionTopic,
-        ValidationTopic,
-        SpringBootExceptionHandlingTopic,
-        SpringBootControllerTestingTopic,
         SpringBootServiceTestingTopic,
+        TestingLayersTopic,
+
+        SpringBootExceptionHandlingTopic,
+
         // Date/Time topics
         DateTimeTopic,
         LocalDateTopic,
@@ -342,11 +356,12 @@ object SpringBootBusinessLogicLesson : Lesson(
 )
 
 object SpringBootDataLayerLesson : Lesson(
-    title = "Spring Boot Data Layer",
+    title = "Data Layer & Repositories",
     preTitle = "Week 3 | Lesson 12",
-    subTitle = "Repository Pattern, JDBC, Spring Data JPA, JOOQ, Transactions, Testing",
-    summary = "Repository pattern, JDBC, JPA, JOOQ, and database interactions",
+    subTitle = "Repository Pattern, JDBC, Spring Data JPA, JOOQ, Transactions, Repository Testing",
+    summary = "Repository pattern concepts, data access frameworks (JDBC, JPA, JOOQ), transactions, and testing",
     topics = listOf(
+        RepositoryTopic,
         JDBCTopic,
         SpringDataJPATopic,
         JOOQTopic,
@@ -358,27 +373,34 @@ object SpringBootDataLayerLesson : Lesson(
 object SecurityAndAuthenticationLesson : Lesson(
     title = "Security & Authentication",
     preTitle = "Week 3 | Lesson 13",
-    subTitle = "Authentication vs Authorization, JWT, Spring Security, Security Best Practices",
-    summary = "Authentication, authorization, JWT, and Spring Security",
+    subTitle = "Authentication, Authorization, JWT, Spring Security Configuration & Implementation",
+    summary = "Authentication concepts, authorization patterns, JWT tokens, and Spring Security framework",
     topics = listOf(
         AuthenticationTopic,
         AuthorizationTopic,
         BasicAuthTopic,
         JWTTopic,
-        // Note: Spring Security topics are mostly missing
+        SpringSecurityIntroTopic,
+        SpringSecurityConfigurationTopic,
+        SpringSecurityAuthenticationTopic,
+        SpringSecurityAuthorizationTopic
     )
 )
 
 object DeploymentAndObservabilityLesson : Lesson(
-    title = "Deployment, Observability & Final Project",
+    title = "Deployment, Docker & Observability",
     preTitle = "Week 3 | Lesson 14",
-    subTitle = "Build & Packaging, Docker, Cloud Deployment, Logging, Metrics, Resilient Applications",
-    summary = "Deployment, logging, metrics, and resilient applications",
+    subTitle = "Docker, Containerization, Deployment, Logging, Metrics, Observability, Resilient Applications",
+    summary = "Containerization with Docker, deployment strategies, logging, metrics, observability, and building resilient applications",
     topics = listOf(
+        DockerBasicsTopic,
+        DockerfileTopic,
+        DockerComposeTopic,
         DeploymentTopic,
+        LoggingStrategiesTopic,
+        MetricsAndMonitoringTopic,
         ObservabilityTopic,
         ResilientApplicationsTopic
-        // Note: Build/packaging and containerization topics are mostly missing
     )
 )
 

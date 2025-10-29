@@ -74,8 +74,8 @@ object RestControllerSlide : Slide(
                 import org.springframework.web.bind.annotation.RequestMapping
 
                 @RestController
-                @RequestMapping("/api/characters")
-                class CharacterController {
+                @RequestMapping("/api/tasks")
+                class TaskController {
 
                     // Handler methods go here
 
@@ -120,17 +120,17 @@ object RequestMappingSlide : Slide(
         kotlinPlayground(
             code = """
                 @RestController
-                @RequestMapping("/api/characters")  // Base path
-                class CharacterController {
+                @RequestMapping("/api/tasks")  // Base path
+                class TaskController {
 
-                    @RequestMapping(method = RequestMethod.GET)  // GET /api/characters
-                    fun getAllCharacters(): List<Character> {
-                        // Return list of characters
+                    @RequestMapping(method = RequestMethod.GET)  // GET /api/tasks
+                    fun getAllTasks(): List<Task> {
+                        // Return list of tasks
                     }
 
-                    @RequestMapping(value = "/{id}", method = RequestMethod.GET)  // GET /api/characters/{id}
-                    fun getCharacterById(@PathVariable id: Long): Character {
-                        // Return character by ID
+                    @RequestMapping(value = "/{id}", method = RequestMethod.GET)  // GET /api/tasks/{id}
+                    fun getTask(@PathVariable id: Long): Task {
+                        // Return task by ID
                     }
                 }
             """.trimIndent(),
@@ -180,26 +180,26 @@ object HTTPMethodAnnotationsSlide : Slide(
         kotlinPlayground(
             code = """
                 @RestController
-                @RequestMapping("/api/characters")
-                class CharacterController {
+                @RequestMapping("/api/tasks")
+                class TaskController {
 
-                    @GetMapping  // GET /api/characters
-                    fun getAllCharacters(): List<Character> = TODO()
+                    @GetMapping  // GET /api/tasks
+                    fun getAllTasks(): List<Task> = TODO()
 
-                    @GetMapping("/{id}")  // GET /api/characters/{id}
-                    fun getCharacterById(@PathVariable id: Long): Character = TODO()
+                    @GetMapping("/{id}")  // GET /api/tasks/{id}
+                    fun getTaskById(@PathVariable id: Long): Task = TODO()
 
-                    @PostMapping  // POST /api/characters
-                    fun createCharacter(@RequestBody character: Character): Character = TODO()
+                    @PostMapping  // POST /api/tasks
+                    fun createTask(@RequestBody task: Task): Task = TODO()
 
-                    @PutMapping("/{id}")  // PUT /api/characters/{id}
-                    fun updateCharacter(
+                    @PutMapping("/{id}")  // PUT /api/tasks/{id}
+                    fun updateTask(
                         @PathVariable id: Long,
-                        @RequestBody character: Character
-                    ): Character = TODO()
+                        @RequestBody task: Task
+                    ): Task = TODO()
 
-                    @DeleteMapping("/{id}")  // DELETE /api/characters/{id}
-                    fun deleteCharacter(@PathVariable id: Long): Unit = TODO()
+                    @DeleteMapping("/{id}")  // DELETE /api/tasks/{id}
+                    fun deleteTask(@PathVariable id: Long): Unit = TODO()
                 }
             """.trimIndent(),
             executable = false
@@ -209,64 +209,57 @@ object HTTPMethodAnnotationsSlide : Slide(
 
 object ControllerExampleSlide : Slide(
     header = "Complete Controller Example",
-    summary = {
-        +"A complete example of a Spring Boot REST controller for the Fantasy.Space character API."
-    },
     content = {
         kotlinPlayground(
             code = """
-                import org.springframework.web.bind.annotation.*
-                import org.springframework.http.HttpStatus
+                    @RestController
+                    @RequestMapping("/api/tasks")
+                    class TaskController(
+                        private val taskService: TaskService
+                    ) {
+                        @GetMapping
+                        fun getAllTasks(
+                            @RequestParam(required = false) title: String?
+                        ): ResponseEntity<List<TaskResponse>> {
+                            val tasks = taskService.getAllTasks(title)
+                            return ResponseEntity.ok(tasks)
+                        }
 
-                @RestController
-                @RequestMapping("/api/characters")
-                class CharacterController(
-                    private val characterService: CharacterService
-                ) {
+                        @GetMapping("/{id}")
+                        fun getTaskById(@PathVariable id: Long): ResponseEntity<TaskResponse> {
+                            val task = taskService.getTaskById(id)
+                            return ResponseEntity.ok(task)
+                        }
 
-                    @GetMapping
-                    fun getAllCharacters(): List<CharacterDTO> {
-                        return characterService.getAllCharacters()
+                        @PostMapping
+                        fun createTask(
+                            @Valid @RequestBody request: TaskRequest
+                        ): ResponseEntity<TaskResponse> {
+                            val created = taskService.createTask(request)
+                            return ResponseEntity.status(HttpStatus.CREATED).body(created)
+                        }
+
+                        @PutMapping("/{id}")
+                        fun updateTask(
+                            @PathVariable id: Long,
+                            @Valid @RequestBody request: TaskRequest
+                        ): ResponseEntity<TaskResponse> {
+                            val updated = taskService.updateTask(id, request)
+                            return ResponseEntity.ok(updated)
+                        }
+
+                        @DeleteMapping("/{id}")
+                        fun deleteTask(@PathVariable id: Long): ResponseEntity<Void> {
+                            taskService.deleteTask(id)
+                            return ResponseEntity.noContent().build()
+                        }
                     }
-
-                    @GetMapping("/{id}")
-                    fun getCharacterById(@PathVariable id: Long): CharacterDTO {
-                        return characterService.getCharacterById(id)
-                    }
-
-                    @PostMapping
-                    @ResponseStatus(HttpStatus.CREATED)
-                    fun createCharacter(@RequestBody request: CreateCharacterRequest): CharacterDTO {
-                        return characterService.createCharacter(request)
-                    }
-
-                    @PutMapping("/{id}")
-                    fun updateCharacter(
-                        @PathVariable id: Long,
-                        @RequestBody request: UpdateCharacterRequest
-                    ): CharacterDTO {
-                        return characterService.updateCharacter(id, request)
-                    }
-
-                    @DeleteMapping("/{id}")
-                    @ResponseStatus(HttpStatus.NO_CONTENT)
-                    fun deleteCharacter(@PathVariable id: Long) {
-                        characterService.deleteCharacter(id)
-                    }
-
-                    @GetMapping("/type/{characterType}")
-                    fun getCharactersByType(
-                        @PathVariable characterType: CharacterType
-                    ): List<CharacterDTO> {
-                        return characterService.getCharactersByType(characterType)
-                    }
-                }
             """.trimIndent(),
             executable = false
         )
         p {
             +"Notice how the "
-            inlineCode("CharacterService")
+            inlineCode("TaskService")
             +" is injected via constructor injection, following Spring Boot's dependency injection pattern."
         }
     }
@@ -283,17 +276,17 @@ object RoutingBestPracticesSlide : Slide(
                 strong { +"Use nouns, not verbs" }
                 br()
                 +"Good: "
-                inlineCode("/api/characters")
+                inlineCode("/api/tasks")
                 br()
                 +"Bad: "
-                inlineCode("/api/getCharacters")
+                inlineCode("/api/getTasks")
             }
             li {
                 strong { +"Use plural nouns for collections" }
                 br()
-                inlineCode("/api/characters")
+                inlineCode("/api/tasks")
                 +" not "
-                inlineCode("/api/character")
+                inlineCode("/api/task")
             }
             li {
                 strong { +"Use proper HTTP methods" }
@@ -303,15 +296,15 @@ object RoutingBestPracticesSlide : Slide(
             li {
                 strong { +"Keep URLs hierarchical" }
                 br()
-                inlineCode("/api/characters/{id}/battles")
-                +" - battles for a specific character"
+                inlineCode("/api/tasks/{id}/subtasks")
+                +" - subtasks for a specific task"
             }
             li {
                 strong { +"Version your API" }
                 br()
-                inlineCode("/api/v1/characters")
+                inlineCode("/api/v1/tasks")
                 +" or "
-                inlineCode("/api/v2/characters")
+                inlineCode("/api/v2/tasks")
             }
             li {
                 strong { +"Use consistent naming" }

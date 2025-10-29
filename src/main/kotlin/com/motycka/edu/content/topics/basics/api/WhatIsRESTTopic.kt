@@ -388,5 +388,16 @@ object StatusCodesSlide : Slide(
                 +" - The server has encountered a situation it doesn't know how to handle"
             }
         }
+        p {
+            highlight("Status Code Cheat Sheets (for fun):")
+            ul {
+                li {
+                    a(href = "https://http.cat/", target = "_blank") { +"HTTP Status Cats" }
+                }
+                li {
+                    a(href = "https://httpstatusdogs.com/", target = "_blank") { +"HTTP Status Dogs" }
+                }
+            }
+        }
     }
 )
