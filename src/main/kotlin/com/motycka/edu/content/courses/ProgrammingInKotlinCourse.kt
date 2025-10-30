@@ -335,7 +335,7 @@ object SpringBootIntroductionLesson : Lesson(
 
 object SpringBootBusinessLogicLesson : Lesson(
     title = "Service Layer & Business Logic",
-    preTitle = "Week 3 | Lesson 11",
+    preTitle = "Week 3 | Lesson 10",
     subTitle = "Service Layer, Dependency Injection, Service Testing, Testing Layers, Date/Time",
     summary = "Service layer patterns, dependency injection, comprehensive testing overview, and date/time handling",
     topics = listOf(
