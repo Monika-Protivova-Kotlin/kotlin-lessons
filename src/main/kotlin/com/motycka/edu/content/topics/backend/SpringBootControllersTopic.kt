@@ -14,7 +14,7 @@ object SpringBootControllersTopic : Topic(
         RestControllerSlide,
         RequestMappingSlide,
         HTTPMethodAnnotationsSlide,
-        ControllerExampleSlide,
+//        ControllerExampleSlide,
         RoutingBestPracticesSlide
     )
 )
@@ -146,9 +146,9 @@ object RequestMappingSlide : Slide(
 
 object HTTPMethodAnnotationsSlide : Slide(
     header = "HTTP Method Annotations",
-    summary = {
-        +"Spring Boot provides shorthand annotations for each HTTP method."
-    },
+//    summary = {
+//        +"Spring Boot provides shorthand annotations for each HTTP method."
+//    },
     content = {
         p {
             +"Instead of using "

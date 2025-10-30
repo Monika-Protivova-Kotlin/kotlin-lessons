@@ -5,6 +5,7 @@ import com.motycka.edu.model.Topic
 import com.motycka.edu.model.highlight
 import com.motycka.edu.model.inlineCode
 import com.motycka.edu.model.kotlinPlayground
+import com.motycka.edu.model.twoColumns
 import kotlinx.html.*
 
 object SpringBootRequestHandlingTopic : Topic(
@@ -63,11 +64,11 @@ object RequestHandlingIntroSlide : Slide(
 
 object PathVariableSlide : Slide(
     header = "@PathVariable",
-    summary = {
-        +""
-        inlineCode("@PathVariable")
-        +" extracts values from the URL path."
-    },
+//    summary = {
+//        +""
+//        inlineCode("@PathVariable")
+//        +" extracts values from the URL path."
+//    },
     content = {
         p {
             +"Use "
@@ -115,7 +116,8 @@ object PathVariableSlide : Slide(
                     }
                 }
             """.trimIndent(),
-            executable = false
+            executable = false,
+            selectLines = 7..32
         )
         p {
             +"Spring Boot automatically converts path variables to the target type (Int, Long, String, Enum, etc.)."
@@ -125,39 +127,40 @@ object PathVariableSlide : Slide(
 
 object RequestParamSlide : Slide(
     header = "@RequestParam",
-    summary = {
-        +""
-        inlineCode("@RequestParam")
-        +" extracts query parameters from the URL."
-    },
+//    summary = {
+//        +""
+//        inlineCode("@RequestParam")
+//        +" extracts query parameters from the URL."
+//    },
     content = {
-        p {
-            +"Use "
-            inlineCode("@RequestParam")
-            +" to capture query parameters from the URL."
-        }
-        p {
-            +"Query parameters are typically used for "
-            strong { +"filtering, sorting, pagination" }
-            +", or passing optional data."
-        }
-        kotlinPlayground(
-            code = """
+        twoColumns(
+            ratio = 2 to 3,
+            left = {
+                p {
+                    +"Use "
+                    inlineCode("@RequestParam")
+                    +" to capture query parameters from the URL."
+                }
+                p {
+                    +"Query parameters are typically used for "
+                    strong { +"filtering, sorting, pagination" }
+                    +", or passing optional data."
+                }
+            },
+            right = {
+                kotlinPlayground(
+                    code = """
                 @RestController
                 @RequestMapping("/api/tasks")
                 class TaskController(
                     private val taskService: TaskService
                 ) {
 
-                    // Simple query parameter
-                    // GET /api/tasks?title=Report
                     @GetMapping
                     fun searchTasks(@RequestParam title: String): List<TaskDTO> {
                         return taskService.searchByTitle(title)
                     }
 
-                    // Optional query parameter with default value
-                    // GET /api/tasks?page=2&size=20 or just /api/tasks
                     @GetMapping
                     fun getAllTasks(
                         @RequestParam(defaultValue = "0") page: Int,
@@ -166,8 +169,6 @@ object RequestParamSlide : Slide(
                         return taskService.getAllTasks(page, size)
                     }
 
-                    // Multiple query parameters with different types
-                    // GET /api/tasks?priority=HIGH&status=TODO&includeArchived=false
                     @GetMapping
                     fun filterTasks(
                         @RequestParam(required = false) priority: TaskPriority?,
@@ -178,38 +179,45 @@ object RequestParamSlide : Slide(
                         return taskService.filterTasks(priority, status, assignee, includeArchived)
                     }
 
-                    // Query parameter with custom name
                     @GetMapping("/search")
                     fun search(@RequestParam("q") query: String): List<TaskDTO> {
                         return taskService.search(query)
                     }
                 }
             """.trimIndent(),
-            executable = false
+                    executable = false,
+                )
+            }
         )
     }
 )
 
 object RequestBodySlide : Slide(
     header = "@RequestBody",
-    summary = {
-        +""
-        inlineCode("@RequestBody")
-        +" deserializes the request body into a Kotlin object."
-    },
+//    summary = {
+//        +""
+//        inlineCode("@RequestBody")
+//        +" deserializes the request body into a Kotlin object."
+//    },
     content = {
-        p {
-            +"Use "
-            inlineCode("@RequestBody")
-            +" to receive and automatically deserialize JSON (or XML) data from the request body."
-        }
-        p {
-            +"Request bodies are used with "
-            strong { +"POST, PUT, and PATCH" }
-            +" requests to send data to create or update resources."
-        }
-        kotlinPlayground(
-            code = """
+        twoColumns(
+            ratio = 2 to 3,
+            left = {
+                p {
+                    +"Use "
+                    inlineCode("@RequestBody")
+                    +" to receive and automatically deserialize JSON (or XML) data from the request body."
+                }
+                p {
+                    +"Request bodies are used with "
+                    strong { +"POST, PUT, and PATCH" }
+                    +" requests to send data to create or update resources."
+                }
+                p {
+                    +"Spring Boot automatically deserializes the JSON request body into the specified Kotlin data class using Jackson."
+                }
+                kotlinPlayground(
+                    code = """
                 data class CreateTaskRequest(
                     val title: String,
                     val description: String?,
@@ -229,25 +237,25 @@ object RequestBodySlide : Slide(
                     val taskId: Long,
                     val assigneeId: Long
                 )
-
+            """.trimIndent(),
+                    executable = false,
+                )
+            },
+            right = {
+                kotlinPlayground(
+                    code = """
                 @RestController
                 @RequestMapping("/api")
                 class TaskController(
                     private val taskService: TaskService
                 ) {
 
-                    // POST request with request body
-                    // Request: POST /api/tasks
-                    // Body: {"title": "Write Report", "priority": "HIGH", "status": "TODO", ...}
                     @PostMapping("/tasks")
                     @ResponseStatus(HttpStatus.CREATED)
                     fun createTask(@RequestBody request: CreateTaskRequest): TaskDTO {
                         return taskService.createTask(request)
                     }
 
-                    // PUT request with path variable and request body
-                    // Request: PUT /api/tasks/123
-                    // Body: {"title": "Write Final Report", "priority": "URGENT", "status": "IN_PROGRESS"}
                     @PutMapping("/tasks/{id}")
                     fun updateTask(
                         @PathVariable id: Long,
@@ -256,9 +264,6 @@ object RequestBodySlide : Slide(
                         return taskService.updateTask(id, request)
                     }
 
-                    // POST request with request body
-                    // Request: POST /api/tasks/assign
-                    // Body: {"taskId": 1, "assigneeId": 5}
                     @PostMapping("/tasks/assign")
                     @ResponseStatus(HttpStatus.OK)
                     fun assignTask(@RequestBody request: AssignTaskRequest): TaskDTO {
@@ -266,11 +271,10 @@ object RequestBodySlide : Slide(
                     }
                 }
             """.trimIndent(),
-            executable = false
+                    executable = false,
+                )
+            },
         )
-        p {
-            +"Spring Boot automatically deserializes the JSON request body into the specified Kotlin data class using Jackson."
-        }
     }
 )
 
@@ -280,45 +284,47 @@ object ResponseHandlingSlide : Slide(
         +"Controllers can return different types of responses with appropriate HTTP status codes."
     },
     content = {
-        p {
-            +"Spring Boot provides several ways to handle responses:"
-        }
-        ul {
-            li {
-                strong { +"Direct return" }
-                +" - Return data directly; Spring automatically serializes to JSON with 200 OK"
-            }
-            li {
-                strong { inlineCode("@ResponseStatus") }
-                +" - Specify custom HTTP status code"
-            }
-            li {
-                strong { inlineCode("ResponseEntity<T>") }
-                +" - Full control over status, headers, and body"
-            }
-        }
-        kotlinPlayground(
-            code = """
+        twoColumns(
+            ratio = 2 to 3,
+            left = {
+                p {
+                    +"Spring Boot provides several ways to handle responses:"
+                }
+                ul {
+                    li {
+                        strong { +"Direct return" }
+                        +" - Return data directly; Spring automatically serializes to JSON with 200 OK"
+                    }
+                    li {
+                        strong { inlineCode("@ResponseStatus") }
+                        +" - Specify custom HTTP status code"
+                    }
+                    li {
+                        strong { inlineCode("ResponseEntity<T>") }
+                        +" - Full control over status, headers, and body"
+                    }
+                }
+            },
+            right = {
+                kotlinPlayground(
+                    code = """
                 @RestController
                 @RequestMapping("/api/tasks")
                 class TaskController(
                     private val taskService: TaskService
                 ) {
 
-                    // Direct return - automatic 200 OK
                     @GetMapping("/{id}")
                     fun getTask(@PathVariable id: Long): TaskDTO {
                         return taskService.getTaskById(id)
                     }
 
-                    // Custom status code with @ResponseStatus
                     @PostMapping
                     @ResponseStatus(HttpStatus.CREATED)  // Returns 201 Created
                     fun createTask(@RequestBody request: CreateTaskRequest): TaskDTO {
                         return taskService.createTask(request)
                     }
 
-                    // No content response for DELETE
                     @DeleteMapping("/{id}")
                     @ResponseStatus(HttpStatus.NO_CONTENT)  // Returns 204 No Content
                     fun deleteTask(@PathVariable id: Long) {
@@ -326,7 +332,9 @@ object ResponseHandlingSlide : Slide(
                     }
                 }
             """.trimIndent(),
-            executable = false
+                    executable = false
+                )
+            }
         )
     }
 )
@@ -339,25 +347,29 @@ object ResponseEntitySlide : Slide(
         +" provides full control over the HTTP response."
     },
     content = {
-        p {
-            +"Use "
-            inlineCode("ResponseEntity<T>")
-            +" when you need:"
-        }
-        ul {
-            li { +"Dynamic status codes based on business logic" }
-            li { +"Custom response headers" }
-            li { +"Conditional responses (e.g., return different status for different scenarios)" }
-        }
-        kotlinPlayground(
-            code = """
+        twoColumns(
+            ratio = 2 to 3,
+            left = {
+                p {
+                    +"Use "
+                    inlineCode("ResponseEntity<T>")
+                    +" when you need:"
+                }
+                ul {
+                    li { +"Dynamic status codes based on business logic" }
+                    li { +"Custom response headers" }
+                    li { +"Conditional responses (e.g., return different status for different scenarios)" }
+                }
+            },
+            right = {
+                kotlinPlayground(
+                    code = """
                 @RestController
                 @RequestMapping("/api/tasks")
                 class TaskController(
                     private val taskService: TaskService
                 ) {
 
-                    // ResponseEntity with dynamic status
                     @GetMapping("/{id}")
                     fun getTask(@PathVariable id: Long): ResponseEntity<TaskDTO> {
                         val task = taskService.findTaskById(id)
@@ -368,7 +380,6 @@ object ResponseEntitySlide : Slide(
                         }
                     }
 
-                    // ResponseEntity with custom headers
                     @PostMapping
                     fun createTask(@RequestBody request: CreateTaskRequest): ResponseEntity<TaskDTO> {
                         val task = taskService.createTask(request)
@@ -378,7 +389,6 @@ object ResponseEntitySlide : Slide(
                             .body(task)
                     }
 
-                    // ResponseEntity with conditional logic
                     @PutMapping("/{id}")
                     fun updateTask(
                         @PathVariable id: Long,
@@ -402,7 +412,9 @@ object ResponseEntitySlide : Slide(
                     }
                 }
             """.trimIndent(),
-            executable = false
+                    executable = false
+                )
+            }
         )
     }
 )
