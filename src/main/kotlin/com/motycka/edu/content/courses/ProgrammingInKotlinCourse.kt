@@ -52,6 +52,7 @@ import com.motycka.edu.content.topics.oop.*
 import com.motycka.edu.content.topics.testing.*
 import com.motycka.edu.model.Course
 import com.motycka.edu.model.Lesson
+import com.motycka.edu.model.Topic
 
 val ProgrammingInKotlinCourse = Course(
     name = "Programming",
@@ -69,14 +70,13 @@ val ProgrammingInKotlinCourse = Course(
         MemoryAndThreadsLesson,                       // L7
         SOLIDAndArchitectureLesson,                   // L8
         SpringBootIntroductionLesson,                 // L9
-//        RESTArchitectureLesson,                       // L10
         SpringBootBusinessLogicLesson,                // L10
 
         // Week 3: Spring Boot & Production
-        SpringBootBusinessLogicLesson,                // L11
-        SpringBootDataLayerLesson,                    // L12
-        SecurityAndAuthenticationLesson,              // L13
-        DeploymentAndObservabilityLesson,             // L14
+//        SpringBootBusinessLogicLesson,                // L11
+        SpringBootDataLayerLesson,                    // L11
+        SecurityAndAuthenticationLesson,              // L12
+        DeploymentAndObservabilityLesson,             // L13
         SpringBootApplicationV3Lesson                 // L15: Project Work
     )
 )
@@ -335,29 +335,34 @@ object SpringBootIntroductionLesson : Lesson(
 
 object SpringBootBusinessLogicLesson : Lesson(
     title = "Service Layer & Business Logic",
-    preTitle = "Week 3 | Lesson 10",
-    subTitle = "Service Layer, Dependency Injection, Service Testing, Testing Layers, Date/Time",
-    summary = "Service layer patterns, dependency injection, comprehensive testing overview, and date/time handling",
+    preTitle = "Week 2 | Lesson 10",
+    subTitle = "Service Layer, Dependency Injection, Data Transformation, Exception Handling, Testing Layers, Service Testing, Mocking, Controller Testing",
+    summary = "Service layer patterns, dependency injection, data transformation between layers, exception handling, comprehensive testing overview with service and controller testing using MockK",
     topics = listOf(
         ServiceLayerTopic,
         SpringBootDependencyInjectionTopic,
-        SpringBootServiceTestingTopic,
-        TestingLayersTopic,
-
+        DataTransformationTopic,
         SpringBootExceptionHandlingTopic,
 
+        TestingLayersTopic,
+        MockingTopic,
+        SpringBootServiceTestingTopic,
+        SpringBootControllerTestingTopic,
+
         // Date/Time topics
-        DateTimeTopic,
-        LocalDateTopic,
-        LocalDateTimeTopic,
-        ZonedDateTimeTopic,
-        DurationAndPeriodTopic
+//        DateTimeTopic,
+//        LocalDateTopic,
+//        LocalDateTimeTopic,
+//        ZonedDateTimeTopic,
+//        DurationAndPeriodTopic
+
+        Topic(title = "Practice")
     )
 )
 
 object SpringBootDataLayerLesson : Lesson(
     title = "Data Layer & Repositories",
-    preTitle = "Week 3 | Lesson 12",
+    preTitle = "Week 3 | Lesson 11",
     subTitle = "Repository Pattern, JDBC, Spring Data JPA, JOOQ, Transactions, Repository Testing",
     summary = "Repository pattern concepts, data access frameworks (JDBC, JPA, JOOQ), transactions, and testing",
     topics = listOf(
@@ -372,7 +377,7 @@ object SpringBootDataLayerLesson : Lesson(
 
 object SecurityAndAuthenticationLesson : Lesson(
     title = "Security & Authentication",
-    preTitle = "Week 3 | Lesson 13",
+    preTitle = "Week 3 | Lesson 12",
     subTitle = "Authentication, Authorization, JWT, Spring Security Configuration & Implementation",
     summary = "Authentication concepts, authorization patterns, JWT tokens, and Spring Security framework",
     topics = listOf(
@@ -389,7 +394,7 @@ object SecurityAndAuthenticationLesson : Lesson(
 
 object DeploymentAndObservabilityLesson : Lesson(
     title = "Deployment, Docker & Observability",
-    preTitle = "Week 3 | Lesson 14",
+    preTitle = "Week 3 | Lesson 13",
     subTitle = "Docker, Containerization, Deployment, Logging, Metrics, Observability, Resilient Applications",
     summary = "Containerization with Docker, deployment strategies, logging, metrics, observability, and building resilient applications",
     topics = listOf(

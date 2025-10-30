@@ -261,7 +261,73 @@ object CourseBuilder {
 //                crossorigin = "anonymous"
             }
             script(src = "https://unpkg.com/kotlin-playground@1") {
-                attributes["data-selector"] = "code.kotlin-playground"
+            }
+            script {
+                unsafe {
+                    raw("""
+                        // Function to initialize only new Kotlin Playground blocks
+                        function initKotlinPlayground() {
+                            if (typeof KotlinPlayground !== 'undefined') {
+                                try {
+                                    // Find all code blocks that haven't been initialized yet
+                                    const allBlocks = document.querySelectorAll('code.kotlin-playground');
+                                    const uninitializedBlocks = [];
+
+                                    allBlocks.forEach(block => {
+                                        // Check if this block has been initialized by looking for the wrapper div
+                                        // that Kotlin Playground creates
+                                        if (!block.parentElement.classList.contains('executable-fragment-wrapper') &&
+                                            !block.parentElement.classList.contains('code-area')) {
+                                            uninitializedBlocks.push(block);
+                                            // Add a temporary class to target only these blocks
+                                            block.classList.add('kotlin-playground-pending');
+                                        }
+                                    });
+
+                                    if (uninitializedBlocks.length > 0) {
+                                        console.log('Found ' + uninitializedBlocks.length + ' uninitialized Kotlin Playground blocks, initializing...');
+                                        // Call KotlinPlayground on ONLY the pending blocks
+                                        KotlinPlayground('.kotlin-playground-pending');
+
+                                        // Remove the temporary class after initialization
+                                        setTimeout(() => {
+                                            uninitializedBlocks.forEach(block => {
+                                                block.classList.remove('kotlin-playground-pending');
+                                            });
+                                            console.log('Initialization attempt complete');
+                                        }, 100);
+                                    } else {
+                                        console.log('All Kotlin Playground blocks already initialized');
+                                    }
+                                } catch (e) {
+                                    console.error('Error initializing Kotlin Playground:', e);
+                                }
+                            } else {
+                                console.warn('KotlinPlayground is not defined yet');
+                            }
+                        }
+
+                        // Wait for the library to load
+                        window.addEventListener('load', () => {
+                            // Wait a bit for Kotlin Playground library to initialize
+                            setTimeout(() => {
+                                // Wait for Reveal to be ready
+                                Reveal.on('ready', () => {
+                                    console.log('Reveal ready, initializing Kotlin Playground');
+                                    initKotlinPlayground();
+                                });
+
+                                // Reinitialize on slide change
+                                Reveal.on('slidechanged', (event) => {
+                                    console.log('Slide changed, checking for new Kotlin Playground blocks');
+                                    setTimeout(() => {
+                                        initKotlinPlayground();
+                                    }, 150);
+                                });
+                            }, 500);
+                        });
+                    """.trimIndent())
+                }
             }
         }
     }
@@ -731,7 +797,73 @@ object CourseBuilder {
 //                crossorigin = "anonymous"
             }
             script(src = "https://unpkg.com/kotlin-playground@1") {
-                attributes["data-selector"] = "code.kotlin-playground"
+            }
+            script {
+                unsafe {
+                    raw("""
+                        // Function to initialize only new Kotlin Playground blocks
+                        function initKotlinPlayground() {
+                            if (typeof KotlinPlayground !== 'undefined') {
+                                try {
+                                    // Find all code blocks that haven't been initialized yet
+                                    const allBlocks = document.querySelectorAll('code.kotlin-playground');
+                                    const uninitializedBlocks = [];
+
+                                    allBlocks.forEach(block => {
+                                        // Check if this block has been initialized by looking for the wrapper div
+                                        // that Kotlin Playground creates
+                                        if (!block.parentElement.classList.contains('executable-fragment-wrapper') &&
+                                            !block.parentElement.classList.contains('code-area')) {
+                                            uninitializedBlocks.push(block);
+                                            // Add a temporary class to target only these blocks
+                                            block.classList.add('kotlin-playground-pending');
+                                        }
+                                    });
+
+                                    if (uninitializedBlocks.length > 0) {
+                                        console.log('Found ' + uninitializedBlocks.length + ' uninitialized Kotlin Playground blocks, initializing...');
+                                        // Call KotlinPlayground on ONLY the pending blocks
+                                        KotlinPlayground('.kotlin-playground-pending');
+
+                                        // Remove the temporary class after initialization
+                                        setTimeout(() => {
+                                            uninitializedBlocks.forEach(block => {
+                                                block.classList.remove('kotlin-playground-pending');
+                                            });
+                                            console.log('Initialization attempt complete');
+                                        }, 100);
+                                    } else {
+                                        console.log('All Kotlin Playground blocks already initialized');
+                                    }
+                                } catch (e) {
+                                    console.error('Error initializing Kotlin Playground:', e);
+                                }
+                            } else {
+                                console.warn('KotlinPlayground is not defined yet');
+                            }
+                        }
+
+                        // Wait for the library to load
+                        window.addEventListener('load', () => {
+                            // Wait a bit for Kotlin Playground library to initialize
+                            setTimeout(() => {
+                                // Wait for Reveal to be ready
+                                Reveal.on('ready', () => {
+                                    console.log('Reveal ready, initializing Kotlin Playground');
+                                    initKotlinPlayground();
+                                });
+
+                                // Reinitialize on slide change
+                                Reveal.on('slidechanged', (event) => {
+                                    console.log('Slide changed, checking for new Kotlin Playground blocks');
+                                    setTimeout(() => {
+                                        initKotlinPlayground();
+                                    }, 150);
+                                });
+                            }, 500);
+                        });
+                    """.trimIndent())
+                }
             }
         }
     }

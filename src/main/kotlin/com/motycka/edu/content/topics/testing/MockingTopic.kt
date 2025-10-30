@@ -6,6 +6,8 @@ import com.motycka.edu.model.highlight
 import kotlinx.html.*
 import com.motycka.edu.model.kotlinPlayground
 import com.motycka.edu.model.highlight
+import com.motycka.edu.model.inlineCode
+import com.motycka.edu.model.twoColumns
 
 object MockingTopic : Topic(
     title = "Mocking",
@@ -64,32 +66,37 @@ object MockKUsageSlide : Slide(
         +"MockK is a powerful mocking library for Kotlin that provides a simple and intuitive API for creating mocks and verifying their behavior."
     },
     content = {
-        p {
-            +"MockK is a powerful mocking library for Kotlin that allows you to create mocks, stubs, and spies for your tests. "
-            +"It provides a simple and intuitive API for creating mocks and verifying their behavior."
-        }
-        p {
-            +"We can mock any class or interface, and define the behavior of the mocked object."
-        }
-        ul {
-            li {
-                +"The mocked object is defined using "
-                code { +"mockk()" }
-                +" function."
-            }
-            li {
-                +"We can define the behavior of the mocked object using "
-                code { +"every { ... } returns ..." }
-                +" syntax."
-            }
-            li {
-                +"We can verify that the mocked object was called with the expected arguments using "
-                code { +"verify { ... }" }
-                +" syntax."
-            }
-        }
-        kotlinPlayground(
-            code = """
+        twoColumns(
+            ratio = 2 to 3,
+            left = {
+                p {
+                    +"MockK is a powerful mocking library for Kotlin that allows you to create mocks, stubs, and spies for your tests. "
+                    +"It provides a simple and intuitive API for creating mocks and verifying their behavior."
+                }
+                p {
+                    +"We can mock any class or interface, and define the behavior of the mocked object."
+                }
+                ul {
+                    li {
+                        +"The mocked object is defined using "
+                        inlineCode("mockk()")
+                        +" function."
+                    }
+                    li {
+                        +"We can define the behavior of the mocked object using "
+                        inlineCode("every { ... } returns ...")
+                        +" syntax."
+                    }
+                    li {
+                        +"We can verify that the mocked object was called with the expected arguments using "
+                        inlineCode("verify { ... }")
+                        +" syntax."
+                    }
+                }
+            },
+            right = {
+                kotlinPlayground(
+                    code = """
                 // create the mocked object
                 val myService: MyService = mockk() // or val myService = mockk<MyService>()
 
@@ -102,19 +109,21 @@ object MockKUsageSlide : Slide(
                 // verify that the mocked object was called with the expected arguments
                 verify(exactly = 1) { myService.doSomething("Test Input") }
             """.trimIndent(),
-            executable = false
-        )
-        ul {
-            li {
-                +"We can also spy on an existing object, which allows us to verify its behavior without modifying the original object."
-            }
-        }
-        kotlinPlayground(
-            code = """
+                    executable = false
+                )
+                ul {
+                    li {
+                        +"We can also spy on an existing object, which allows us to verify its behavior without modifying the original object."
+                    }
+                }
+                kotlinPlayground(
+                    code = """
                 val myRealObject = spyk(MyRealObject())
                 verify { myRealObject.someMethod("Was called with an argument") }
             """.trimIndent(),
-            executable = false
+                    executable = false
+                )
+            },
         )
     }
 )

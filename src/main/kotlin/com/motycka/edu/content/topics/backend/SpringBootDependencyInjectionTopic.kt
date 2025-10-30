@@ -11,12 +11,12 @@ import kotlinx.html.*
 object SpringBootDependencyInjectionTopic : Topic(
     title = "Dependency Injection in Spring Boot",
     slides = listOf(
-        SpringDIIntroSlide,
+//        SpringDIIntroSlide,
         ManualDIProblemsSlide,
         SpringIoCContainerSlide,
         ConstructorInjectionSlide,
         SpringStereotypeAnnotationsSlide,
-        CompleteDIExampleSlide
+//        CompleteDIExampleSlide
     )
 )
 
@@ -133,30 +133,33 @@ object SpringIoCContainerSlide : Slide(
             inlineCode("@SpringBootApplication")
             +" annotation on your main class enables:"
         }
-        ul {
-            li { inlineCode("@Configuration")
-                +" - marks this as a configuration class"
-            }
-            li { inlineCode("@EnableAutoConfiguration")
-                +" - enables Spring Boot's auto-configuration"
-            }
-            li { inlineCode("@ComponentScan")
-                +" - enables component scanning in this package and subpackages"
-            }
-        }
-        kotlinPlayground(
-            code = """
-                import org.springframework.boot.autoconfigure.SpringBootApplication
-                import org.springframework.boot.runApplication
-
-                @SpringBootApplication
-                class FantasySpaceApplication
-
-                fun main(args: Array<String>) {
-                    runApplication<FantasySpaceApplication>(*args)
+        twoColumns(
+            right = {
+                ul {
+                    li { inlineCode("@Configuration")
+                        +" - marks this as a configuration class"
+                    }
+                    li { inlineCode("@EnableAutoConfiguration")
+                        +" - enables Spring Boot's auto-configuration"
+                    }
+                    li { inlineCode("@ComponentScan")
+                        +" - enables component scanning in this package and subpackages"
+                    }
                 }
-            """.trimIndent(),
-            executable = false
+            },
+            left = {
+                kotlinPlayground(
+                    code = """
+                        @SpringBootApplication
+                        class FantasySpaceApplication
+        
+                        fun main(args: Array<String>) {
+                            runApplication<FantasySpaceApplication>(*args)
+                        }
+                    """,
+                    executable = false
+                )
+            }
         )
     }
 )
@@ -195,43 +198,43 @@ object ConstructorInjectionSlide : Slide(
             li { +"Easier to test (can pass mocks without Spring)" }
             li { +"Prevents circular dependencies at compile time" }
         }
-        p { +"In Kotlin, Spring automatically injects constructor parameters - no "
-            inlineCode("@Autowired")
-            +" needed:"
-        }
-        kotlinPlayground(
-            code = """
-                @Repository
-                class CharacterRepositoryImpl : CharacterRepository {
-                    // Repository implementation
-                }
-
-                @Service
-                class CharacterService(
-                    private val characterRepository: CharacterRepository  // Automatically injected!
-                ) {
-                    fun getCharacterById(id: Long): CharacterDTO {
-                        val character = characterRepository.findById(id)
-                        return character.toDTO()
-                    }
-                }
-
-                @RestController
-                @RequestMapping("/api/characters")
-                class CharacterController(
-                    private val characterService: CharacterService  // Automatically injected!
-                ) {
-                    @GetMapping("/{id}")
-                    fun getCharacter(@PathVariable id: Long): CharacterDTO {
-                        return characterService.getCharacterById(id)
-                    }
-                }
-            """.trimIndent(),
-            executable = false
-        )
-        p {
-            +"Spring Boot automatically discovers these classes through component scanning and wires them together!"
-        }
+//        p { +"In Kotlin, Spring automatically injects constructor parameters - no "
+//            inlineCode("@Autowired")
+//            +" needed:"
+//        }
+//        kotlinPlayground(
+//            code = """
+//                @Repository
+//                class CharacterRepositoryImpl : CharacterRepository {
+//                    // Repository implementation
+//                }
+//
+//                @Service
+//                class CharacterService(
+//                    private val characterRepository: CharacterRepository  // Automatically injected!
+//                ) {
+//                    fun getCharacterById(id: Long): CharacterDTO {
+//                        val character = characterRepository.findById(id)
+//                        return character.toDTO()
+//                    }
+//                }
+//
+//                @RestController
+//                @RequestMapping("/api/characters")
+//                class CharacterController(
+//                    private val characterService: CharacterService  // Automatically injected!
+//                ) {
+//                    @GetMapping("/{id}")
+//                    fun getCharacter(@PathVariable id: Long): CharacterDTO {
+//                        return characterService.getCharacterById(id)
+//                    }
+//                }
+//            """.trimIndent(),
+//            executable = false
+//        )
+//        p {
+//            +"Spring Boot automatically discovers these classes through component scanning and wires them together!"
+//        }
     }
 )
 
@@ -241,85 +244,81 @@ object SpringStereotypeAnnotationsSlide : Slide(
         +"Spring uses stereotype annotations to identify and register beans in the IoC container."
     },
     content = {
-        p {
-            +"Main stereotype annotations:"
-        }
-        ul {
-            li {
-                strong { inlineCode("@Component") }
-                +" - Generic stereotype for any Spring-managed component"
-            }
-            li {
-                strong { inlineCode("@Service") }
-                +" - Indicates that a class provides business logic (service layer)"
-            }
-            li {
-                strong { inlineCode("@Repository") }
-                +" - Indicates that a class provides data access (data layer)"
-            }
-            li {
-                strong { inlineCode("@Controller") }
-                +" or "
-                strong { inlineCode("@RestController") }
-                +" - Indicates that a class handles HTTP requests (presentation layer)"
-            }
-            li {
-                strong { inlineCode("@Configuration") }
-                +" - Indicates that a class provides bean definitions"
-            }
-        }
-        p {
-            +"These annotations enable "
-            strong { +"component scanning" }
-            +" - Spring automatically discovers and registers these classes as beans."
-        }
         twoColumns(
+            ratio = 2 to 3,
             left = {
-                p { strong { +"Repository Layer:" } }
+                p {
+                    +"These annotations enable "
+                    strong { +"component scanning" }
+                    +" - Spring automatically discovers and registers these classes as beans."
+                }
+                p {
+                    +"Main stereotype annotations:"
+                }
+                ul {
+                    li {
+                        strong { inlineCode("@Component") }
+                        +" - Generic stereotype for any Spring-managed component"
+                    }
+                    li {
+                        strong { inlineCode("@Service") }
+                        +" - Indicates that a class provides business logic (service layer)"
+                    }
+                    li {
+                        strong { inlineCode("@Repository") }
+                        +" - Indicates that a class provides data access (data layer)"
+                    }
+                    li {
+                        strong { inlineCode("@Controller") }
+                        +" or "
+                        strong { inlineCode("@RestController") }
+                        +" - Indicates that a class handles HTTP requests (presentation layer)"
+                    }
+                    li {
+                        strong { inlineCode("@Configuration") }
+                        +" - Indicates that a class provides bean definitions"
+                    }
+                }
+            },
+            right = {
+//                p { strong { +"Controller Layer:" } }
                 kotlinPlayground(
                     code = """
-                        @Repository
-                        class CharacterRepositoryImpl : CharacterRepository {
-                            fun findById(id: Long): Character? {
-                                // Database access
-                            }
-
-                            fun save(character: Character): Character {
-                                // Database save
-                            }
-                        }
-
-                        @Repository
-                        class BattleRepositoryImpl : BattleRepository {
-                            fun findById(id: Long): Battle? {
-                                // Database access
+                        @RestController
+                        @RequestMapping("/api/tasks")
+                        class TaskController(
+                            private val taskService: TaskService,
+                        ) {
+                            @GetMapping
+                            fun getTasks(): List<TaskResponse> {
+                                return taskService.getTasks().map { it.toResponse() }
                             }
                         }
                     """.trimIndent(),
                     executable = false
                 )
-            },
-            right = {
-                p { strong { +"Service Layer:" } }
+
+//                p { strong { +"Service Layer:" } }
                 kotlinPlayground(
                     code = """
                         @Service
-                        class CharacterService(
-                            private val characterRepository: CharacterRepository
+                        class TaskService(
+                            private val taskRepository: TaskRepository
                         ) {
-                            fun getCharacterById(id: Long): CharacterDTO {
-                                // Business logic
+                            fun getTasks(): List<Task> {
+                                return taskRepository.findAll().map { it.toDomain() }
                             }
                         }
+                    """.trimIndent(),
+                    executable = false
+                )
 
-                        @Service
-                        class BattleService(
-                            private val characterRepository: CharacterRepository,
-                            private val battleRepository: BattleRepository
-                        ) {
-                            fun initiateBattle(request: BattleRequest): BattleDTO {
-                                // Business logic
-                            }
+//                p { strong { +"Repository Layer:" } }
+                kotlinPlayground(
+                    code = """
+                        @Repository
+                        interface TaskRepository : JpaRepository<TaskEntity, Long> {
+                            // Additional query methods can be defined here if needed
                         }
                     """.trimIndent(),
                     executable = false
