@@ -445,7 +445,7 @@ object SpringErrorResponseExampleSlide : Slide(
         }
         kotlinPlayground(
             code = """
-                @ControllerAdvice
+                @RestControllerAdvice
                 class GlobalExceptionHandler {
 
                     private val logger = LoggerFactory.getLogger(this::class.java)

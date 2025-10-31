@@ -57,7 +57,7 @@ object ControllerTestingIntroSlide : Slide(
                 ul {
                     li { inlineCode("@WebMvcTest"); +" - Loads only the web layer (controllers)" }
                     li { inlineCode("MockMvc"); +" - Simulates HTTP requests without starting a server" }
-                    li { inlineCode("@MockBean"); +" - Mocks service layer dependencies" }
+//                    li { inlineCode("@MockkBean"); +" - Mocks service layer dependencies" }
                     li { inlineCode("MockK"); +" - Mocking library for Kotlin" }
                 }
             },
@@ -66,11 +66,13 @@ object ControllerTestingIntroSlide : Slide(
 )
 
 object WebMvcTestAnnotationSlide : Slide(
-    header = "@WebMvcTest Annotation",
+    header = "@WebMvcTest with MockK Configuration",
     summary = {
         +""
         inlineCode("@WebMvcTest")
-        +" loads only the web layer of your application for testing controllers in isolation."
+        +" loads only the web layer. Use "
+        inlineCode("@TestConfiguration")
+        +" to provide MockK beans instead of Mockito's @MockBean."
     },
     content = {
         twoColumns(
@@ -88,34 +90,39 @@ object WebMvcTestAnnotationSlide : Slide(
                     li { +"Not load the full application context (fast startup)" }
                 }
                 p {
-                    strong { +"Key points:" }
+                    strong { +"MockK setup with @TestConfiguration:" }
                 }
                 ul {
-                    li { +"Specify which controller to test: "; inlineCode("@WebMvcTest(TaskController::class)") }
-                    li { +"Use "; inlineCode("@MockBean"); +" to mock service dependencies" }
-                    li { +"Inject "; inlineCode("MockMvc"); +" with "; inlineCode("@Autowired") }
-                    li { +"Much faster than "; inlineCode("@SpringBootTest"); +" (doesn't load full context)" }
+                    li { +"Create nested "; inlineCode("@TestConfiguration"); +" class" }
+                    li { +"Define "; inlineCode("@Bean"); +" methods that return "; inlineCode("mockk()") }
+                    li { +"Import config with "; inlineCode("@Import(TestConfig::class)") }
+                    li { +"Use "; inlineCode("beforeEach"); +" to clear mocks between tests" }
                 }
             },
             right = {
                 kotlinPlayground(
                     code = """
-                        import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-                        import org.springframework.beans.factory.annotation.Autowired
-                        import org.springframework.test.web.servlet.MockMvc
-                        import org.springframework.boot.test.mock.mockito.MockBean
-                        import io.kotest.core.spec.style.FunSpec
-
                         @WebMvcTest(TaskController::class)
+                        @Import(TaskControllerTest.TaskControllerTestConfig::class)
                         class TaskControllerTest : FunSpec() {
 
                             @Autowired
                             private lateinit var mockMvc: MockMvc
 
-                            @MockBean
+                            @Autowired
                             private lateinit var taskService: TaskService
 
+                            @TestConfiguration
+                            class TaskControllerTestConfig {
+                                @Bean
+                                fun taskService(): TaskService = mockk(relaxed = false)
+                            }
+
                             init {
+                                beforeEach {
+                                    clearMocks(taskService)
+                                }
+
                                 test("controller is loaded") {
                                     // MockMvc and controller are auto-configured
                                 }
@@ -131,11 +138,11 @@ object WebMvcTestAnnotationSlide : Slide(
 
 object MockMvcBasicsSlide : Slide(
     header = "MockMvc Basics",
-    summary = {
-        +""
-        inlineCode("MockMvc")
-        +" allows you to test controllers by simulating HTTP requests and verifying responses."
-    },
+//    summary = {
+//        +""
+//        inlineCode("MockMvc")
+//        +" allows you to test controllers by simulating HTTP requests and verifying responses."
+//    },
     content = {
         twoColumns(
             ratio = 2 to 3,
@@ -154,11 +161,11 @@ object MockMvcBasicsSlide : Slide(
                     strong { +"Common assertions:" }
                 }
                 ul {
-                    li { inlineCode("status().isOk()"); +" - 200" }
-                    li { inlineCode("status().isCreated()"); +" - 201" }
-                    li { inlineCode("status().isNotFound()"); +" - 404" }
-                    li { inlineCode("status().isBadRequest()"); +" - 400" }
-                    li { inlineCode("jsonPath(\"\$.field\").value(expectedValue)"); +" - Assert JSON field" }
+                    li { inlineCode("status().isOk"); +" - 200" }
+                    li { inlineCode("status().isCreated"); +" - 201" }
+                    li { inlineCode("status().isNotFound"); +" - 404" }
+                    li { inlineCode("status().isBadRequest"); +" - 400" }
+                    li { inlineCode("jsonPath(\"\$.field\").value(expected)"); +" - Assert JSON field" }
                 }
             },
             right = {
@@ -167,14 +174,17 @@ object MockMvcBasicsSlide : Slide(
                 }
                 kotlinPlayground(
                     code = """
+                        import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+                        import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+
                         mockMvc.perform(
                             get("/api/tasks/{id}", taskId)                // HTTP method and URL
                                 .contentType(MediaType.APPLICATION_JSON)   // Request content type
                                 .accept(MediaType.APPLICATION_JSON)        // Expected response type
                         )
-                        .andExpect(status().isOk())                        // Assert status code
-                        .andExpect(content().contentType(MediaType.APPLICATION_JSON))  // Assert content type
-                        .andExpect(jsonPath("${'$'}.id").value(taskId))    // Assert JSON fields
+                            .andExpect(status().isOk)                      // Assert status code
+                            .andExpect(content().contentType(MediaType.APPLICATION_JSON))  // Assert content type
+                            .andExpect(jsonPath("$.id").value(taskId))     // Assert JSON fields
                     """.trimIndent(),
                     executable = false
                 )
@@ -185,9 +195,9 @@ object MockMvcBasicsSlide : Slide(
 
 object TestingGetEndpointSlide : Slide(
     header = "Testing GET Endpoint",
-    summary = {
-        +"Test GET endpoints by mocking the service layer and verifying the response."
-    },
+//    summary = {
+//        +"Test GET endpoints by mocking the service layer and verifying the response."
+//    },
     content = {
         twoColumns(
             ratio = 2 to 3,
@@ -214,36 +224,41 @@ object TestingGetEndpointSlide : Slide(
             right = {
                 kotlinPlayground(
                     code = """
+                        import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+                        import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+                        import io.mockk.every
+                        import io.mockk.verify
+
                         @WebMvcTest(TaskController::class)
+                        @Import(TaskControllerTest.TaskControllerTestConfig::class)
                         class TaskControllerTest : FunSpec() {
 
                             @Autowired
                             private lateinit var mockMvc: MockMvc
 
-                            @MockBean
+                            @Autowired
                             private lateinit var taskService: TaskService
 
                             init {
-                                test("GET /api/tasks/{id} should return task") {
+                                beforeEach {
+                                    clearMocks(taskService)
+                                }
+
+                                test("should return task when it exists") {
                                     // Arrange: Mock service to return a task
-                                    val taskId = 1L
-                                    val task = Task(
-                                        id = taskId.toInt(),
-                                        description = "Write tests",
-                                        status = TaskStatus.TODO
-                                    )
-                                    every { taskService.getTaskById(taskId) } returns task
+                                    val task = Task(id = 1, description = "Write tests", status = TaskStatus.TODO)
+                                    every { taskService.getTask(1L) } returns task
 
                                     // Act & Assert: Perform request and verify response
-                                    mockMvc.perform(get("/api/tasks/{id}", taskId))
-                                        .andExpect(status().isOk())
+                                    mockMvc.perform(get("/api/tasks/1"))
+                                        .andExpect(status().isOk)
                                         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                                        .andExpect(jsonPath("${'$'}.id").value(taskId.toInt()))
-                                        .andExpect(jsonPath("${'$'}.description").value("Write tests"))
-                                        .andExpect(jsonPath("${'$'}.status").value("TODO"))
+                                        .andExpect(jsonPath("$.id").value(1))
+                                        .andExpect(jsonPath("$.description").value("Write tests"))
+                                        .andExpect(jsonPath("$.status").value("TODO"))
 
                                     // Verify service was called
-                                    verify(exactly = 1) { taskService.getTaskById(taskId) }
+                                    verify(exactly = 1) { taskService.getTask(1L) }
                                 }
                             }
                         }
@@ -258,9 +273,9 @@ object TestingGetEndpointSlide : Slide(
 
 object TestingPostEndpointSlide : Slide(
     header = "Testing POST Endpoint",
-    summary = {
-        +"Test POST endpoints by sending request body and verifying the created resource."
-    },
+//    summary = {
+//        +"Test POST endpoints by sending request body and verifying the created resource."
+//    },
     content = {
         twoColumns(
             ratio = 2 to 3,
@@ -286,7 +301,14 @@ object TestingPostEndpointSlide : Slide(
             right = {
                 kotlinPlayground(
                     code = """
+                        import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+                        import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+                        import com.fasterxml.jackson.databind.ObjectMapper
+                        import io.mockk.every
+                        import io.mockk.verify
+
                         @WebMvcTest(TaskController::class)
+                        @Import(TaskControllerTest.TaskControllerTestConfig::class)
                         class TaskControllerTest : FunSpec() {
 
                             @Autowired
@@ -295,15 +317,19 @@ object TestingPostEndpointSlide : Slide(
                             @Autowired
                             private lateinit var objectMapper: ObjectMapper
 
-                            @MockBean
+                            @Autowired
                             private lateinit var taskService: TaskService
 
                             init {
-                                test("POST /api/tasks should create task") {
+                                beforeEach {
+                                    clearMocks(taskService)
+                                }
+
+                                test("should create task and return 201 with task response") {
                                     // Arrange: Prepare request and mock response
-                                    val request = NewTaskRequest(description = "New task")
-                                    val createdTask = Task(id = 1, description = "New task", status = TaskStatus.TODO)
-                                    every { taskService.createTask(request, any()) } returns createdTask
+                                    val request = NewTaskRequest(description = "New Task")
+                                    val createdTask = Task(id = 1, description = "New Task", status = TaskStatus.NEW)
+                                    every { taskService.addTask("New Task") } returns createdTask
 
                                     // Act & Assert
                                     mockMvc.perform(
@@ -311,13 +337,13 @@ object TestingPostEndpointSlide : Slide(
                                             .contentType(MediaType.APPLICATION_JSON)
                                             .content(objectMapper.writeValueAsString(request))
                                     )
-                                        .andExpect(status().isCreated())
-                                        .andExpect(jsonPath("${'$'}.id").value(1))
-                                        .andExpect(jsonPath("${'$'}.description").value("New task"))
-                                        .andExpect(jsonPath("${'$'}.status").value("TODO"))
+                                        .andExpect(status().isCreated)
+                                        .andExpect(jsonPath("$.id").value(1))
+                                        .andExpect(jsonPath("$.description").value("New Task"))
+                                        .andExpect(jsonPath("$.status").value("NEW"))
 
                                     // Verify service was called
-                                    verify(exactly = 1) { taskService.createTask(request, any()) }
+                                    verify(exactly = 1) { taskService.addTask("New Task") }
                                 }
                             }
                         }
@@ -332,9 +358,9 @@ object TestingPostEndpointSlide : Slide(
 
 object TestingErrorResponsesSlide : Slide(
     header = "Testing Error Responses",
-    summary = {
-        +"Test error handling by making the service throw exceptions and verifying error responses."
-    },
+//    summary = {
+//        +"Test error handling by making the service throw exceptions and verifying error responses."
+//    },
     content = {
         twoColumns(
             ratio = 2 to 3,
@@ -369,33 +395,45 @@ object TestingErrorResponsesSlide : Slide(
             right = {
                 kotlinPlayground(
                     code = """
+                        import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+                        import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+                        import io.mockk.every
+
                         @WebMvcTest(TaskController::class)
+                        @Import(TaskControllerTest.TaskControllerTestConfig::class)
                         class TaskControllerTest : FunSpec() {
 
                             @Autowired
                             private lateinit var mockMvc: MockMvc
 
-                            @MockBean
+                            @Autowired
+                            private lateinit var objectMapper: ObjectMapper
+
+                            @Autowired
                             private lateinit var taskService: TaskService
 
                             init {
-                                test("GET /api/tasks/{id} should return 404 when task not found") {
-                                    // Arrange: Mock service to throw exception
-                                    val taskId = 999L
-                                    every { taskService.getTaskById(taskId) } throws TaskNotFoundException(taskId)
-
-                                    // Act & Assert: Verify 404 response
-                                    mockMvc.perform(get("/api/tasks/{id}", taskId))
-                                        .andExpect(status().isNotFound())
-                                        .andExpect(jsonPath("${'$'}.message").exists())
-                                        .andExpect(jsonPath("${'$'}.traceId").exists())
+                                beforeEach {
+                                    clearMocks(taskService)
                                 }
 
-                                test("POST /api/tasks should return 400 for invalid data") {
+                                test("should return 404 when task does not exist") {
+                                    // Arrange: Mock service to throw exception
+                                    every { taskService.getTask(1L) } throws TaskNotFoundException(1L)
+
+                                    // Act & Assert: Verify 404 response
+                                    mockMvc.perform(get("/api/tasks/1"))
+                                        .andExpect(status().isNotFound)
+                                        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                        .andExpect(jsonPath("$.status").value(404))
+                                        .andExpect(jsonPath("$.message").value("Task with id 1 not found"))
+                                }
+
+                                test("should return 400 when description is blank") {
                                     // Arrange: Mock service to throw validation exception
                                     val request = NewTaskRequest(description = "")
-                                    every { taskService.createTask(request, any()) } throws
-                                        InvalidTaskDataException("Description cannot be empty")
+                                    every { taskService.addTask("") } throws
+                                        InvalidTaskException("Task description cannot be blank")
 
                                     // Act & Assert: Verify 400 response
                                     mockMvc.perform(
@@ -403,8 +441,9 @@ object TestingErrorResponsesSlide : Slide(
                                             .contentType(MediaType.APPLICATION_JSON)
                                             .content(objectMapper.writeValueAsString(request))
                                     )
-                                        .andExpect(status().isBadRequest())
-                                        .andExpect(jsonPath("${'$'}.message").value("Description cannot be empty"))
+                                        .andExpect(status().isBadRequest)
+                                        .andExpect(jsonPath("$.status").value(400))
+                                        .andExpect(jsonPath("$.message").value("Task description cannot be blank"))
                                 }
                             }
                         }
