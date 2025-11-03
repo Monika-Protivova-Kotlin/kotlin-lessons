@@ -408,6 +408,7 @@ section.has-dark-background, section.has-dark-background h1, section.has-dark-ba
   padding-top: 14px;
   padding-bottom: 14px;
   border-top: 1px lightgrey solid;
+  font-size: 90%;
 }
 
 .reveal .content {
@@ -498,4 +499,14 @@ section[data-exercise="true"] h3::before {
     font-weight: 900;
     margin-right: 12px;
     color: #E87E04;
+}
+
+/* Content Card Styling */
+.reveal .content-card {
+    border: 1px solid rgba(127, 82, 255, 0.3);
+    border-radius: 8px;
+    padding: 1.5em;
+    margin: 1em 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: rgba(127, 82, 255, 0.02);
 }

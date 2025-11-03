@@ -2,8 +2,10 @@ package com.motycka.edu.content.topics.backend.springboot
 
 import com.motycka.edu.model.Slide
 import com.motycka.edu.model.Topic
+import com.motycka.edu.model.contentCard
 import com.motycka.edu.model.highlight
 import com.motycka.edu.model.inlineCode
+import com.motycka.edu.model.twoColumns
 import kotlinx.html.*
 
 object SpringSecurityIntroTopic : Topic(
@@ -26,29 +28,37 @@ object SpringSecurityOverviewSlide : Slide(
             +"It is the de facto standard for securing Spring-based applications."
         }
 
-        p { strong { +"What Spring Security Provides:" } }
-        ul {
-            li {
-                strong { +"Authentication" }
-                +" - Verifying the identity of users"
-            }
-            li {
-                strong { +"Authorization" }
-                +" - Controlling access to resources"
-            }
-            li {
-                strong { +"Protection Against Exploits" }
-                +" - CSRF, session fixation, clickjacking, etc."
-            }
-            li {
-                strong { +"Integration" }
-                +" - LDAP, OAuth 2.0, SAML, JWT, and more"
-            }
-        }
-
-        blockQuote {
-            +"Spring Security integrates seamlessly with Spring Boot, providing auto-configuration and sensible defaults that can be customized as needed."
-        }
+        twoColumns(
+            ratio = 3 to 2,
+            left = {
+                p {
+                    h4 { +"Spring Security Provides" }
+                    ul {
+                        li {
+                            strong { +"Authentication" }
+                            +" - Verifying the identity of users"
+                        }
+                        li {
+                            strong { +"Authorization" }
+                            +" - Controlling access to resources"
+                        }
+                        li {
+                            strong { +"Protection Against Exploits" }
+                            +" - CSRF, session fixation, clickjacking, etc."
+                        }
+                        li {
+                            strong { +"Integration" }
+                            +" - LDAP, OAuth 2.0, SAML, JWT, and more"
+                        }
+                    }
+                }
+            },
+            right = {
+                contentCard {
+                    +"Spring Security integrates seamlessly with Spring Boot, providing auto-configuration and sensible defaults that can be customized as needed."
+                }
+            },
+        )
     }
 )
 
@@ -58,39 +68,42 @@ object SpringSecurityArchitectureSlide : Slide(
         +"Understanding the core components of Spring Security's authentication and authorization architecture"
     },
     content = {
-        p { highlight("Key Components:") }
-        ul {
-            li {
-                strong { inlineCode("SecurityContext") }
-                +" - Holds security information about the current thread"
-            }
-            li {
-                strong { inlineCode("Authentication") }
-                +" - Represents the token for an authentication request or authenticated principal"
-            }
-            li {
-                strong { inlineCode("AuthenticationManager") }
-                +" - Processes authentication requests"
-            }
-            li {
-                strong { inlineCode("UserDetailsService") }
-                +" - Core interface for loading user-specific data"
-            }
-            li {
-                strong { inlineCode("SecurityFilterChain") }
-                +" - Defines security filter configurations for different URL patterns"
+        p {
+            h4 { highlight("Key Components") }
+            ul {
+                li {
+                    strong { inlineCode("SecurityContext") }
+                    +" - Holds security information about the current thread"
+                }
+                li {
+                    strong { inlineCode("Authentication") }
+                    +" - Represents the token for an authentication request or authenticated principal"
+                }
+                li {
+                    strong { inlineCode("AuthenticationManager") }
+                    +" - Processes authentication requests"
+                }
+                li {
+                    strong { inlineCode("UserDetailsService") }
+                    +" - Core interface for loading user-specific data"
+                }
+                li {
+                    strong { inlineCode("SecurityFilterChain") }
+                    +" - Defines security filter configurations for different URL patterns"
+                }
             }
         }
-
-        p { strong { +"How It Works:" } }
-        ol {
-            li { +"Request enters the application" }
-            li { +"Security filters intercept the request" }
-            li { +"Authentication filters extract credentials" }
-            li { +"AuthenticationManager validates credentials" }
-            li { +"SecurityContext is populated with Authentication" }
-            li { +"Authorization checks are performed" }
-            li { +"Request proceeds to controller or is rejected" }
+        p {
+            h4 { +"How It Works" }
+            ol {
+                li { +"Request enters the application" }
+                li { +"Security filters intercept the request" }
+                li { +"Authentication filters extract credentials" }
+                li { +"AuthenticationManager validates credentials" }
+                li { +"SecurityContext is populated with Authentication" }
+                li { +"Authorization checks are performed" }
+                li { +"Request proceeds to controller or is rejected" }
+            }
         }
     }
 )
@@ -98,31 +111,41 @@ object SpringSecurityArchitectureSlide : Slide(
 object SpringSecurityFeaturesSlide : Slide(
     header = "Spring Security Features",
     content = {
-        p { highlight("Authentication Methods:") }
-        ul {
-            li { +"Form-based login" }
-            li { +"HTTP Basic authentication" }
-            li { +"OAuth 2.0 / OpenID Connect" }
-            li { +"LDAP authentication" }
-            li { +"JWT (JSON Web Tokens)" }
-            li { +"Remember-me authentication" }
-        }
-
-        p { highlight("Authorization Strategies:") }
-        ul {
-            li { +"URL-based security ("; inlineCode("requestMatchers"); +")" }
-            li { +"Method-level security ("; inlineCode("@PreAuthorize"); +", "; inlineCode("@Secured"); +")" }
-            li { +"Role-based access control (RBAC)" }
-            li { +"Expression-based access control" }
-        }
-
-        p { highlight("Protection Features:") }
-        ul {
-            li { +"CSRF (Cross-Site Request Forgery) protection" }
-            li { +"Session management" }
-            li { +"Password encoding" }
-            li { +"Security headers (X-Frame-Options, CSP, etc.)" }
-            li { +"CORS configuration" }
-        }
+        twoColumns(
+            left = {
+                p {
+                    h4 { +"Authentication Methods" }
+                    ul {
+                        li { +"Form-based login" }
+                        li { +"HTTP Basic authentication" }
+                        li { +"OAuth 2.0 / OpenID Connect" }
+                        li { +"LDAP authentication" }
+                        li { +"JWT (JSON Web Tokens)" }
+                        li { +"Remember-me authentication" }
+                    }
+                }
+                p {
+                    h4 { +"Authorization Strategies" }
+                    ul {
+                        li { +"URL-based security ("; inlineCode("requestMatchers"); +")" }
+                        li { +"Method-level security ("; inlineCode("@PreAuthorize"); +", "; inlineCode("@Secured"); +")" }
+                        li { +"Role-based access control (RBAC)" }
+                        li { +"Expression-based access control" }
+                    }
+                }
+            },
+            right = {
+                p {
+                    h4 { +"Protection Features" }
+                    ul {
+                        li { +"CSRF (Cross-Site Request Forgery) protection" }
+                        li { +"Session management" }
+                        li { +"Password encoding" }
+                        li { +"Security headers (X-Frame-Options, CSP, etc.)" }
+                        li { +"CORS configuration" }
+                    }
+                }
+            }
+        )
     }
 )

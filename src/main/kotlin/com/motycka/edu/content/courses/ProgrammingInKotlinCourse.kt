@@ -1,5 +1,6 @@
 package com.motycka.edu.content.courses
 
+import com.motycka.edu.content.lessons.DeveloperAndAILesson
 import com.motycka.edu.content.lessons.programming.*
 import com.motycka.edu.content.topics.FinalAssignmentTopic
 import com.motycka.edu.content.topics.backend.*
@@ -69,10 +70,10 @@ val ProgrammingInKotlinCourse = Course(
         SpringBootBusinessLogicLesson,                // L10
 
         // Week 3: Spring Boot & Production
-//        SpringBootBusinessLogicLesson,                // L11
         SpringBootDataLayerLesson,                    // L11
         SecurityAndAuthenticationLesson,              // L12
         DeploymentAndObservabilityLesson,             // L13
+        DeveloperAndAILesson,                         // L14
         SpringBootApplicationV3Lesson                 // L15: Project Work
     )
 )
@@ -385,7 +386,10 @@ object SecurityAndAuthenticationLesson : Lesson(
         SpringSecurityIntroTopic,
         SpringSecurityConfigurationTopic,
         SpringSecurityAuthenticationTopic,
-        SpringSecurityAuthorizationTopic
+        SpringSecurityAuthorizationTopic,
+        Topic(
+            title = "Practice"
+        )
     )
 )
 

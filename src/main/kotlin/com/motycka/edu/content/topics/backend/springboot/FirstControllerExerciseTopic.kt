@@ -28,7 +28,7 @@ object ProjectSetupSlide : Slide(
         p {
             +"Visit "
             a(href = "https://github.com/Monika-Protivova-Kotlin/harbour-space-coffee") {
-                code { +"https://github.com/Monika-Protivova-Kotlin/harbour-space-coffee" }
+                inlineCode("https://github.com/Monika-Protivova-Kotlin/harbour-space-coffee")
             }
         }
         p { +"Click the 'Fork' button to create your own copy" }
@@ -67,7 +67,7 @@ object AlternativeSetupSlide : Slide(
         p {
             +"Go to "
             a(href = "https://start.spring.io") {
-                code { +"https://start.spring.io" }
+                inlineCode("https://start.spring.io")
             }
         }
 
@@ -118,12 +118,12 @@ object RestApiExerciseSlide : Slide(
         h4 { +"API Endpoints You'll Create" }
         p { +"Your coffee shop API will include:" }
         ul {
-            li { code { +"GET /api/menu" }; +" - List all menu items" }
-            li { code { +"GET /api/menu/{id}" }; +" - Get a specific item" }
-            li { code { +"POST /api/menu" }; +" - Add a new item" }
-            li { code { +"PUT /api/menu/{id}" }; +" - Update an item" }
-            li { code { +"DELETE /api/menu/{id}" }; +" - Remove an item" }
-            li { code { +"PATCH /api/menu/{id}/price" }; +" - Update just the price" }
+            li { inlineCode("GET /api/menu"); +" - List all menu items" }
+            li { inlineCode("GET /api/menu/{id}"); +" - Get a specific item" }
+            li { inlineCode("POST /api/menu"); +" - Add a new item" }
+            li { inlineCode("PUT /api/menu/{id}"); +" - Update an item" }
+            li { inlineCode("DELETE /api/menu/{id}"); +" - Remove an item" }
+            li { inlineCode("PATCH /api/menu/{id}/price"); +" - Update just the price" }
         }
 
         blockQuote {

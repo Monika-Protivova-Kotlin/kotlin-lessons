@@ -1,6 +1,5 @@
 package com.motycka.edu.content.lessons.programming
 
-import com.motycka.edu.builders.CourseBuilder.ARROW_DOWN
 import com.motycka.edu.model.Slide
 import com.motycka.edu.model.Topic
 import com.motycka.edu.model.inlineCode

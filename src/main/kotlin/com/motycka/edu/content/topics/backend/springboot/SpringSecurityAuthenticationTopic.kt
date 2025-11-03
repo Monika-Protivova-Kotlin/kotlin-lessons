@@ -2,9 +2,11 @@ package com.motycka.edu.content.topics.backend.springboot
 
 import com.motycka.edu.model.Slide
 import com.motycka.edu.model.Topic
+import com.motycka.edu.model.contentCard
 import com.motycka.edu.model.highlight
 import com.motycka.edu.model.inlineCode
 import com.motycka.edu.model.kotlinPlayground
+import com.motycka.edu.model.twoColumns
 import kotlinx.html.*
 
 object SpringSecurityAuthenticationTopic : Topic(
@@ -26,10 +28,11 @@ object UserDetailsServiceSlide : Slide(
             +"The "; inlineCode("UserDetailsService"); +" interface has a single method that loads a user by username. "
             +"Spring Security uses this to retrieve user information during authentication."
         }
-
-        p { strong { +"Custom UserDetailsService Implementation:" } }
-        kotlinPlayground(
-            code = """
+        twoColumns(
+            ratio = 3 to 2,
+            left = {
+                kotlinPlayground(
+                    code = """
                 @Service
                 class CustomUserDetailsService(
                     private val userRepository: UserRepository
@@ -51,16 +54,19 @@ object UserDetailsServiceSlide : Slide(
                     }
                 }
             """.trimIndent(),
-            executable = false
+                    executable = false
+                )
+            },
+            right = {
+                p { highlight("Key Points:") }
+                ul {
+                    li { +"Load user from your database or data source" }
+                    li { +"Return a "; inlineCode("UserDetails"); +" object" }
+                    li { +"Throw "; inlineCode("UsernameNotFoundException"); +" if user not found" }
+                    li { +"Include roles and account status information" }
+                }
+            },
         )
-
-        p { highlight("Key Points:") }
-        ul {
-            li { +"Load user from your database or data source" }
-            li { +"Return a "; inlineCode("UserDetails"); +" object" }
-            li { +"Throw "; inlineCode("UsernameNotFoundException"); +" if user not found" }
-            li { +"Include roles and account status information" }
-        }
     }
 )
 
@@ -84,10 +90,8 @@ object CustomAuthenticationProviderSlide : Slide(
                 ) : AuthenticationProvider {
 
                     override fun authenticate(authentication: Authentication): Authentication {
-                        val username = authentication.name
                         val password = authentication.credentials.toString()
-
-                        val userDetails = userDetailsService.loadUserByUsername(username)
+                        val userDetails = userDetailsService.loadUserByUsername(authentication.name)
 
                         // Verify password
                         if (!passwordEncoder.matches(password, userDetails.password)) {
@@ -99,28 +103,20 @@ object CustomAuthenticationProviderSlide : Slide(
                             throw LockedException("User account is locked")
                         }
 
-                        return UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            password,
-                            userDetails.authorities
-                        )
+                        return UsernamePasswordAuthenticationToken(userDetails, password, userDetails.authorities)
                     }
 
                     override fun supports(authentication: Class<*>): Boolean {
                         return authentication == UsernamePasswordAuthenticationToken::class.java
                     }
 
-                    private fun isAllowedToLogin(userDetails: UserDetails): Boolean {
-                        // Custom business logic
-                        return true
-                    }
+                    private fun isAllowedToLogin(userDetails: UserDetails): Boolean = true
                 }
             """.trimIndent(),
             executable = false,
             showLines = false
         )
     },
-    fontSize = "70%"
 )
 
 object AccessingAuthenticationSlide : Slide(
@@ -129,10 +125,11 @@ object AccessingAuthenticationSlide : Slide(
         +"Retrieve the currently authenticated user in your controllers and services"
     },
     content = {
-        p { strong { +"Multiple Ways to Access Authentication:" } }
-
-        kotlinPlayground(
-            code = """
+        twoColumns(
+            ratio = 3 to 2,
+            left = {
+                kotlinPlayground(
+                    code = """
                 @RestController
                 @RequestMapping("/api")
                 class UserController {
@@ -165,12 +162,16 @@ object AccessingAuthenticationSlide : Slide(
                     }
                 }
             """.trimIndent(),
-            executable = false
+                    executable = false
+                )
+            },
+            right = {
+                contentCard {
+                    +"💡 "; strong { +"Best Practice: " }
+                    br
+                    +"Use "; inlineCode("@AuthenticationPrincipal"); +" in controllers for clean, type-safe access to user details."
+                }
+            },
         )
-
-        blockQuote {
-            +"💡 "; strong { +"Best Practice: " }
-            +"Use "; inlineCode("@AuthenticationPrincipal"); +" in controllers for clean, type-safe access to user details."
-        }
     }
 )

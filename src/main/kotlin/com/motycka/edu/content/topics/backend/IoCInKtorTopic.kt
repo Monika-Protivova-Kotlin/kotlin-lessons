@@ -2,6 +2,7 @@ package com.motycka.edu.content.topics.backend
 
 import com.motycka.edu.model.Topic
 import com.motycka.edu.model.Slide
+import com.motycka.edu.model.inlineCode
 import com.motycka.edu.model.kotlinPlayground
 import com.motycka.edu.model.twoColumns
 import com.motycka.edu.model.highlight
@@ -144,7 +145,7 @@ object IoCWithKoinSlide : Slide(
                 )
                 p {
                     +"Start Koin in the "
-                    code { +"main" }
+                    inlineCode("main")
                     +" function and inject the dependencies into the Ktor application:"
                 }
                 kotlinPlayground(
@@ -252,19 +253,19 @@ object KoinImplementationSlide : Slide(
         }
         ul {
             li {
-                code { +"single { }" }
+                inlineCode("single { }")
                 +" - Creates a singleton instance"
             }
             li {
-                code { +"factory { }" }
+                inlineCode("factory { }")
                 +" - Creates a new instance each time"
             }
             li {
-                code { +"singleOf(::Class)" }
+                inlineCode("singleOf(::Class)")
                 +" - Shorthand for singleton with constructor injection"
             }
             li {
-                code { +"bind<Interface>()" }
+                inlineCode("bind<Interface>()")
                 +" - Binds implementation to interface"
             }
         }

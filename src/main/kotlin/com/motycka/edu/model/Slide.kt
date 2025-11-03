@@ -90,6 +90,14 @@ fun FlowContent.kotlinPlayground(
     }
 }
 
+fun FlowContent.contentCard(
+    content: FlowContent.() -> Unit
+) {
+    div(classes = "content-card") {
+        content()
+    }
+}
+
 fun FlowContent.twoColumns(
     left: FlowContent.() -> Unit,
     right: FlowContent.() -> Unit,

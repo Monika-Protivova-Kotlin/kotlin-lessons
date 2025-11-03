@@ -5,6 +5,7 @@ import com.motycka.edu.model.Topic
 import com.motycka.edu.model.highlight
 import com.motycka.edu.model.inlineCode
 import com.motycka.edu.model.kotlinPlayground
+import com.motycka.edu.model.twoColumns
 import kotlinx.html.*
 
 object SpringSecurityConfigurationTopic : Topic(
@@ -26,16 +27,19 @@ object SecurityConfigurationBasicsSlide : Slide(
             +"In Spring Boot 3.x, security configuration is done through "; inlineCode("@Configuration"); +" classes "
             +"that define "; inlineCode("SecurityFilterChain"); +" beans."
         }
-
-        p { strong { +"Basic Configuration Structure:" } }
-        kotlinPlayground(
-            code = """
+        twoColumns(
+            ratio = 3 to 2,
+            left = {
+                kotlinPlayground(
+                    code = """
                 @Configuration
                 @EnableWebSecurity
                 class SecurityConfiguration {
 
                     @Bean
-                    fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
+                    fun securityFilterChain(
+                        http: HttpSecurity
+                    ): SecurityFilterChain {
                         http {
                             authorizeHttpRequests {
                                 authorize("/public/**", permitAll)
@@ -50,29 +54,32 @@ object SecurityConfigurationBasicsSlide : Slide(
                     }
                 }
             """.trimIndent(),
-            executable = false
+                    executable = false
+                )
+            },
+            right = {
+                p {
+//                    strong { +"Annotations:" }
+                    ul {
+                        li {
+                            inlineCode("@EnableWebSecurity"); +" - Enables Spring Security's web security support"
+                        }
+                        li {
+                            inlineCode("@Configuration"); +" - Indicates this class provides Spring beans"
+                        }
+                    }
+                }
+            }
         )
-
-        p { highlight("Key Annotations:") }
-        ul {
-            li {
-                inlineCode("@EnableWebSecurity"); +" - Enables Spring Security's web security support"
-            }
-            li {
-                inlineCode("@Configuration"); +" - Indicates this class provides Spring beans"
-            }
-        }
     }
 )
 
 object SecurityFilterChainSlide : Slide(
     header = "SecurityFilterChain Configuration",
-    summary = {
-        +"The SecurityFilterChain defines URL-based security rules and authentication mechanisms"
-    },
+//    summary = {
+//        +"The SecurityFilterChain defines URL-based security rules and authentication mechanisms"
+//    },
     content = {
-        p { highlight("Common Configuration Options:") }
-
         kotlinPlayground(
             code = """
                 @Bean
@@ -114,7 +121,6 @@ object SecurityFilterChainSlide : Slide(
             showLines = false
         )
     },
-    fontSize = "75%"
 )
 
 object PasswordEncoderSlide : Slide(
@@ -127,10 +133,11 @@ object PasswordEncoderSlide : Slide(
             +"Spring Security provides several password encoders. "
             inlineCode("BCryptPasswordEncoder"); +" is the recommended choice for most applications."
         }
-
-        p { strong { +"Password Encoder Configuration:" } }
-        kotlinPlayground(
-            code = """
+        twoColumns(
+            ratio = 3 to 2,
+            left = {
+                kotlinPlayground(
+                    code = """
                 @Configuration
                 class SecurityConfiguration {
 
@@ -157,16 +164,21 @@ object PasswordEncoderSlide : Slide(
                     }
                 }
             """.trimIndent(),
-            executable = false
+                    executable = false
+                )
+            },
+            right = {
+                p { highlight("Available Password Encoders:") }
+                ul {
+                    li { strong { inlineCode("BCryptPasswordEncoder") }; +" - Recommended (uses bcrypt hashing)" }
+                    li { inlineCode("Pbkdf2PasswordEncoder"); +" - Uses PBKDF2" }
+                    li { inlineCode("SCryptPasswordEncoder"); +" - Uses scrypt" }
+                    li { inlineCode("Argon2PasswordEncoder"); +" - Uses Argon2" }
+                }
+            }
         )
 
-        p { highlight("Available Password Encoders:") }
-        ul {
-            li { strong { inlineCode("BCryptPasswordEncoder") }; +" - Recommended (uses bcrypt hashing)" }
-            li { inlineCode("Pbkdf2PasswordEncoder"); +" - Uses PBKDF2" }
-            li { inlineCode("SCryptPasswordEncoder"); +" - Uses scrypt" }
-            li { inlineCode("Argon2PasswordEncoder"); +" - Uses Argon2" }
-        }
+
 
         blockQuote {
             +"⚠️ Never use "; inlineCode("NoOpPasswordEncoder"); +" in production!"

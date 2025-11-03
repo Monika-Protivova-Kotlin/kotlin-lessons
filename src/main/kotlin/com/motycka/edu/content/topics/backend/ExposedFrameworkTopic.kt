@@ -2,6 +2,7 @@ package com.motycka.edu.content.topics.backend
 
 import com.motycka.edu.model.Topic
 import com.motycka.edu.model.Slide
+import com.motycka.edu.model.inlineCode
 import com.motycka.edu.model.kotlinPlayground
 import kotlinx.html.*
 
@@ -81,19 +82,19 @@ object ExposedTableSchemaSlide : Slide(
         }
         ul {
             li {
-                code { +"LongIdTable" }
+                inlineCode("LongIdTable")
                 +" - Provides auto-incrementing ID column"
             }
             li {
-                code { +"Table" }
+                inlineCode("Table")
                 +" - Basic table without auto-generated ID"
             }
             li {
-                code { +"references()" }
+                inlineCode("references()")
                 +" - Creates foreign key relationships"
             }
             li {
-                code { +"default()" }
+                inlineCode("default()")
                 +" - Sets default values for columns"
             }
         }
@@ -136,7 +137,7 @@ object ExposedDAOSlide : Slide(
             li {
                 strong { +"Property Delegation" }
                 +" - Uses Kotlin's "
-                code { +"by" }
+                inlineCode("by")
                 +" keyword for property mapping"
             }
             li {

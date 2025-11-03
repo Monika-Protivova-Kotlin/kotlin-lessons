@@ -39,7 +39,7 @@ fun FlowContent.codeOrderedList(
 
 fun FlowContent.highlightListItem(header: String, flowContent: FlowContent.() -> Unit) {
     highlight(header)
-    br()
+    br
     flowContent()
 }
 

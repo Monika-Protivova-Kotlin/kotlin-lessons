@@ -1,17 +1,14 @@
 package com.motycka.edu.builders
 
-import com.motycka.edu.content.topics.backend.ApplicationErrorsIntroSlide.content
 import com.motycka.edu.ext.normalizedFileName
 import com.motycka.edu.model.Course
 import com.motycka.edu.model.Lesson
-import com.motycka.edu.model.Topic
 import com.motycka.edu.model.lessonIntro
 import com.motycka.edu.model.topic
 import kotlinx.html.*
 import kotlinx.html.stream.appendHTML
 import java.io.File
 import java.io.StringWriter
-import java.time.LocalDate
 
 object CourseBuilder {
     const val CHARSET = "UTF-8"
@@ -19,6 +16,8 @@ object CourseBuilder {
     const val ARROW_DOWN = "↓"
 
     const val PATH = "public/courses"
+
+    const val REVEAL_JS = "https://unpkg.com/reveal.js"
     const val REVEAL_VERSION = "5.2.1"
 
     fun createCourse(
@@ -30,7 +29,7 @@ object CourseBuilder {
 
         println("Generating ${course.name} ${course.subTitle} course...")
 
-        val files = course.lessons.mapIndexed { index, lesson ->
+        course.lessons.mapIndexed { index, lesson ->
             val stringWriter = createLesson(
                 lesson = lesson
             )
@@ -215,8 +214,8 @@ object CourseBuilder {
                 content = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
             )
             title { +lesson.title }
-            link(rel = "stylesheet", href = "https://unpkg.com/reveal.js@$REVEAL_VERSION/dist/reset.css")
-            link(rel = "stylesheet", href = "https://unpkg.com/reveal.js@$REVEAL_VERSION/dist/reveal.css")
+            link(rel = "stylesheet", href = "$REVEAL_JS@$REVEAL_VERSION/dist/reset.css")
+            link(rel = "stylesheet", href = "$REVEAL_JS@$REVEAL_VERSION/dist/reveal.css")
             link(rel = "stylesheet", href = "../../dist/theme/kotlin.css")
             link(rel = "stylesheet", href = "../../dist/theme/gc-animations.css")
         }
@@ -229,28 +228,16 @@ object CourseBuilder {
                 }
             }
 
-            script(src = "https://unpkg.com/reveal.js@$REVEAL_VERSION/dist/reveal.js") { attributes["data-charset"] = CHARSET }
-            script(src = "https://unpkg.com/reveal.js@$REVEAL_VERSION/plugin/notes/notes.js") { attributes["data-charset"] = CHARSET }
-            // Mermaid for diagrams
-            script(src = "https://unpkg.com/mermaid@10/dist/mermaid.min.js") { attributes["data-charset"] = CHARSET }
-            script(src = "https://unpkg.com/reveal.js-mermaid-plugin@2/plugin/mermaid/mermaid.js") { attributes["data-charset"] = CHARSET }
+            script(src = "$REVEAL_JS@$REVEAL_VERSION/dist/reveal.js") { attributes["data-charset"] = CHARSET }
+            script(src = "$REVEAL_JS@$REVEAL_VERSION/plugin/notes/notes.js") { attributes["data-charset"] = CHARSET }
             script(type = "module") {
                 unsafe {
                     raw("""
                         Reveal.initialize({
+                            width: 1200,
+                            margin: 0.02,
                             hash: true,
-                            plugins: [ RevealNotes, RevealMermaid ],
-                            mermaid: {
-                                theme: 'default',
-                                themeVariables: {
-                                    primaryColor: '#7F52FF',
-                                    primaryTextColor: '#fff',
-                                    primaryBorderColor: '#7F52FF',
-                                    lineColor: '#7F52FF',
-                                    secondaryColor: '#E87E04',
-                                    tertiaryColor: '#fff'
-                                }
-                            }
+                            plugins: [ RevealNotes ]
                         });
                         Reveal.configure({ showNotes: false });
                     """.trimIndent())
@@ -260,74 +247,34 @@ object CourseBuilder {
                 src = "https://kit.fontawesome.com/aa8dffce33.js"
 //                crossorigin = "anonymous"
             }
-            script(src = "https://unpkg.com/kotlin-playground@1") {
-            }
             script {
                 unsafe {
                     raw("""
-                        // Function to initialize only new Kotlin Playground blocks
                         function initKotlinPlayground() {
-                            if (typeof KotlinPlayground !== 'undefined') {
-                                try {
-                                    // Find all code blocks that haven't been initialized yet
-                                    const allBlocks = document.querySelectorAll('code.kotlin-playground');
-                                    const uninitializedBlocks = [];
+                            let initialized = false;
 
-                                    allBlocks.forEach(block => {
-                                        // Check if this block has been initialized by looking for the wrapper div
-                                        // that Kotlin Playground creates
-                                        if (!block.parentElement.classList.contains('executable-fragment-wrapper') &&
-                                            !block.parentElement.classList.contains('code-area')) {
-                                            uninitializedBlocks.push(block);
-                                            // Add a temporary class to target only these blocks
-                                            block.classList.add('kotlin-playground-pending');
-                                        }
-                                    });
-
-                                    if (uninitializedBlocks.length > 0) {
-                                        console.log('Found ' + uninitializedBlocks.length + ' uninitialized Kotlin Playground blocks, initializing...');
-                                        // Call KotlinPlayground on ONLY the pending blocks
-                                        KotlinPlayground('.kotlin-playground-pending');
-
-                                        // Remove the temporary class after initialization
-                                        setTimeout(() => {
-                                            uninitializedBlocks.forEach(block => {
-                                                block.classList.remove('kotlin-playground-pending');
-                                            });
-                                            console.log('Initialization attempt complete');
-                                        }, 100);
-                                    } else {
-                                        console.log('All Kotlin Playground blocks already initialized');
-                                    }
-                                } catch (e) {
-                                    console.error('Error initializing Kotlin Playground:', e);
+                            function doInit() {
+                                if (!initialized && typeof KotlinPlayground !== 'undefined') {
+                                    KotlinPlayground('.kotlin-playground');
+                                    initialized = true;
+                                    console.log('Kotlin Playground initialized');
                                 }
+                            }
+
+                            // Wait for Reveal and add delay to ensure DOM is ready
+                            if (typeof Reveal !== 'undefined' && Reveal.isReady()) {
+                                setTimeout(doInit, 300);
                             } else {
-                                console.warn('KotlinPlayground is not defined yet');
+                                Reveal.on('ready', () => {
+                                    setTimeout(doInit, 300);
+                                });
                             }
                         }
-
-                        // Wait for the library to load
-                        window.addEventListener('load', () => {
-                            // Wait a bit for Kotlin Playground library to initialize
-                            setTimeout(() => {
-                                // Wait for Reveal to be ready
-                                Reveal.on('ready', () => {
-                                    console.log('Reveal ready, initializing Kotlin Playground');
-                                    initKotlinPlayground();
-                                });
-
-                                // Reinitialize on slide change
-                                Reveal.on('slidechanged', (event) => {
-                                    console.log('Slide changed, checking for new Kotlin Playground blocks');
-                                    setTimeout(() => {
-                                        initKotlinPlayground();
-                                    }, 150);
-                                });
-                            }, 500);
-                        });
                     """.trimIndent())
                 }
+            }
+            script(src = "https://unpkg.com/kotlin-playground@1") {
+                attributes["onload"] = "initKotlinPlayground()"
             }
         }
     }
@@ -767,26 +714,14 @@ object CourseBuilder {
 
             script(src = "https://unpkg.com/reveal.js@$REVEAL_VERSION/dist/reveal.js") { attributes["data-charset"] = CHARSET }
             script(src = "https://unpkg.com/reveal.js@$REVEAL_VERSION/plugin/notes/notes.js") { attributes["data-charset"] = CHARSET }
-            // Mermaid for diagrams
-            script(src = "https://unpkg.com/mermaid@10/dist/mermaid.min.js") { attributes["data-charset"] = CHARSET }
-            script(src = "https://unpkg.com/reveal.js-mermaid-plugin@2/plugin/mermaid/mermaid.js") { attributes["data-charset"] = CHARSET }
             script(type = "module") {
                 unsafe {
                     raw("""
                         Reveal.initialize({
+                            width: 1200,
+                            margin: 0.02,
                             hash: true,
-                            plugins: [ RevealNotes, RevealMermaid ],
-                            mermaid: {
-                                theme: 'default',
-                                themeVariables: {
-                                    primaryColor: '#7F52FF',
-                                    primaryTextColor: '#fff',
-                                    primaryBorderColor: '#7F52FF',
-                                    lineColor: '#7F52FF',
-                                    secondaryColor: '#E87E04',
-                                    tertiaryColor: '#fff'
-                                }
-                            }
+                            plugins: [ RevealNotes ]
                         });
                         Reveal.configure({ showNotes: false });
                     """.trimIndent())
@@ -796,74 +731,34 @@ object CourseBuilder {
                 src = "https://kit.fontawesome.com/aa8dffce33.js"
 //                crossorigin = "anonymous"
             }
-            script(src = "https://unpkg.com/kotlin-playground@1") {
-            }
             script {
                 unsafe {
                     raw("""
-                        // Function to initialize only new Kotlin Playground blocks
                         function initKotlinPlayground() {
-                            if (typeof KotlinPlayground !== 'undefined') {
-                                try {
-                                    // Find all code blocks that haven't been initialized yet
-                                    const allBlocks = document.querySelectorAll('code.kotlin-playground');
-                                    const uninitializedBlocks = [];
+                            let initialized = false;
 
-                                    allBlocks.forEach(block => {
-                                        // Check if this block has been initialized by looking for the wrapper div
-                                        // that Kotlin Playground creates
-                                        if (!block.parentElement.classList.contains('executable-fragment-wrapper') &&
-                                            !block.parentElement.classList.contains('code-area')) {
-                                            uninitializedBlocks.push(block);
-                                            // Add a temporary class to target only these blocks
-                                            block.classList.add('kotlin-playground-pending');
-                                        }
-                                    });
-
-                                    if (uninitializedBlocks.length > 0) {
-                                        console.log('Found ' + uninitializedBlocks.length + ' uninitialized Kotlin Playground blocks, initializing...');
-                                        // Call KotlinPlayground on ONLY the pending blocks
-                                        KotlinPlayground('.kotlin-playground-pending');
-
-                                        // Remove the temporary class after initialization
-                                        setTimeout(() => {
-                                            uninitializedBlocks.forEach(block => {
-                                                block.classList.remove('kotlin-playground-pending');
-                                            });
-                                            console.log('Initialization attempt complete');
-                                        }, 100);
-                                    } else {
-                                        console.log('All Kotlin Playground blocks already initialized');
-                                    }
-                                } catch (e) {
-                                    console.error('Error initializing Kotlin Playground:', e);
+                            function doInit() {
+                                if (!initialized && typeof KotlinPlayground !== 'undefined') {
+                                    KotlinPlayground('.kotlin-playground');
+                                    initialized = true;
+                                    console.log('Kotlin Playground initialized');
                                 }
+                            }
+
+                            // Wait for Reveal and add delay to ensure DOM is ready
+                            if (typeof Reveal !== 'undefined' && Reveal.isReady()) {
+                                setTimeout(doInit, 300);
                             } else {
-                                console.warn('KotlinPlayground is not defined yet');
+                                Reveal.on('ready', () => {
+                                    setTimeout(doInit, 300);
+                                });
                             }
                         }
-
-                        // Wait for the library to load
-                        window.addEventListener('load', () => {
-                            // Wait a bit for Kotlin Playground library to initialize
-                            setTimeout(() => {
-                                // Wait for Reveal to be ready
-                                Reveal.on('ready', () => {
-                                    console.log('Reveal ready, initializing Kotlin Playground');
-                                    initKotlinPlayground();
-                                });
-
-                                // Reinitialize on slide change
-                                Reveal.on('slidechanged', (event) => {
-                                    console.log('Slide changed, checking for new Kotlin Playground blocks');
-                                    setTimeout(() => {
-                                        initKotlinPlayground();
-                                    }, 150);
-                                });
-                            }, 500);
-                        });
                     """.trimIndent())
                 }
+            }
+            script(src = "https://unpkg.com/kotlin-playground@1") {
+                attributes["onload"] = "initKotlinPlayground()"
             }
         }
     }

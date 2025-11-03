@@ -3,6 +3,7 @@ package com.motycka.edu.content.topics.introductory.kotlin
 import com.motycka.edu.builders.*
 import com.motycka.edu.model.Slide
 import com.motycka.edu.model.Topic
+import com.motycka.edu.model.inlineCode
 import kotlinx.html.a
 import kotlinx.html.br
 import kotlinx.html.code
@@ -69,11 +70,11 @@ object YourFirstKotlinProgramTopic : Topic(
                 highlightNumberedList(
                     startFrom = 7,
                     "Commit and push your changes" to {
-                        code { +"git add ." }
+                        inlineCode("git add .")
                         br()
-                        code { +"git commit -m \"Complete assignment\"" }
+                        inlineCode("git commit -m \"Complete assignment\"")
                         br()
-                        code { +"git push" }
+                        inlineCode("git push")
                     },
                     "Verify submission" to {
                         +"Check your GitHub repository to ensure all changes have been pushed."

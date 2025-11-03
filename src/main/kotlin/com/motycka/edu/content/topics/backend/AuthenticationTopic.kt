@@ -1,10 +1,11 @@
 package com.motycka.edu.content.topics.backend
 
-import com.motycka.edu.model.Topic
 import com.motycka.edu.model.Slide
+import com.motycka.edu.model.Topic
+import com.motycka.edu.model.contentCard
 import com.motycka.edu.model.highlight
+import com.motycka.edu.model.twoColumns
 import kotlinx.html.*
-import com.motycka.edu.model.highlight
 
 object AuthenticationTopic : Topic(
     title = "Authentication",
@@ -21,6 +22,7 @@ object AuthenticationIntroSlide : Slide(
     header = "Authentication",
     summary = {
         +"Authentication is the process of verifying the identity of a user, device, or system. "
+        br
         +"It answers the question: \"Who are you?\""
     },
     content = {
@@ -115,6 +117,7 @@ object UsernamePasswordAuthSlide : Slide(
                     li { +"Include salt to prevent rainbow table attacks" }
                     li { +"Use appropriate work factors for computational cost" }
                 }
+                br
             }
             li {
                 strong { +"Password Policies" }
@@ -124,6 +127,7 @@ object UsernamePasswordAuthSlide : Slide(
                     li { +"Regular password rotation" }
                     li { +"Prevent password reuse" }
                 }
+                br
             }
             li {
                 strong { +"Security Measures" }
@@ -133,6 +137,7 @@ object UsernamePasswordAuthSlide : Slide(
                     li { +"Secure transmission (HTTPS)" }
                     li { +"Multi-factor authentication (MFA)" }
                 }
+                br
             }
         }
     }
@@ -144,45 +149,51 @@ object TokenBasedAuthSlide : Slide(
         +"Token-based authentication uses tokens to represent authenticated sessions, providing a stateless and scalable approach."
     },
     content = {
-        p {
-            +"How token-based authentication works:"
-        }
-        ol {
-            li { +"User provides credentials (username/password)" }
-            li { +"Server validates credentials" }
-            li { +"Server generates a token and returns it to the client" }
-            li { +"Client includes the token in subsequent requests" }
-            li { +"Server validates the token for each request" }
-        }
-        p {
-            +"Advantages:"
-        }
-        ul {
-            li {
-                strong { +"Stateless" }
-                +" - Server doesn't need to store session information"
+        twoColumns(
+            left = {
+                h4 { +"How token-based authentication works" }
+                p {
+                    ol {
+                        li { +"User provides credentials (username/password)" }
+                        li { +"Server validates credentials" }
+                        li { +"Server generates a token and returns it to the client" }
+                        li { +"Client includes the token in subsequent requests" }
+                        li { +"Server validates the token for each request" }
+                    }
+                }
+                h4 { +"Common token formats" }
+                p {
+                    ul {
+                        li { +"JWT (JSON Web Tokens)" }
+                        li { +"Opaque tokens with server-side lookup" }
+                        li { +"API keys for service-to-service communication" }
+                    }
+                }
+            },
+            right = {
+                contentCard {
+                    h4 { +"Advantages" }
+                    ul {
+                        li {
+                            strong { +"Stateless" }
+                            +" - Server doesn't need to store session information"
+                        }
+                        li {
+                            strong { +"Scalable" }
+                            +" - Easy to distribute across multiple servers"
+                        }
+                        li {
+                            strong { +"Cross-domain" }
+                            +" - Works across different domains and services"
+                        }
+                        li {
+                            strong { +"Mobile-friendly" }
+                            +" - Ideal for mobile applications and APIs"
+                        }
+                    }
+                }
             }
-            li {
-                strong { +"Scalable" }
-                +" - Easy to distribute across multiple servers"
-            }
-            li {
-                strong { +"Cross-domain" }
-                +" - Works across different domains and services"
-            }
-            li {
-                strong { +"Mobile-friendly" }
-                +" - Ideal for mobile applications and APIs"
-            }
-        }
-        p {
-            +"Common token formats:"
-        }
-        ul {
-            li { +"JWT (JSON Web Tokens)" }
-            li { +"Opaque tokens with server-side lookup" }
-            li { +"API keys for service-to-service communication" }
-        }
+        )
     }
 )
 
@@ -192,50 +203,58 @@ object OAuthSlide : Slide(
         +"OAuth 2.0 is an authorization framework that enables applications to obtain limited access to user accounts on third-party services."
     },
     content = {
-        p {
-            +"OAuth 2.0 roles:"
-        }
-        ul {
-            li {
-                strong { +"Resource Owner" }
-                +" - The user who authorizes access to their data"
+        twoColumns(
+            ratio = 3 to 2,
+            left = {
+                h4 { +"OAuth 2.0 roles" }
+                p {
+                    ul {
+                        li {
+                            strong { +"Resource Owner" }
+                            +" - The user who authorizes access to their data"
+                        }
+                        li {
+                            strong { +"Client" }
+                            +" - The application requesting access to user data"
+                        }
+                        li {
+                            strong { +"Authorization Server" }
+                            +" - Server that authenticates the user and issues access tokens"
+                        }
+                        li {
+                            strong { +"Resource Server" }
+                            +" - Server hosting the protected user data"
+                        }
+                    }
+                }
+                h4 { +"Common OAuth 2.0 grant types" }
+                p {
+                    ul {
+                        li {
+                            strong { +"Authorization Code" }
+                            +" - Most secure, suitable for web applications"
+                        }
+                        li {
+                            strong { +"Implicit" }
+                            +" - For client-side applications (less secure)"
+                        }
+                        li {
+                            strong { +"Client Credentials" }
+                            +" - For service-to-service communication"
+                        }
+                        li {
+                            strong { +"Resource Owner Password Credentials" }
+                            +" - Direct username/password (discouraged)"
+                        }
+                    }
+                }
+            },
+            right = {
+                contentCard {
+                    h4 { +"Benefits" }
+                    +" Single sign-on (SSO), reduced password fatigue, leverages established identity providers."
+                }
             }
-            li {
-                strong { +"Client" }
-                +" - The application requesting access to user data"
-            }
-            li {
-                strong { +"Authorization Server" }
-                +" - Server that authenticates the user and issues access tokens"
-            }
-            li {
-                strong { +"Resource Server" }
-                +" - Server hosting the protected user data"
-            }
-        }
-        p {
-            +"Common OAuth 2.0 grant types:"
-        }
-        ul {
-            li {
-                strong { +"Authorization Code" }
-                +" - Most secure, suitable for web applications"
-            }
-            li {
-                strong { +"Implicit" }
-                +" - For client-side applications (less secure)"
-            }
-            li {
-                strong { +"Client Credentials" }
-                +" - For service-to-service communication"
-            }
-            li {
-                strong { +"Resource Owner Password Credentials" }
-                +" - Direct username/password (discouraged)"
-            }
-        }
-        p {
-            +"Benefits: Single sign-on (SSO), reduced password fatigue, leverages established identity providers."
-        }
+        )
     }
 )
