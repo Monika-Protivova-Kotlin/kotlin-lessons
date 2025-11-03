@@ -52,26 +52,26 @@ object SpringDataJPAIntroSlide : Slide(
         }
         kotlinPlayground(
             """
-            |interface UserRepository : JpaRepository<User, Long>
+            |interface TaskRepository : JpaRepository<TaskEntity, Long>
             """,
             executable = false
         )
         ul {
             li {
                 +"Repository is defined as "
-                strong { highlight("UserRepository") }
+                strong { highlight("TaskRepository") }
                 +" interface, extending "
                 strong { highlight("JpaRepository") }
                 +"."
             }
             li {
-                inlineCode("User")
+                inlineCode("TaskEntity")
                 +" is a class representing data object (entity) managed by the repository."
             }
             li {
                 inlineCode("Long")
                 +" is the primary key type of the "
-                inlineCode("User")
+                inlineCode("TaskEntity")
                 +" type."
             }
         }
@@ -88,20 +88,27 @@ object JPAEntitySlide : Slide(
     content = {
         p {
             +"The "
-            inlineCode("User")
+            inlineCode("TaskEntity")
             +" entity may look like this"
         }
         kotlinPlayground(
             """
             |@Entity
-            |@Table(name = "users")
-            |data class User(
+            |@Table(name = "tasks")
+            |data class TaskEntity(
             |    @Id
             |    @GeneratedValue(strategy = GenerationType.IDENTITY)
             |    val id: Long? = null,
             |
-            |    @Column(name = "name")
-            |    val name: String
+            |    @Column(name = "description")
+            |    val description: String,
+            |
+            |    @Column(name = "status")
+            |    @Enumerated(EnumType.STRING)
+            |    val status: TaskStatus,
+            |
+            |    @Column(name = "created_by")
+            |    val createdBy: Long
             |)
             """,
             executable = false
@@ -120,14 +127,14 @@ object JPARepositorySlide : Slide(
             strong { highlight("Spring Data JPA") }
             +" will automatically generate a query using "
             +"the "
-            strong { highlight("findByName") }
+            strong { highlight("findByStatus") }
             +" method name because it follows a Spring Data JPA naming convention."
         }
         kotlinPlayground(
             """
-            |interface UserRepository : JpaRepository<User, Long> {
+            |interface TaskRepository : JpaRepository<TaskEntity, Long> {
             |
-            |    fun findByName(name: String): List<User>
+            |    fun findByStatus(status: TaskStatus): List<TaskEntity>
             |
             |}
             """,
@@ -140,10 +147,10 @@ object JPARepositorySlide : Slide(
         }
         kotlinPlayground(
             """
-            |interface UserRepository : JpaRepository<User, Long> {
+            |interface TaskRepository : JpaRepository<TaskEntity, Long> {
             |
-            |    @Query("SELECT u FROM User u WHERE u.name = :name")
-            |    fun findUsersByName(@Param("name") name: String): List<User>
+            |    @Query("SELECT t FROM TaskEntity t WHERE t.createdBy = :userId AND t.status = :status")
+            |    fun findTasksByUserAndStatus(@Param("userId") userId: Long, @Param("status") status: TaskStatus): List<TaskEntity>
             |
             |}
             """,
@@ -166,12 +173,18 @@ object JPAServiceUsageSlide : Slide(
             |import org.springframework.stereotype.Service
             |
             |@Service
-            |class UserService(
-            |    private val userRepository: UserRepository
+            |class TaskService(
+            |    private val taskRepository: TaskRepository
             |) {
             |
-            |    fun getUsers(): List<User> {
-            |        return userRepository.findAll()
+            |    fun getTasks(): List<Task> {
+            |        return taskRepository.findAll()
+            |            .map { it.toDomain() }
+            |    }
+            |
+            |    fun getTasksByStatus(status: TaskStatus): List<Task> {
+            |        return taskRepository.findByStatus(status)
+            |            .map { it.toDomain() }
             |    }
             |
             |}

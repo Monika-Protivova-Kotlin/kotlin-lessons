@@ -246,7 +246,7 @@ object TestingGetEndpointSlide : Slide(
 
                                 test("should return task when it exists") {
                                     // Arrange: Mock service to return a task
-                                    val task = Task(id = 1, description = "Write tests", status = TaskStatus.TODO)
+                                    val task = Task(id = 1, description = "Write tests", status = TaskStatus.NEW)
                                     every { taskService.getTask(1L) } returns task
 
                                     // Act & Assert: Perform request and verify response
@@ -255,7 +255,7 @@ object TestingGetEndpointSlide : Slide(
                                         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                         .andExpect(jsonPath("$.id").value(1))
                                         .andExpect(jsonPath("$.description").value("Write tests"))
-                                        .andExpect(jsonPath("$.status").value("TODO"))
+                                        .andExpect(jsonPath("$.status").value("NEW"))
 
                                     // Verify service was called
                                     verify(exactly = 1) { taskService.getTask(1L) }

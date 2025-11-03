@@ -37,12 +37,12 @@ object JOOQSlide : Slide(
             """
             |val context = DSL.using(dataSource, SQLDialect.H2)
             |
-            |val users = context.selectFrom(USERS)
+            |val tasks = context.selectFrom(TASKS)
             |    .where(
-            |        USERS.NAME.eq("John"),
-            |        USERS.AGE.gt(18)
+            |        TASKS.STATUS.eq("NEW"),
+            |        TASKS.CREATED_BY.eq(1L)
             |    )
-            |    .fetch(Records.mapping(::User.java))
+            |    .fetch(Records.mapping(::TaskEntity.java))
             """,
             executable = false
         )

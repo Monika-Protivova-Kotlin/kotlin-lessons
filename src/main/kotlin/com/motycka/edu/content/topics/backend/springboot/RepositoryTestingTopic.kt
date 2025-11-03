@@ -2,8 +2,10 @@ package com.motycka.edu.content.topics.backend.springboot
 
 import com.motycka.edu.model.Slide
 import com.motycka.edu.model.Topic
+import com.motycka.edu.model.highlight
 import com.motycka.edu.model.inlineCode
 import com.motycka.edu.model.kotlinPlayground
+import com.motycka.edu.model.twoColumns
 import kotlinx.html.*
 
 object RepositoryTestingTopic : Topic(
@@ -26,36 +28,42 @@ object RepositoryTestingIntroSlide : Slide(
             +"Testing the repository layer requires a real database to verify SQL queries, constraints, and data mapping. "
             +"We need to ensure the database is in a known state before running each test."
         }
-        p {
-            strong { +"Key principles:" }
-        }
-        ul {
-            li { strong { +"Never mock the database" }; +" - Use a real database instance" }
-            li { +"Use in-memory database (H2) or containerized database (Testcontainers)" }
-            li { +"Reset database state before each test" }
-            li { +"Focus on data access logic, not business logic" }
-        }
-        p {
-            +"To build the correct testing context with Spring, use:"
-        }
-        ul {
-            li { inlineCode("@JdbcTest"); +" - For JDBC-based repositories" }
-            li { inlineCode("@DataJpaTest"); +" - For JPA repositories" }
-        }
-        p {
-            +"Additional useful annotations:"
-        }
-        ul {
-            li { inlineCode("@Import"); +" - Import repository class if needed" }
-            li { inlineCode("@Autowired"); +" - Inject repository and dependencies" }
-            li { inlineCode("@DirtiesContext"); +" - Reset database state before each test" }
-        }
-        blockQuote {
-            +"In-memory H2 database is convenient for testing, but production uses PostgreSQL/MySQL. "
-            +"For more realistic tests, use "
-            strong(classes = "inline") { +"TestContainers" }
-            +" to run tests against containerized production databases."
-        }
+        twoColumns(
+            left = {
+                p {
+                    +"To build the correct testing context with Spring, use:"
+                }
+                ul {
+                    li { inlineCode("@JdbcTest"); +" - For JDBC-based repositories" }
+                    li { inlineCode("@DataJpaTest"); +" - For JPA repositories" }
+                }
+                p {
+                    +"Additional useful annotations:"
+                }
+                ul {
+                    li { inlineCode("@Import"); +" - Import repository class if needed" }
+                    li { inlineCode("@Autowired"); +" - Inject repository and dependencies" }
+                    li { inlineCode("@DirtiesContext"); +" - Reset database state before each test" }
+                }
+            },
+            right = {
+                p {
+                    strong { +"Key principles:" }
+                }
+                ul {
+                    li { strong { +"Never mock the database" }; +" - Use a real database instance" }
+                    li { +"Use in-memory database (H2) or containerized database (Testcontainers)" }
+                    li { +"Reset database state before each test" }
+                    li { +"Focus on data access logic, not business logic" }
+                }
+                blockQuote {
+                    +"In-memory H2 database is convenient for testing, but production uses PostgreSQL/MySQL. "
+                    +"For more realistic tests, use "
+                    highlight("TestContainers")
+                    +" to run tests against containerized production databases."
+                }
+            },
+        )
     }
 )
 
@@ -73,15 +81,6 @@ object JdbcTestSlide : Slide(
         }
         kotlinPlayground(
             code = """
-                import io.kotest.core.spec.style.FunSpec
-                import io.kotest.matchers.shouldBe
-                import org.springframework.beans.factory.annotation.Autowired
-                import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
-                import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest
-                import org.springframework.context.annotation.Import
-                import org.springframework.jdbc.core.JdbcTemplate
-                import org.springframework.test.annotation.DirtiesContext
-
                 @JdbcTest
                 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
                 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
@@ -96,38 +95,19 @@ object JdbcTestSlide : Slide(
 
                     init {
                         test("findAll should return all tasks") {
-                            // Arrange: Insert test data directly
                             jdbcTemplate.update(
                                 "INSERT INTO tasks (description, status, created_by) VALUES (?, ?, ?)",
-                                "Task 1", "TODO", 1
+                                "Task 1", "NEW", 1
                             )
                             jdbcTemplate.update(
                                 "INSERT INTO tasks (description, status, created_by) VALUES (?, ?, ?)",
                                 "Task 2", "IN_PROGRESS", 1
                             )
 
-                            // Act
                             val tasks = taskRepository.findAll()
-
-                            // Assert
                             tasks.size shouldBe 2
                             tasks[0].description shouldBe "Task 1"
                             tasks[1].description shouldBe "Task 2"
-                        }
-
-                        test("findById should return task when exists") {
-                            // Arrange
-                            jdbcTemplate.update(
-                                "INSERT INTO tasks (id, description, status, created_by) VALUES (?, ?, ?, ?)",
-                                1, "Test Task", "TODO", 1
-                            )
-
-                            // Act
-                            val task = taskRepository.findById(1)
-
-                            // Assert
-                            task?.description shouldBe "Test Task"
-                            task?.status shouldBe "TODO"
                         }
                     }
                 }
@@ -152,14 +132,6 @@ object JPATestSlide : Slide(
         }
         kotlinPlayground(
             code = """
-                import io.kotest.core.spec.style.FunSpec
-                import io.kotest.matchers.shouldBe
-                import io.kotest.matchers.shouldNotBe
-                import org.springframework.beans.factory.annotation.Autowired
-                import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-                import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
-                import org.springframework.test.annotation.DirtiesContext
-
                 @DataJpaTest
                 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
                 class TaskJpaRepositoryTest : FunSpec() {
@@ -172,39 +144,20 @@ object JPATestSlide : Slide(
 
                     init {
                         test("save should persist task to database") {
-                            // Arrange
                             val task = TaskEntity(
                                 description = "Test JPA",
-                                status = TaskStatus.TODO,
+                                status = TaskStatus.NEW,
                                 createdBy = 1L
                             )
 
-                            // Act
                             val saved = taskRepository.save(task)
                             entityManager.flush()
                             entityManager.clear()
 
-                            // Assert
-                            saved.id shouldNotBe null
+                            saved.id shouldNotBeNull
                             val found = taskRepository.findById(saved.id!!)
                             found.isPresent shouldBe true
                             found.get().description shouldBe "Test JPA"
-                        }
-
-                        test("findByStatus should return tasks with matching status") {
-                            // Arrange: Create tasks with different statuses
-                            val task1 = TaskEntity(description = "Task 1", status = TaskStatus.TODO, createdBy = 1L)
-                            val task2 = TaskEntity(description = "Task 2", status = TaskStatus.IN_PROGRESS, createdBy = 1L)
-                            val task3 = TaskEntity(description = "Task 3", status = TaskStatus.TODO, createdBy = 1L)
-                            taskRepository.saveAll(listOf(task1, task2, task3))
-                            entityManager.flush()
-
-                            // Act
-                            val todoTasks = taskRepository.findByStatus(TaskStatus.TODO)
-
-                            // Assert
-                            todoTasks.size shouldBe 2
-                            todoTasks.all { it.status == TaskStatus.TODO } shouldBe true
                         }
                     }
                 }
@@ -225,25 +178,11 @@ object TestContainersSlide : Slide(
             inlineCode("TestContainers")
             +" is a library that allows you to run your tests against real databases in isolated Docker containers."
         }
-        p {
-            strong { +"Benefits:" }
-        }
-        ul {
-            li { +"Test against the actual production database (PostgreSQL, MySQL, etc.)" }
-            li { +"Avoid H2 compatibility issues" }
-            li { +"Automatic container lifecycle management" }
-            li { +"Isolated test environment (no shared state)" }
-        }
-        kotlinPlayground(
-            code = """
-                import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
-                import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-                import org.springframework.test.context.DynamicPropertyRegistry
-                import org.springframework.test.context.DynamicPropertySource
-                import org.testcontainers.containers.PostgreSQLContainer
-                import org.testcontainers.junit.jupiter.Container
-                import org.testcontainers.junit.jupiter.Testcontainers
-
+        twoColumns(
+            ratio = 3 to 2,
+            left = {
+                kotlinPlayground(
+                    code = """
                 @DataJpaTest
                 @Testcontainers
                 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -273,7 +212,7 @@ object TestContainersSlide : Slide(
                         test("should work with real PostgreSQL") {
                             val task = TaskEntity(
                                 description = "Test with real database",
-                                status = TaskStatus.TODO,
+                                status = TaskStatus.NEW,
                                 createdBy = 1L
                             )
                             val saved = taskRepository.save(task)
@@ -282,7 +221,20 @@ object TestContainersSlide : Slide(
                     }
                 }
             """.trimIndent(),
-            executable = false
+                    executable = false
+                )
+            },
+            right = {
+                p {
+                    strong { +"Benefits:" }
+                }
+                ul {
+                    li { +"Test against the actual production database (PostgreSQL, MySQL, etc.)" }
+                    li { +"Avoid H2 compatibility issues" }
+                    li { +"Automatic container lifecycle management" }
+                    li { +"Isolated test environment (no shared state)" }
+                }
+            },
         )
     },
     fontSize = "65%"

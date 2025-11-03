@@ -89,15 +89,17 @@ object JDBCSlide : Slide(
         kotlinPlayground(
             """
             |@Repository
-            |class UserRepository(
+            |class TaskRepository(
             |    private val jdbcTemplate: JdbcTemplate
             |) {
             |
-            |    fun selectAll(): List<User> {
-            |        return jdbcTemplate.query("SELECT * FROM users") { resultSet, index ->
-            |            User(
-            |                resultSet.getLong("id"),
-            |                resultSet.getString("name")
+            |    fun findAll(): List<TaskEntity> {
+            |        return jdbcTemplate.query("SELECT * FROM tasks") { resultSet, index ->
+            |            TaskEntity(
+            |                id = resultSet.getLong("id"),
+            |                description = resultSet.getString("description"),
+            |                status = TaskStatus.valueOf(resultSet.getString("status")),
+            |                createdBy = resultSet.getLong("created_by")
             |            )
             |        }
             |    }
@@ -117,9 +119,9 @@ object JdbcTemplateSlide : Slide(
         p { +"Select with parameters" }
         kotlinPlayground(
             """
-            |fun selectById(id: Long): User? {
+            |fun findById(id: Long): TaskEntity? {
             |    return jdbcTemplate.query(
-            |        "SELECT * FROM users WHERE id = ? LIMIT 1",
+            |        "SELECT * FROM tasks WHERE id = ? LIMIT 1",
             |        ::rowMapper,
             |        id
             |    ).firstOrNull()
@@ -130,11 +132,13 @@ object JdbcTemplateSlide : Slide(
         p { +"Insert/update with parameters and returning results" }
         kotlinPlayground(
             """
-            |fun insert(user: NewUser): User? {
+            |fun save(task: NewTaskRequest): TaskEntity? {
             |    return jdbcTemplate.query(
-            |        "SELECT * FROM FINAL TABLE (INSERT INTO users (name) VALUES (?))",
+            |        "SELECT * FROM FINAL TABLE (INSERT INTO tasks (description, status, created_by) VALUES (?, ?, ?))",
             |        ::rowMapper,
-            |        user.name
+            |        task.description,
+            |        "NEW",
+            |        task.createdBy
             |    ).firstOrNull()
             |}
             """,
@@ -151,10 +155,12 @@ object JdbcTemplateQueriesSlide : Slide(
     content = {
         kotlinPlayground(
             """
-            |private fun rowMapper(rs: ResultSet, i: Int): User {
-            |    return User(
-            |        rs.getLong("id"),
-            |        rs.getString("name")
+            |private fun rowMapper(rs: ResultSet, i: Int): TaskEntity {
+            |    return TaskEntity(
+            |        id = rs.getLong("id"),
+            |        description = rs.getString("description"),
+            |        status = TaskStatus.valueOf(rs.getString("status")),
+            |        createdBy = rs.getLong("created_by")
             |    )
             |}
             """,

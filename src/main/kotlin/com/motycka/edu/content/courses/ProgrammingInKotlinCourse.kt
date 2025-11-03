@@ -1,6 +1,7 @@
 package com.motycka.edu.content.courses
 
 import com.motycka.edu.content.lessons.programming.*
+import com.motycka.edu.content.topics.FinalAssignmentTopic
 import com.motycka.edu.content.topics.backend.*
 import com.motycka.edu.content.topics.backend.deployment.*
 import com.motycka.edu.content.topics.backend.springboot.*
@@ -22,22 +23,17 @@ import com.motycka.edu.content.topics.basics.concurrency.MultithreadingTopic
 import com.motycka.edu.content.topics.basics.concurrency.SynchronizersTopic
 import com.motycka.edu.content.topics.basics.concurrency.ThreadExercisesTopic
 import com.motycka.edu.content.topics.basics.conditionals.ConditionalsTopic
-import com.motycka.edu.content.topics.basics.datetime.*
 import com.motycka.edu.content.topics.basics.essentials.*
 import com.motycka.edu.content.topics.basics.functions.*
 import com.motycka.edu.content.topics.basics.io.*
 import com.motycka.edu.content.topics.design.ApplicationArchitecturePatternsTopic
 import com.motycka.edu.content.topics.design.DesignPatternsTopic
-import com.motycka.edu.content.topics.design.FunctionalProgrammingTopic
 import com.motycka.edu.content.topics.design.InversionOfControlTopic
 import com.motycka.edu.content.topics.design.SOLIDPracticeTopic
 import com.motycka.edu.content.topics.design.patterns.SingletonPatternTopic
 import com.motycka.edu.content.topics.design.patterns.FactoryPatternTopic
 import com.motycka.edu.content.topics.design.patterns.BuilderPatternTopic
-import com.motycka.edu.content.topics.design.patterns.ObserverPatternTopic
 import com.motycka.edu.content.topics.design.patterns.StrategyPatternTopic
-import com.motycka.edu.content.topics.design.patterns.DecoratorPatternTopic
-import com.motycka.edu.content.topics.design.patterns.AdapterPatternTopic
 import com.motycka.edu.content.topics.design.patterns.RepositoryPatternTopic
 import com.motycka.edu.content.topics.design.solid.DesignForTestabilityTopic
 import com.motycka.edu.content.topics.design.solid.SolidPrinciplesTopic
@@ -371,7 +367,8 @@ object SpringBootDataLayerLesson : Lesson(
         SpringDataJPATopic,
         JOOQTopic,
         TransactionsTopic,
-        RepositoryTestingTopic
+        RepositoryTestingTopic,
+        FinalAssignmentTopic
     )
 )
 
@@ -422,3 +419,4 @@ object SpringBootApplicationV3Lesson : Lesson(
         PracticeTopic // Project work
     )
 )
+
