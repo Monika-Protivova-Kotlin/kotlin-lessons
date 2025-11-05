@@ -424,24 +424,27 @@ object CourseBuilder {
         // Grading
         section {
             h3 { +"Grading" }
-            div(classes = "content content-100") {
-                p {
-                    strong { +"80%" }
-                    +" - Exercises and assignments"
-                    br()
-                    em {
-                        +"There will be exercises in each lesson which we will have reserved time to work on in class."
-                        br()
-                        +"I can give you individual feedback if you ask for it."
+            div(classes = "content content-100 content-center") {
+                ul {
+                    li {
+                        strong { +"Kotlin Practice Assignments 1-8" }
+                        +" = "
+                        em { +"40%" }
                     }
-                }
-                br()
-                p {
-                    strong { +"20%" }
-                    +" - Participation"
-                    br()
-                    em {
-                        +"Participation in class - we will see how it goes since you are many."
+                    li {
+                        strong { +"Final Project" }
+                        +" = "
+                        em { +"40%" }
+                    }
+                    li {
+                        strong { +"Coffee Shop Exercise" }
+                        +" = "
+                        em { +"10%" }
+                    }
+                    li {
+                        strong { +"Class participation" }
+                        +" = "
+                        em { +"10%" }
                     }
                 }
             }
