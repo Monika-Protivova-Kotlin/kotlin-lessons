@@ -7,6 +7,7 @@ import kotlinx.html.div
 import kotlinx.html.h3
 import kotlinx.html.li
 import kotlinx.html.ol
+import kotlinx.html.p
 import kotlinx.html.pre
 import kotlinx.html.section
 import kotlinx.html.span
@@ -97,6 +98,38 @@ fun FlowContent.contentCard(
         content()
     }
 }
+
+fun FlowContent.contentCard(
+    icon: String = "",
+    header: String = "",
+    content: FlowContent.() -> Unit
+) {
+    div(classes = "content-card") {
+        strong { +"$icon ️${if (header.isEmpty()) " " else ": "}" }
+        content()
+    }
+}
+
+fun FlowContent.infoCard(
+    header: String = "",
+    content: FlowContent.() -> Unit
+) = contentCard("ℹ️", header, content)
+
+fun FlowContent.warningCard(
+    header: String = "",
+    content: FlowContent.() -> Unit
+) = contentCard("⚠️", header, content)
+
+fun FlowContent.hintCard(
+    header: String = "",
+    content: FlowContent.() -> Unit
+) = contentCard("💡", header, content)
+
+
+fun FlowContent.importantCard(
+    header: String = "",
+    content: FlowContent.() -> Unit
+) = contentCard("❗", header, content)
 
 fun FlowContent.twoColumns(
     left: FlowContent.() -> Unit,

@@ -74,7 +74,15 @@ val ProgrammingInKotlinCourse = Course(
         SecurityAndAuthenticationLesson,              // L12
         DeploymentAndObservabilityLesson,             // L13
         DeveloperAndAILesson,                         // L14
-        SpringBootApplicationV3Lesson                 // L15: Project Work
+        Lesson(                                       // L15
+            title = "Final Project & Assignment Work",
+            preTitle = "Week 3 | Lesson 15",
+            subTitle = "Final Project Work",
+            summary = "",
+            topics = listOf(
+                PracticeTopic // Project work
+            )
+        )
     )
 )
 
@@ -406,7 +414,8 @@ object DeploymentAndObservabilityLesson : Lesson(
         LoggingStrategiesTopic,
         MetricsAndMonitoringTopic,
         ObservabilityTopic,
-        ResilientApplicationsTopic
+        ResilientApplicationsTopic,
+        Topic(title = "Practice")
     )
 )
 

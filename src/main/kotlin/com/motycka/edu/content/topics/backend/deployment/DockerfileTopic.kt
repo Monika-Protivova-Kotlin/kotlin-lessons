@@ -4,6 +4,7 @@ import com.motycka.edu.model.Slide
 import com.motycka.edu.model.Topic
 import com.motycka.edu.model.highlight
 import com.motycka.edu.model.inlineCode
+import com.motycka.edu.model.twoColumns
 import kotlinx.html.*
 
 object DockerfileTopic : Topic(
@@ -26,34 +27,42 @@ object DockerfileIntroSlide : Slide(
             +"A Dockerfile defines the steps Docker takes to create an image. "
             +"Each instruction creates a layer in the image, and Docker caches these layers for efficiency."
         }
-
-        p { strong { +"Basic Dockerfile Structure:" } }
-        pre {
-            +"""
-            # Start from a base image
-            FROM openjdk:17-jdk-slim
-
-            # Set the working directory
-            WORKDIR /app
-
-            # Copy files into the image
-            COPY target/myapp.jar app.jar
-
-            # Expose a port
-            EXPOSE 8080
-
-            # Define the command to run
-            ENTRYPOINT ["java", "-jar", "app.jar"]
-            """.trimIndent()
-        }
-
-        p { highlight("Key Principles:") }
-        ul {
-            li { +"Instructions are executed in order" }
-            li { +"Each instruction creates a new layer" }
-            li { +"Layers are cached for faster rebuilds" }
-            li { +"Order matters for cache optimization" }
-        }
+        twoColumns(
+            left = {
+                p {
+                    h4 { +"Basic Dockerfile Structure" }
+                    pre {
+                        +"""
+                        # Start from a base image
+                        FROM openjdk:17-jdk-slim
+            
+                        # Set the working directory
+                        WORKDIR /app
+            
+                        # Copy files into the image
+                        COPY target/myapp.jar app.jar
+            
+                        # Expose a port
+                        EXPOSE 8080
+            
+                        # Define the command to run
+                        ENTRYPOINT ["java", "-jar", "app.jar"]
+                        """.trimIndent()
+                    }
+                }
+            },
+            right = {
+                p {
+                    h4 { +"Key Principles" }
+                    ul {
+                        li { +"Instructions are executed in order" }
+                        li { +"Each instruction creates a new layer" }
+                        li { +"Layers are cached for faster rebuilds" }
+                        li { +"Order matters for cache optimization" }
+                    }
+                }
+            }
+        )
     }
 )
 
