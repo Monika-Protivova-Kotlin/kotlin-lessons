@@ -1,6 +1,7 @@
 package com.motycka.edu.model
 
 import kotlinx.html.FlowContent
+import kotlinx.html.UL
 import kotlinx.html.br
 import kotlinx.html.code
 import kotlinx.html.div
@@ -105,7 +106,7 @@ fun FlowContent.contentCard(
     content: FlowContent.() -> Unit
 ) {
     div(classes = "content-card") {
-        strong { +"$icon ️${if (header.isEmpty()) " " else ": "}" }
+        strong { +"$icon ️${if (header.isEmpty()) " " else "$header: "}" }
         content()
     }
 }

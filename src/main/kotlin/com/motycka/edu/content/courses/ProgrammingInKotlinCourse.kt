@@ -402,7 +402,7 @@ object SecurityAndAuthenticationLesson : Lesson(
 )
 
 object DeploymentAndObservabilityLesson : Lesson(
-    title = "Deployment, Docker & Observability",
+    title = "Development, Deployment & Monitoring",
     preTitle = "Week 3 | Lesson 13",
     subTitle = "Docker, Containerization, Deployment, Logging, Metrics, Observability, Resilient Applications",
     summary = "Containerization with Docker, deployment strategies, logging, metrics, observability, and building resilient applications",
@@ -410,7 +410,9 @@ object DeploymentAndObservabilityLesson : Lesson(
         DockerBasicsTopic,
         DockerfileTopic,
         DockerComposeTopic,
-        DeploymentTopic,
+        DevelopmentAndEnvironmentsTopic,
+        BuildAndPackagingTopic,
+        DeploymentStrategiesTopic,
         LoggingStrategiesTopic,
         MetricsAndMonitoringTopic,
         ObservabilityTopic,

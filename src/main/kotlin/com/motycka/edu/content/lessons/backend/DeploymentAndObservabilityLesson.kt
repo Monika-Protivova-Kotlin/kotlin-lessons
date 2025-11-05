@@ -1,7 +1,9 @@
 package com.motycka.edu.content.lessons.backend
 
 import com.motycka.edu.content.topics.backend.ApplicationLifecycleTopic
-import com.motycka.edu.content.topics.backend.DeploymentTopic
+import com.motycka.edu.content.topics.backend.DevelopmentAndEnvironmentsTopic
+import com.motycka.edu.content.topics.backend.BuildAndPackagingTopic
+import com.motycka.edu.content.topics.backend.DeploymentStrategiesTopic
 import com.motycka.edu.content.topics.backend.ObservabilityTopic
 import com.motycka.edu.model.Lesson
 
@@ -11,7 +13,9 @@ val DeploymentAndObservabilityLesson = Lesson(
     subTitle = "Deployment, Configuration and Secrets, Observability, Monitoring",
     topics = listOf(
         ApplicationLifecycleTopic,
-        DeploymentTopic,
+        DevelopmentAndEnvironmentsTopic,
+        BuildAndPackagingTopic,
+        DeploymentStrategiesTopic,
         ObservabilityTopic
     )
 )
