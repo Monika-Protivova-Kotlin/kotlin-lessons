@@ -1,7 +1,11 @@
 package com.motycka.edu.model
 
 import kotlinx.html.FlowContent
+import kotlinx.html.FlowOrPhrasingContent
+import kotlinx.html.HtmlTagMarker
+import kotlinx.html.STRONG
 import kotlinx.html.UL
+import kotlinx.html.attributesMapOf
 import kotlinx.html.br
 import kotlinx.html.code
 import kotlinx.html.div
@@ -15,6 +19,10 @@ import kotlinx.html.span
 import kotlinx.html.strong
 import kotlinx.html.style
 import kotlinx.html.ul
+import kotlinx.html.visit
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 
 open class Slide(
     val header: String,
@@ -59,6 +67,11 @@ fun FlowContent.inlineCode(code: String) {
 
 fun FlowContent.highlight(text: String) {
     strong(classes = "highlight") { +text }
+}
+
+@HtmlTagMarker
+inline fun FlowOrPhrasingContent.highlight(crossinline block : STRONG.() -> Unit = {}) {
+    STRONG(attributesMapOf("class", "highlight"), consumer).visit(block)
 }
 
 fun FlowContent.kotlinPlayground(
@@ -114,7 +127,7 @@ fun FlowContent.contentCard(
 fun FlowContent.infoCard(
     header: String = "",
     content: FlowContent.() -> Unit
-) = contentCard("ℹ️", header, content)
+) = contentCard("\uD83D\uDCDD", header, content)
 
 fun FlowContent.warningCard(
     header: String = "",

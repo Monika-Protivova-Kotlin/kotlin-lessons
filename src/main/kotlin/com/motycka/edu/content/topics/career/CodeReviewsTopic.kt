@@ -10,8 +10,8 @@ object CodeReviewsTopic : Topic(
         WhatToReviewSlide,
         GivingFeedbackSlide,
         ReceivingFeedbackSlide,
-        CodeReviewBestPracticesSlide,
-        CodeReviewToolsSlide
+//        CodeReviewBestPracticesSlide,
+//        CodeReviewToolsSlide
     )
 )
 
@@ -22,7 +22,7 @@ object CodeReviewIntroSlide : Slide(
     },
     content = {
         p {
-            strong { +"Benefits of code reviews:" }
+            h4 { +"Benefits of code reviews" }
         }
         ul {
             li {
@@ -48,7 +48,7 @@ object CodeReviewIntroSlide : Slide(
             li {
                 strong { +"Mentorship opportunity" }
                 br()
-                +"Junior developers learn from senior developers' feedback"
+                +"Junior developers learn from senior developers' feedback, or by reviewing seniors' code"
             }
             li {
                 strong { +"Collective ownership" }
@@ -154,7 +154,7 @@ object GivingFeedbackSlide : Slide(
 
         twoColumns(
             left = {
-                h4 { +"✅ Do:" }
+                h4 { +"Do" }
                 ul {
                     li {
                         strong { +"Be specific" }
@@ -189,7 +189,7 @@ object GivingFeedbackSlide : Slide(
                 }
             },
             right = {
-                h4 { +"❌ Don't:" }
+                h4 { +"Don't" }
                 ul {
                     li {
                         strong { +"Be vague" }
@@ -237,52 +237,50 @@ object ReceivingFeedbackSlide : Slide(
         +"Receiving code review feedback gracefully is a key professional skill that accelerates your growth."
     },
     content = {
-        p { strong { +"Mindset for receiving feedback:" } }
+//        p { strong { +"Mindset for receiving feedback:" } }
         ul {
             li {
-                strong { +"Assume good intent" }
-                br()
-                +"Reviewers are trying to help improve the code, not criticize you personally"
+                highlight { +"Assume good intent" }
+                +" - Reviewers are trying to help improve the code, not criticize you personally"
             }
             li {
-                strong { +"Ask for clarification" }
-                br()
-                +"If feedback is unclear, ask questions rather than getting defensive"
+                highlight { +"Ask for clarification" }
+                +" - If feedback is unclear, ask questions rather than getting defensive"
             }
             li {
-                strong { +"Explain your reasoning" }
-                br()
-                +"If you disagree, explain your thinking: \"I chose this approach because...\""
+                highlight { +"Explain your reasoning" }
+                +" - If you disagree, explain your thinking: \"I chose this approach because...\""
             }
             li {
-                strong { +"Be open to learning" }
-                br()
-                +"Even senior developers learn from reviews. Every reviewer has different experience"
+                highlight { +"Be open to learning" }
+                +" - Even senior developers learn from reviews. Every reviewer has different experience"
             }
             li {
-                strong { +"Separate ego from code" }
-                br()
-                +"Your code is not you. Better code benefits everyone"
+                highlight { +"Separate ego from code" }
+                +" - Your code is not you. Better code benefits everyone"
             }
             li {
-                strong { +"Thank reviewers" }
-                br()
-                +"Someone took time to help improve your work. Acknowledge that"
+                highlight { +"You may decide not to make a change based on feedback" }
+                +" - That's okay if you have a good reason. Just explain your choice respectfully"
+            }
+            li {
+                highlight { +"Thank reviewers" }
+                +" - Someone took time to help improve your work. Acknowledge that"
             }
         }
-
         twoColumns(
             left = {
-                h4 { +"✅ Good responses:" }
+                p { h4 { +"Good responses" } }
                 ul {
                     li { +"\"Good catch! I'll fix that\"" }
                     li { +"\"Could you explain more about why?\"" }
                     li { +"\"I hadn't considered that case. Thanks!\"" }
                     li { +"\"I chose X because Y, but I'm open to alternatives\"" }
+                    li { +"\"You're right, but I will do it in separate branch.\"" }
                 }
             },
             right = {
-                h4 { +"❌ Avoid:" }
+                p { h4 { +"Avoid" } }
                 ul {
                     li { +"\"That's just your opinion\"" }
                     li { +"\"It works, doesn't it?\"" }

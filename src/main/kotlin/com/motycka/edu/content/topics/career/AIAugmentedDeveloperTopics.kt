@@ -3,6 +3,8 @@ package com.motycka.edu.content.topics.career
 import com.motycka.edu.model.Slide
 import com.motycka.edu.model.Topic
 import com.motycka.edu.model.highlight
+import com.motycka.edu.model.hintCard
+import com.motycka.edu.model.infoCard
 import com.motycka.edu.model.twoColumns
 import kotlinx.html.*
 
@@ -21,12 +23,12 @@ object SoftwareDevelopmentEvolvingSlide : Slide(
         +"AI is changing how we write code, but not why we write it or what makes great software."
     },
     content = {
-        p {
-            h4 { +"The landscape is shifting rapidly" }
-        }
+//        p {
+//            h4 { +"The landscape is shifting rapidly" }
+//        }
         twoColumns(
             left = {
-                p { strong { +"What's Changing:" } }
+                p { h4 { +"What's Changing:" } }
                 ul {
                     li { +"AI can generate code from descriptions" }
                     li { +"Boilerplate code is automated" }
@@ -37,7 +39,7 @@ object SoftwareDevelopmentEvolvingSlide : Slide(
                 }
             },
             right = {
-                p { strong { +"What Remains Essential:" } }
+                p { h4 { +"What Remains Essential:" } }
                 ul {
                     li { +"Understanding system architecture" }
                     li { +"Making design decisions" }
@@ -48,13 +50,16 @@ object SoftwareDevelopmentEvolvingSlide : Slide(
                 }
             }
         )
-        blockQuote {
+        hintCard {
             +"The question isn't whether AI will change development."
             br
-            +"It already has. "
+            br
+            em { +"It already has. "}
+            br
             br
             +"The real question is: "
-            strong { +"What kind of developer will thrive in this new world?" }
+            br
+            em { +"What kind of developer will thrive in this new world?" }
         }
     }
 )
@@ -132,7 +137,7 @@ object WhatStaysSameSlide : Slide(
             +"AI can help with implementation, but these concerns require human judgment, "
             +"understanding of context, and experience with trade-offs."
         }
-        blockQuote {
+        hintCard {
             +"Your value as a developer has never been just about typing code. "
             +"It's about understanding problems and crafting solutions."
         }
@@ -237,7 +242,7 @@ object WhatAIStrugglesWithSlide : Slide(
                 em { +"Keeping large codebases coherent across many files" }
             }
         }
-        blockQuote {
+        hintCard {
             +"AI sees code. You see the system. That's your advantage."
         }
     }

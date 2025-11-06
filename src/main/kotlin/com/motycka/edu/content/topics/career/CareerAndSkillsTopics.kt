@@ -3,6 +3,8 @@ package com.motycka.edu.content.topics.career
 import com.motycka.edu.model.Slide
 import com.motycka.edu.model.Topic
 import com.motycka.edu.model.highlight
+import com.motycka.edu.model.hintCard
+import com.motycka.edu.model.infoCard
 import com.motycka.edu.model.twoColumns
 import kotlinx.html.*
 
@@ -22,42 +24,49 @@ object ArchitecturalThinkingSlide : Slide(
         +"The ability to design systems and make architectural decisions is becoming more valuable, not less."
     },
     content = {
-        p {
-            strong { +"Why architecture matters more than ever:" }
-        }
-        ul {
-            li {
-                strong { +"AI generates components, not systems" }
-                br()
-                +"It can create individual classes but struggles with overall system design"
+        twoColumns(
+            left = {
+                p {
+                    h4 { +"Architecture matters more than ever" }
+                }
+                ul {
+                    li {
+                        strong { +"AI generates components, not systems" }
+                        br()
+                        +"It can create individual classes but struggles with overall system design"
+                    }
+                    li {
+                        strong { +"Trade-offs require context" }
+                        br()
+                        +"Should this be synchronous or async? Monolith or microservices? AI doesn't know your constraints"
+                    }
+                    li {
+                        strong { +"Evolution matters" }
+                        br()
+                        +"Systems must grow and change. Architecture determines how painful that will be"
+                    }
+                    li {
+                        strong { +"Integration complexity" }
+                        br()
+                        +"How services communicate, where boundaries are, what depends on what"
+                    }
+                }
+            },
+            right = {
+                p {
+                    h4 { +"This course gives you architectural thinking" }
+                }
+                ul {
+                    li { +"Layered architecture (Controller → Service → Repository)" }
+                    li { +"Separation of concerns (DTOs vs Entities)" }
+                    li { +"Dependency management (Dependency Injection)" }
+                    li { +"Data access patterns (JDBC vs JPA vs JOOQ)" }
+                    li { +"Transaction boundaries and consistency" }
+                }
+
             }
-            li {
-                strong { +"Trade-offs require context" }
-                br()
-                +"Should this be synchronous or async? Monolith or microservices? AI doesn't know your constraints"
-            }
-            li {
-                strong { +"Evolution matters" }
-                br()
-                +"Systems must grow and change. Architecture determines how painful that will be"
-            }
-            li {
-                strong { +"Integration complexity" }
-                br()
-                +"How services communicate, where boundaries are, what depends on what"
-            }
-        }
-        p {
-            highlight("This course gives you architectural thinking:")
-        }
-        ul {
-            li { +"Layered architecture (Controller → Service → Repository)" }
-            li { +"Separation of concerns (DTOs vs Entities)" }
-            li { +"Dependency management (Dependency Injection)" }
-            li { +"Data access patterns (JDBC vs JPA vs JOOQ)" }
-            li { +"Transaction boundaries and consistency" }
-        }
-        blockQuote {
+        )
+        hintCard {
             +"AI can build the bricks. You design the building."
         }
     }
@@ -69,47 +78,53 @@ object TestingAndQualitySlide : Slide(
         +"Writing tests becomes even more critical when AI generates implementation code."
     },
     content = {
-        p {
-            strong { +"Why testing matters with AI:" }
-        }
-        ul {
-            li {
-                strong { +"Verification of correctness" }
-                br()
-                +"How do you know AI-generated code actually works? Tests."
+        twoColumns(
+            left = {
+                p {
+                    h4 { +"Why testing matters with AI" }
+                }
+                ul {
+                    li {
+                        strong { +"Verification of correctness" }
+                        br()
+                        +"How do you know AI-generated code actually works? Tests."
+                    }
+                    li {
+                        strong { +"Edge case discovery" }
+                        br()
+                        +"AI often misses edge cases. Good tests catch them."
+                    }
+                    li {
+                        strong { +"Documentation of intent" }
+                        br()
+                        +"Tests show what code should do, not just what it does"
+                    }
+                    li {
+                        strong { +"Refactoring safety" }
+                        br()
+                        +"Tests let you safely improve AI-generated code"
+                    }
+                    li {
+                        strong { +"Integration validation" }
+                        br()
+                        +"Does this component work with the rest of your system?"
+                    }
+                }
+            },
+            right = {
+                p {
+                    h4 { +"Testing skills you've learned" }
+                }
+                ul {
+                    li { +"Unit testing with JUnit and Kotest" }
+                    li { +"Mocking with MockK" }
+                    li { +"Controller testing with MockMvc" }
+                    li { +"Service and repository testing patterns" }
+                    li { +"Test organization and best practices" }
+                }
             }
-            li {
-                strong { +"Edge case discovery" }
-                br()
-                +"AI often misses edge cases. Good tests catch them."
-            }
-            li {
-                strong { +"Documentation of intent" }
-                br()
-                +"Tests show what code should do, not just what it does"
-            }
-            li {
-                strong { +"Refactoring safety" }
-                br()
-                +"Tests let you safely improve AI-generated code"
-            }
-            li {
-                strong { +"Integration validation" }
-                br()
-                +"Does this component work with the rest of your system?"
-            }
-        }
-        p {
-            highlight("Testing skills you've learned:")
-        }
-        ul {
-            li { +"Unit testing with JUnit and Kotest" }
-            li { +"Mocking with MockK" }
-            li { +"Controller testing with MockMvc" }
-            li { +"Service and repository testing patterns" }
-            li { +"Test organization and best practices" }
-        }
-        p {
+        )
+        hintCard {
             +"These skills let you confidently validate any code, regardless of its source."
         }
     }
@@ -122,11 +137,11 @@ object DebuggingAndProblemSolvingSlide : Slide(
     },
     content = {
         p {
-            strong { +"Debugging in the AI era:" }
+            h4 { +"Debugging in the AI era" }
         }
         twoColumns(
             left = {
-                p { strong { +"AI can help with:" } }
+                p { highlight { +"AI can help with" } }
                 ul {
                     li { +"Suggesting possible causes" }
                     li { +"Explaining error messages" }
@@ -135,7 +150,7 @@ object DebuggingAndProblemSolvingSlide : Slide(
                 }
             },
             right = {
-                p { strong { +"You must handle:" } }
+                p { highlight { +"You must handle" } }
                 ul {
                     li { +"Understanding your system state" }
                     li { +"Reproducing the issue" }
@@ -145,20 +160,26 @@ object DebuggingAndProblemSolvingSlide : Slide(
                 }
             }
         )
-        p {
-            strong { +"Complex debugging scenarios AI struggles with:" }
-        }
-        ul {
-            li { +"Race conditions and concurrency issues" }
-            li { +"Production-only bugs with partial information" }
-            li { +"Performance degradation in specific scenarios" }
-            li { +"Integration issues across multiple services" }
-            li { +"Security vulnerabilities and their implications" }
-        }
-        p {
-            +"Your ability to systematically investigate, form hypotheses, and verify solutions "
-            +"is what makes you valuable when problems occur."
-        }
+        twoColumns(
+            left = {
+                p {
+                    highlight { +"Complex debugging scenarios AI struggles with" }
+                }
+                ul {
+                    li { +"Race conditions and concurrency issues" }
+                    li { +"Production-only bugs with partial information" }
+                    li { +"Performance degradation in specific scenarios" }
+                    li { +"Integration issues across multiple services" }
+                    li { +"Security vulnerabilities and their implications" }
+                }
+            },
+            right = {
+                hintCard {
+                    +"Your ability to systematically investigate, form hypotheses, and verify solutions "
+                    +"is what makes you valuable when problems occur."
+                }
+            }
+        )
     }
 )
 
@@ -169,7 +190,7 @@ object ProductionReadinessSlide : Slide(
     },
     content = {
         p {
-            strong { +"What makes code production-ready?" }
+            h4 { +"What makes code production-ready?" }
         }
         ul {
             li {
@@ -375,8 +396,8 @@ object YourCareerInAIWorldTopic : Topic(
     title = "Your Career in an AI World",
     slides = listOf(
         JobsBecomingValuableSlide,
-        HowToPositionYourselfSlide,
-        ContinuousLearningSlide,
+//        HowToPositionYourselfSlide,
+//        ContinuousLearningSlide,
         FinalEncouragementSlide
     )
 )
@@ -569,14 +590,14 @@ object ContinuousLearningSlide : Slide(
 )
 
 object FinalEncouragementSlide : Slide(
-    header = "Your Future as a Developer",
+    header = "Your Future in Software Development",
     summary = {
         +"AI is a tool that makes skilled developers more powerful, not less relevant."
     },
     content = {
-        p {
-            strong { +"Remember:" }
-        }
+//        p {
+//            h4 { +"Remember:" }
+//        }
         ul {
             li {
                 +"Software development has always been about solving problems, not just writing code"
@@ -595,24 +616,19 @@ object FinalEncouragementSlide : Slide(
                 +"But developers who rely only on AI without deep understanding will struggle"
             }
         }
-        p {
-            highlight("The opportunity:")
-        }
-        p {
+        p { h4 { +"The opportunity" } }
+        hintCard {
             +"We're entering an era where skilled developers can build more, faster, and better than ever before. "
             +"AI removes the tedium and lets you focus on what matters: architecture, design, problem-solving, "
             +"and creating software that actually solves real problems."
         }
-        blockQuote {
+        hintCard {
             +"The best developers have always been those who understand problems deeply, "
             +"make good decisions, and build reliable systems. That hasn't changed. "
             +"AI is just a new tool in your toolbox."
         }
-        p {
-            strong { +"Your value is not in typing code. It's in understanding what to build and how to build it well." }
-        }
-        p {
-            +"Now go build something amazing."
+        hintCard {
+            +"Your value is not in typing code. It's in understanding what to build and how to build it well."
         }
     }
 )

@@ -1,6 +1,6 @@
 package com.motycka.edu.content.courses
 
-import com.motycka.edu.content.lessons.DeveloperAndAILesson
+import com.motycka.edu.content.lessons.ProfessionalDevelopmentAndCareerLesson
 import com.motycka.edu.content.lessons.programming.*
 import com.motycka.edu.content.topics.FinalAssignmentTopic
 import com.motycka.edu.content.topics.backend.*
@@ -73,7 +73,7 @@ val ProgrammingInKotlinCourse = Course(
         SpringBootDataLayerLesson,                    // L11
         SecurityAndAuthenticationLesson,              // L12
         DeploymentAndObservabilityLesson,             // L13
-        DeveloperAndAILesson,                         // L14
+        ProfessionalDevelopmentAndCareerLesson,       // L14
         Lesson(                                       // L15
             title = "Final Project & Assignment Work",
             preTitle = "Week 3 | Lesson 15",

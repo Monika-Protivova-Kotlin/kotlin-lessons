@@ -3,7 +3,7 @@ package com.motycka.edu.content.lessons
 import com.motycka.edu.content.topics.career.*
 import com.motycka.edu.model.Lesson
 
-val DeveloperAndAILesson = Lesson(
+object ProfessionalDevelopmentAndCareerLesson : Lesson(
     title = "Professional Development & Career",
     preTitle = "Week 3 | Lesson 14",
     subTitle = "AI, Code Reviews, and Building Your Career",
@@ -12,11 +12,12 @@ val DeveloperAndAILesson = Lesson(
         ChangingLandscapeTopic,
         WhatAICanAndCannotDoTopic,
         WorkingEffectivelyWithAITopic,
-        ValidatingAICodeTopic,
+        SkillsThatMatterMostTopic,
+//        DeepUnderstandingVsSurfaceKnowledgeTopic,
+//        AICodeGenerationExerciseTopic,
         GitWorkflowsTopic,
         CodeReviewsTopic,
-        SkillsThatMatterMostTopic,
-        DeepUnderstandingVsSurfaceKnowledgeTopic,
+
         YourCareerInAIWorldTopic
     )
 )
